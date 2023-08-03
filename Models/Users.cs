@@ -27,11 +27,18 @@ namespace Group20_IoT.Models
         public string Email { get; set; }
 
 
-        [ForeignKey("UserType")]
         [Required]
-        public int UserTypeId { get; set; }
+        [MinLength(8,ErrorMessage ="Please enter a Password with atleast 8 characters"), MaxLength(128, ErrorMessage ="Your Password cannot exceed 128 characters")]
+        public string Password { get; set; }
 
-        public UserType UserType { get; set; }
+        [Required]
+        public bool Access { get; set; }
+
+        [ForeignKey("Role")]
+        [Required]
+        public int RoleId { get; set; }
+
+        public Role Role { get; set; }
 
     }
 }

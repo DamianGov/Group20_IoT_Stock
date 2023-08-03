@@ -15,9 +15,9 @@
 
         protected override void Seed(IoTContext context)
         {
-            context.UserType.AddOrUpdate(u => u.Type,
-                new UserType { Type = "Admin" },
-                new UserType { Type = "Standard" });
+            context.Role.AddOrUpdate(u => u.Type,
+                new Role { Type = "Admin" },
+                new Role { Type = "Standard" });
 
             context.SaveChanges();
 
@@ -25,7 +25,9 @@
             {
                 Name = "Damian",
                 Email = "govdamian@gmail.com",
-                UserTypeId = context.UserType.Single(u => u.Type == "Admin").Id
+                Password = "$2a$11$whipL/4TlRNmEYIm0T0Ha.3eXZjstkTj8uI79/omgrIAybqmTHkYa",
+                Access = true,
+                RoleId = context.Role.Single(u => u.Type == "Admin").Id
             };
 
             context.Users.AddOrUpdate(u => u.Email, adminU);

@@ -7,7 +7,7 @@ using System.Web;
 
 namespace Group20_IoT.Models
 {
-    public class UserType
+    public class Role
     {
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [Key]

@@ -10,107 +10,108 @@ using Group20_IoT.Models;
 
 namespace Group20_IoT.Controllers
 {
-    public class UserTypesController : Controller
+    [SessionCheckerAdmin]
+    public class RolesController : Controller
     {
         private IoTContext db = new IoTContext();
 
-        // GET: UserTypes
+        // GET: Roles
         public ActionResult Index()
         {
-            return View(db.UserType.ToList());
+            return View(db.Role.ToList());
         }
 
-        // GET: UserTypes/Details/5
+        // GET: Roles/Details/5
         public ActionResult Details(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            UserType userType = db.UserType.Find(id);
-            if (userType == null)
+            Role role = db.Role.Find(id);
+            if (role == null)
             {
                 return HttpNotFound();
             }
-            return View(userType);
+            return View(role);
         }
 
-        // GET: UserTypes/Create
+        // GET: Roles/Create
         public ActionResult Create()
         {
             return View();
         }
 
-        // POST: UserTypes/Create
+        // POST: Roles/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,Type")] UserType userType)
+        public ActionResult Create([Bind(Include = "Id,Type")] Role role)
         {
             if (ModelState.IsValid)
             {
-                db.UserType.Add(userType);
+                db.Role.Add(role);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
 
-            return View(userType);
+            return View(role);
         }
 
-        // GET: UserTypes/Edit/5
+        // GET: Roles/Edit/5
         public ActionResult Edit(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            UserType userType = db.UserType.Find(id);
-            if (userType == null)
+            Role role = db.Role.Find(id);
+            if (role == null)
             {
                 return HttpNotFound();
             }
-            return View(userType);
+            return View(role);
         }
 
-        // POST: UserTypes/Edit/5
+        // POST: Roles/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,Type")] UserType userType)
+        public ActionResult Edit([Bind(Include = "Id,Type")] Role role)
         {
             if (ModelState.IsValid)
             {
-                db.Entry(userType).State = EntityState.Modified;
+                db.Entry(role).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            return View(userType);
+            return View(role);
         }
 
-        // GET: UserTypes/Delete/5
+        // GET: Roles/Delete/5
         public ActionResult Delete(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            UserType userType = db.UserType.Find(id);
-            if (userType == null)
+            Role role = db.Role.Find(id);
+            if (role == null)
             {
                 return HttpNotFound();
             }
-            return View(userType);
+            return View(role);
         }
 
-        // POST: UserTypes/Delete/5
+        // POST: Roles/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            UserType userType = db.UserType.Find(id);
-            db.UserType.Remove(userType);
+            Role role = db.Role.Find(id);
+            db.Role.Remove(role);
             db.SaveChanges();
             return RedirectToAction("Index");
         }
