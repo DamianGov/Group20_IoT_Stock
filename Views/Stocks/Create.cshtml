@@ -1,0 +1,112 @@
+﻿@model Group20_IoT.Models.Stock
+
+@{
+    ViewBag.Title = "Create";
+}
+
+<h2>Create</h2>
+
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <h4>Stock</h4>
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <div class="form-group">
+            @Html.LabelFor(model => model.StockCode, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.StockCode, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.StockCode, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Quantity, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Quantity, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Quantity, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+
+        @Html.LabelFor(model => model.StorageArea.RoomId, "Room")
+        @Html.DropDownList("Rooms", null, new { id = "ddlRoom" })
+        @Html.ValidationMessageFor(model => model.StorageArea.RoomId)
+
+        @Html.LabelFor(model => model.StorageArea, "Storage Area")
+        @Html.DropDownListFor(model => model.StorageAreaId, Enumerable.Empty<SelectListItem>(), "Select a Storage Area", new { id = "ddlStorageArea" })
+        @Html.ValidationMessageFor(model => model.StorageAreaId)
+
+        <input type="submit" value="Create" />
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Create" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+
+<script>
+        $(document).ready(function () {
+            $("#ddlRoom").change(function () {
+                var roomId = $(this).val();
+                if (roomId) {
+                    loadStorageAreas(roomId);
+                } else {
+                    $("#ddlStorageArea").html("");
+                    $("#ddlStorageArea").append(
+                        $("<option></option>").html("Select a Room")
+                    );
+                }
+            });
+
+
+        function loadStorageAreas(roomId) {
+            $.ajax({
+                        url: '@Url.Action("GetStorageAreasByRoom", "Stocks")',
+                        type: "GET",
+                        data: { roomId: roomId },
+                        success: function (data) {
+                            $("#ddlStorageArea").html("");
+                            if (data.length > 0) {
+                                $.each(data, function (index, item) {
+                                    $("#ddlStorageArea").append(
+                                        $("<option></option>").val(item.Value).html(item.Text)
+                                    );
+                                });
+                            } else {
+                                $("#ddlStorageArea").append(
+                                    $("<option></option>").html("No Storage Areas in this Room")
+                                );
+                            }
+                        },
+                        error: function () {
+                            console.log("Error occurred while loading Stock Areas.");
+                }
+            });
+          
+            }
+            $("#ddlRoom").trigger("change");
+        });
+</script>
+
+}

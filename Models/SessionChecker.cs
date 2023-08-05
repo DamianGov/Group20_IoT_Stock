@@ -34,6 +34,7 @@ namespace Group20_IoT.Models
                 filterContext.Result = new RedirectResult("~/Home/Index");
                 return;
             }
+            // Add else>>> must go to standard user home
         }
     }
 
@@ -51,6 +52,7 @@ namespace Group20_IoT.Models
                 filterContext.Result = new RedirectResult("~/Home/Index");
                 return;
             }
+            // Add else>>> must go to admin user home
         }
     }
 }

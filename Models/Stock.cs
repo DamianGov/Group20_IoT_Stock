@@ -14,19 +14,26 @@ namespace Group20_IoT.Models
         public int Id { get; set; }
 
         [Required]
+        [Index(IsUnique = true)]
+        [MaxLength(255)]
+        [Display(Name = "Stock Code")]
+        public string StockCode { get; set; }
+
+        [Required]
         [MinLength(1),MaxLength(100)]
         public string Name { get; set; }
 
         public int Quantity { get; set; } = 0;
 
+        [Display(Name = "Quantity Borrowed")]
         public int QuantityBorrowed { get; set; } = 0;
 
-        public DateTime? LastBorrowedDate { get; set; }
+        //public DateTime DateCreated { get; set; }
 
-        public DateTime? LastReturnedDate { get; set; }
 
         [ForeignKey("StorageArea")]
-        [Required]
+        [Required(ErrorMessage = "Please select a Storage Area")]
+        [Display(Name = "Storage Area")]
         public int StorageAreaId { get; set; }
 
         public StorageArea StorageArea { get; set; }

@@ -1,4 +1,4 @@
-﻿@model IEnumerable<Group20_IoT.Models.Role>
+﻿@model IEnumerable<Group20_IoT.Models.StorageArea>
 
 @{
     ViewBag.Title = "Index";
@@ -12,7 +12,10 @@
 <table class="table">
     <tr>
         <th>
-            @Html.DisplayNameFor(model => model.Type)
+            @Html.DisplayNameFor(model => model.Room.Room_Number)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Area_Name)
         </th>
         <th></th>
     </tr>
@@ -20,7 +23,10 @@
 @foreach (var item in Model) {
     <tr>
         <td>
-            @Html.DisplayFor(modelItem => item.Type)
+            @Html.DisplayFor(modelItem => item.Room.Room_Number)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Area_Name)
         </td>
         <td>
             @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |

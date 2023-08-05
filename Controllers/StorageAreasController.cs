@@ -10,108 +10,112 @@ using Group20_IoT.Models;
 
 namespace Group20_IoT.Controllers
 {
-    [SessionCheckerAdmin]
-    public class RolesController : Controller
+    public class StorageAreasController : Controller
     {
         private IoTContext db = new IoTContext();
 
-        // GET: Roles
+        // GET: StorageAreas
         public ActionResult Index()
         {
-            return View(db.Role.ToList());
+            var storageArea = db.StorageArea.Include(s => s.Room);
+            return View(storageArea.ToList());
         }
 
-        // GET: Roles/Details/5
+        // GET: StorageAreas/Details/5
         public ActionResult Details(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Role role = db.Role.Find(id);
-            if (role == null)
+            StorageArea storageArea = db.StorageArea.Find(id);
+            if (storageArea == null)
             {
                 return HttpNotFound();
             }
-            return View(role);
+            return View(storageArea);
         }
 
-        // GET: Roles/Create
+        // GET: StorageAreas/Create
         public ActionResult Create()
         {
+            ViewBag.RoomId = new SelectList(db.Room, "Id", "Room_Number");
             return View();
         }
 
-        // POST: Roles/Create
+        // POST: StorageAreas/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,Type")] Role role)
+        public ActionResult Create([Bind(Include = "Id,Area_Name,RoomId")] StorageArea storageArea)
         {
             if (ModelState.IsValid)
             {
-                db.Role.Add(role);
+                db.StorageArea.Add(storageArea);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
 
-            return View(role);
+            ViewBag.RoomId = new SelectList(db.Room, "Id", "Room_Number", storageArea.RoomId);
+            return View(storageArea);
         }
 
-        // GET: Roles/Edit/5
+        // GET: StorageAreas/Edit/5
         public ActionResult Edit(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Role role = db.Role.Find(id);
-            if (role == null)
+            StorageArea storageArea = db.StorageArea.Find(id);
+            if (storageArea == null)
             {
                 return HttpNotFound();
             }
-            return View(role);
+            ViewBag.RoomId = new SelectList(db.Room, "Id", "Room_Number", storageArea.RoomId);
+            return View(storageArea);
         }
 
-        // POST: Roles/Edit/5
+        // POST: StorageAreas/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,Type")] Role role)
+        public ActionResult Edit([Bind(Include = "Id,Area_Name,RoomId")] StorageArea storageArea)
         {
             if (ModelState.IsValid)
             {
-                db.Entry(role).State = EntityState.Modified;
+                db.Entry(storageArea).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            return View(role);
+            ViewBag.RoomId = new SelectList(db.Room, "Id", "Room_Number", storageArea.RoomId);
+            return View(storageArea);
         }
 
-        // GET: Roles/Delete/5
+        // GET: StorageAreas/Delete/5
         public ActionResult Delete(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Role role = db.Role.Find(id);
-            if (role == null)
+            StorageArea storageArea = db.StorageArea.Find(id);
+            if (storageArea == null)
             {
                 return HttpNotFound();
             }
-            return View(role);
+            return View(storageArea);
         }
 
-        // POST: Roles/Delete/5
+        // POST: StorageAreas/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            Role role = db.Role.Find(id);
-            db.Role.Remove(role);
+            StorageArea storageArea = db.StorageArea.Find(id);
+            db.StorageArea.Remove(storageArea);
             db.SaveChanges();
             return RedirectToAction("Index");
         }
