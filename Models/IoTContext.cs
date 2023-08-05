@@ -8,19 +8,9 @@ namespace Group20_IoT.Models
 {
     public class IoTContext : DbContext
     {
-        public IoTContext() : base("IoT_Db")
+        public IoTContext() : base("IoTDb")
         {
-            Database.SetInitializer<IoTContext>(null);
-            //Database.SetInitializer(new CreateDatabaseIfNotExists<IoTContext>());
-        }
 
-        public static void CreateDatabaseIfNotExists()
-        {
-            using (var context = new IoTContext())
-            {
-                // Create the database explicitly without accessing any tables
-                context.Database.Create();
-            }
         }
 
         public DbSet<Role> Role { get; set; }

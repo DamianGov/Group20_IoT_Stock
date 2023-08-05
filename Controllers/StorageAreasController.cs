@@ -14,7 +14,7 @@ namespace Group20_IoT.Controllers
     {
         private IoTContext db = new IoTContext();
 
-        // GET: StorageAreas
+
         public ActionResult Index()
         {
             var storageArea = db.StorageArea.Include(s => s.Room);

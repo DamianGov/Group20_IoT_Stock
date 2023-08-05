@@ -7,13 +7,13 @@ namespace Group20_IoT.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.4.4")]
-    public sealed partial class AddedStock : IMigrationMetadata
+    public sealed partial class AddedActiveField : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(AddedStock));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(AddedActiveField));
         
         string IMigrationMetadata.Id
         {
-            get { return "202308031528079_AddedStock"; }
+            get { return "202308052003475_AddedActiveField"; }
         }
         
         string IMigrationMetadata.Source

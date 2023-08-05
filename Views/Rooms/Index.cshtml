@@ -1,0 +1,43 @@
+﻿@model IEnumerable<Group20_IoT.Models.Room>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Room_Number)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Room_Description)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Active)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Room_Number)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Room_Description)
+        </td>
+        @if (item.Active)
+        { <td>Yes</td>}
+        else { <td>No</td>}
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id = item.Id })
+        </td>
+    </tr>
+}
+
+</table>

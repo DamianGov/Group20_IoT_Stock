@@ -28,6 +28,8 @@ namespace Group20_IoT.Models
         [Display(Name = "Quantity Borrowed")]
         public int QuantityBorrowed { get; set; } = 0;
 
+        public bool Active { get; set; } = true;
+
         //public DateTime DateCreated { get; set; }
 
 

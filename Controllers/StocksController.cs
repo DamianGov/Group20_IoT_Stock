@@ -16,7 +16,6 @@ namespace Group20_IoT.Controllers
     {
         private IoTContext db = new IoTContext();
 
-        // GET: Stocks
         public ActionResult Index()
         {
             var stock =  db.Stock.Include(s => s.StorageArea).Include(s=>s.StorageArea.Room).ToList().Select(
@@ -51,10 +50,13 @@ namespace Group20_IoT.Controllers
             return PartialView("_StockTable", stock);
         }
 
-        // GET: Stocks/Create
+
+
         public ActionResult Create()
         {
-            var rooms = db.Room.ToList().Select(r => new
+            var roomWithStorageAreas = db.StorageArea.Select(s => s.RoomId).Distinct().ToList();
+            
+            var rooms = db.Room.Where(r => roomWithStorageAreas.Contains(r.Id) && r.Active).ToList().Select(r => new
             {
                 r.Id,
                 RoomDetails = $"{r.Room_Number} [{r.Room_Description}]"
@@ -78,9 +80,6 @@ namespace Group20_IoT.Controllers
             return Json(storageAreas, JsonRequestBehavior.AllowGet);
         }
 
-        // POST: Stocks/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
-        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Create([Bind(Include = "Id,StockCode,Name,Quantity,QuantityBorrowed,StorageAreaId")] Stock stock)
@@ -104,7 +103,9 @@ namespace Group20_IoT.Controllers
                 return RedirectToAction("Index");
             }
 
-            var rooms = db.Room.ToList().Select(r => new
+            var roomWithStorageAreas = db.StorageArea.Select(s => s.RoomId).Distinct().ToList();
+
+            var rooms = db.Room.Where(r => roomWithStorageAreas.Contains(r.Id) && r.Active).ToList().Select(r => new
             {
                 r.Id,
                 RoomDetails = $"{r.Room_Number} [{r.Room_Description}]"
@@ -115,7 +116,6 @@ namespace Group20_IoT.Controllers
             return View(stock);
         }
 
-        // GET: Stocks/Edit/5
         public ActionResult Edit(int? id)
         {
             if (id == null)
@@ -127,7 +127,9 @@ namespace Group20_IoT.Controllers
             {
                 return HttpNotFound();
             }
-            var rooms = db.Room.ToList().Select(r => new
+            var roomWithStorageAreas = db.StorageArea.Select(s => s.RoomId).Distinct().ToList();
+
+            var rooms = db.Room.Where(r => roomWithStorageAreas.Contains(r.Id) && r.Active).ToList().Select(r => new
             {
                 r.Id,
                 RoomDetails = $"{r.Room_Number} [{r.Room_Description}]"
@@ -137,9 +139,6 @@ namespace Group20_IoT.Controllers
             return View(stock);
         }
 
-        // POST: Stocks/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
-        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "Id,StockCode,Name,Quantity,QuantityBorrowed,LastBorrowedDate,LastReturnedDate,StorageAreaId")] Stock stock)
@@ -150,7 +149,10 @@ namespace Group20_IoT.Controllers
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            var rooms = db.Room.ToList().Select(r => new
+
+            var roomWithStorageAreas = db.StorageArea.Select(s => s.RoomId).Distinct().ToList();
+
+            var rooms = db.Room.Where(r => roomWithStorageAreas.Contains(r.Id) && r.Active).ToList().Select(r => new
             {
                 r.Id,
                 RoomDetails = $"{r.Room_Number} [{r.Room_Description}]"

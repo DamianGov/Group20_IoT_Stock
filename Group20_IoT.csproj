@@ -56,6 +56,9 @@
       <HintPath>packages\EntityFramework.6.4.4\lib\net45\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>packages\Newtonsoft.Json.13.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Buffers, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>packages\System.Buffers.4.5.1\lib\net461\System.Buffers.dll</HintPath>
@@ -122,9 +125,6 @@
       <Private>True</Private>
       <HintPath>packages\Microsoft.AspNet.WebPages.3.2.9\lib\net45\System.Web.WebPages.Razor.dll</HintPath>
     </Reference>
-    <Reference Include="Newtonsoft.Json">
-      <HintPath>packages\Newtonsoft.Json.12.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
-    </Reference>
     <Reference Include="WebGrease">
       <Private>True</Private>
       <HintPath>packages\WebGrease.1.6.0\lib\WebGrease.dll</HintPath>
@@ -144,17 +144,19 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\HomeController.cs" />
-    <Compile Include="Controllers\RolesController.cs" />
+    <Compile Include="Controllers\RoomsController.cs" />
+    <Compile Include="Controllers\StocksController.cs" />
+    <Compile Include="Controllers\StorageAreasController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\202308031528079_AddedStock.cs" />
-    <Compile Include="Migrations\202308031528079_AddedStock.designer.cs">
-      <DependentUpon>202308031528079_AddedStock.cs</DependentUpon>
+    <Compile Include="Migrations\202308051948358_UpdatedRoomTbl.cs" />
+    <Compile Include="Migrations\202308051948358_UpdatedRoomTbl.designer.cs">
+      <DependentUpon>202308051948358_UpdatedRoomTbl.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\202308031708263_RenamedUserTypesToRole.cs" />
-    <Compile Include="Migrations\202308031708263_RenamedUserTypesToRole.designer.cs">
-      <DependentUpon>202308031708263_RenamedUserTypesToRole.cs</DependentUpon>
+    <Compile Include="Migrations\202308052003475_AddedActiveField.cs" />
+    <Compile Include="Migrations\202308052003475_AddedActiveField.designer.cs">
+      <DependentUpon>202308052003475_AddedActiveField.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\IoTContext.cs" />
@@ -166,6 +168,7 @@
     <Compile Include="Models\StorageArea.cs" />
     <Compile Include="Models\Users.cs" />
     <Compile Include="Models\Role.cs" />
+    <Compile Include="Models\ViewModel\StockViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -219,11 +222,18 @@
     <Content Include="Views\Home\About.cshtml" />
     <Content Include="Views\Home\Contact.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
-    <Content Include="Views\Roles\Create.cshtml" />
-    <Content Include="Views\Roles\Delete.cshtml" />
-    <Content Include="Views\Roles\Details.cshtml" />
-    <Content Include="Views\Roles\Edit.cshtml" />
-    <Content Include="Views\Roles\Index.cshtml" />
+    <Content Include="Views\Stocks\Create.cshtml" />
+    <Content Include="Views\Stocks\Edit.cshtml" />
+    <Content Include="Views\Stocks\Index.cshtml" />
+    <Content Include="Views\Stocks\_StockTable.cshtml" />
+    <Content Include="Views\StorageAreas\Create.cshtml" />
+    <Content Include="Views\StorageAreas\Delete.cshtml" />
+    <Content Include="Views\StorageAreas\Details.cshtml" />
+    <Content Include="Views\StorageAreas\Edit.cshtml" />
+    <Content Include="Views\StorageAreas\Index.cshtml" />
+    <Content Include="Views\Rooms\Create.cshtml" />
+    <Content Include="Views\Rooms\Edit.cshtml" />
+    <Content Include="Views\Rooms\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -256,11 +266,11 @@
     <Content Include="Scripts\jquery-3.4.1.min.map" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\202308031528079_AddedStock.resx">
-      <DependentUpon>202308031528079_AddedStock.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\202308051948358_UpdatedRoomTbl.resx">
+      <DependentUpon>202308051948358_UpdatedRoomTbl.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202308031708263_RenamedUserTypesToRole.resx">
-      <DependentUpon>202308031708263_RenamedUserTypesToRole.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\202308052003475_AddedActiveField.resx">
+      <DependentUpon>202308052003475_AddedActiveField.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

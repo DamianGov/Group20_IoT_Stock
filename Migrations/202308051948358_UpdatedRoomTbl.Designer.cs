@@ -7,18 +7,18 @@ namespace Group20_IoT.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.4.4")]
-    public sealed partial class RenamedUserTypesToRole : IMigrationMetadata
+    public sealed partial class UpdatedRoomTbl : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(RenamedUserTypesToRole));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(UpdatedRoomTbl));
         
         string IMigrationMetadata.Id
         {
-            get { return "202308031708263_RenamedUserTypesToRole"; }
+            get { return "202308051948358_UpdatedRoomTbl"; }
         }
         
         string IMigrationMetadata.Source
         {
-            get { return null; }
+            get { return Resources.GetString("Source"); }
         }
         
         string IMigrationMetadata.Target
