@@ -40,5 +40,7 @@ namespace Group20_IoT.Models
 
         public StorageArea StorageArea { get; set; }
 
+        public int CreatedBy { get; set; }
+
     }
 }

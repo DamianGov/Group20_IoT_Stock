@@ -8,6 +8,7 @@ namespace Group20_IoT.Models
 {
     public class SessionChecker : ActionFilterAttribute
     {
+        
         public override void OnActionExecuting(ActionExecutingContext filterContext)
         {
             if (filterContext.HttpContext.Session["User"] == null)
@@ -22,14 +23,17 @@ namespace Group20_IoT.Models
 
     public class SessionCheckerAdmin : SessionChecker
     {
+        private IoTContext db = new IoTContext();
         public override void OnActionExecuting(ActionExecutingContext filterContext)
         {
             base.OnActionExecuting(filterContext);
 
+            int SuperUser = db.Role.Single(r => r.Type.Equals("SuperUser")).Id;
+            int Admin = db.Role.Single(r => r.Type.Equals("Admin")).Id;
 
-            Users user = filterContext.HttpContext.Session["User"] as Users;
-
-            if (user == null || user.RoleId != 1)
+            var AdminSuperUser = db.Users.Where(u => u.RoleId.Equals(SuperUser) || u.RoleId.Equals(Admin)).Select(r =>r.RoleId).ToList();
+            
+            if (!(filterContext.HttpContext.Session["User"] is Users user) || !AdminSuperUser.Contains(user.RoleId))
             {
                 filterContext.Result = new RedirectResult("~/Home/Index");
                 return;
@@ -55,4 +59,24 @@ namespace Group20_IoT.Models
             // Add else>>> must go to admin user home
         }
     }
+
+    public class SessionCheckerSuperUser : SessionChecker
+    {
+        private IoTContext db = new IoTContext();
+        public override void OnActionExecuting(ActionExecutingContext filterContext)
+        {
+            base.OnActionExecuting(filterContext);
+
+
+            Users user = filterContext.HttpContext.Session["User"] as Users;
+
+            if (user == null || user.RoleId != db.Role.Single(r => r.Type.Equals("SuperUser")).Id)
+            {
+                filterContext.Result = new RedirectResult("~/Home/Index");
+                return;
+            }
+            // Add else>>> must go to admin user home
+        }
+    }
+
 }

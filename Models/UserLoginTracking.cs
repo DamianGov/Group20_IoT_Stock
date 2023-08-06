@@ -7,22 +7,18 @@ using System.Web;
 
 namespace Group20_IoT.Models
 {
-    public class StorageArea
+    public class UserLoginTracking
     {
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [Key]
         public int Id { get; set; }
 
-        [Required]
-        [MaxLength(255)]
-        public string Area_Name { get; set; }
+        public int UserId { get; set; }
 
-        [ForeignKey("Room")]
-        [Required]
-        public int RoomId { get; set; }
+        public DateTime? UserLoginDateTime { get; set; }
 
-        public Room Room { get; set; }
+        public DateTime? UserLogoutDateTime { get; set; }
 
-        public int CreatedBy { get; set; }
+        public double? Duration { get; set; } 
     }
 }

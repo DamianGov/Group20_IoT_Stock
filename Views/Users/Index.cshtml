@@ -1,0 +1,115 @@
+﻿@model IEnumerable<Group20_IoT.Models.Users>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Role.Type)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Name)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Email)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Access)
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Role.Type)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Email)
+            </td>
+            @if (item.Access)
+            {
+                <td>
+                    Yes
+                </td>
+                <td>
+                    <button class="restrict-button" data-user-id="@item.Id">Restrict</button>
+                   
+                </td>
+            }
+            else
+            {
+                <td>
+                    No
+                </td>
+                <td>
+                    <button class="unrestrict-button" data-user-id="@item.Id">Unrestrict</button>
+                </td>
+            }
+
+           
+        </tr>
+    }
+
+</table>
+
+@section scripts
+{
+    <script>
+    $(document).ready(function () {
+
+        $(".restrict-button").on("click", function () {
+            var userId = $(this).data("user-id");
+            updateUserStatusRestrict(userId, false);
+        });
+
+        $(".unrestrict-button").on("click", function () {
+            var userId = $(this).data("user-id");
+            updateUserStatusUnrestrict(userId, true);
+        });
+
+        function updateUserStatusRestrict(userId) {
+            $.ajax({
+                url: '@Url.Action("Restrict", "Users")',
+                type: 'POST',
+                data: { id: userId },
+                dataType: 'json',
+                success: function (data) {
+                    location.reload();
+                },
+                error: function () {
+                    alert("An error occurred while updating user status.");
+                }
+            });
+        }
+
+        function updateUserStatusUnrestrict(userId, isActive) {
+            $.ajax({
+                url: '@Url.Action("Unrestrict", "Users")', 
+                type: 'POST',
+                data: { id: userId },
+                dataType: 'json',
+                success: function (data) {
+                    location.reload(); 
+                },
+                error: function () {
+                    alert("An error occurred while updating user status.");
+                }
+            });
+        }
+    });
+    </script>
+
+
+}

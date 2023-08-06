@@ -15,6 +15,13 @@ namespace Group20_IoT.Controllers
         private IoTContext db = new IoTContext();
         public ActionResult Index()
         {
+            // Check if user is logged in already
+            if (Session["User"] != null && Session["Login"] != null)
+            {
+                // Check what type of user and route to relevant index
+                return RedirectToAction(nameof(About));
+            }
+
             return View();
         }
 
@@ -29,33 +36,38 @@ namespace Group20_IoT.Controllers
                 // If user doesnt exist
                 if (user == null)
                 {
+                    // route to error page
                     return HttpNotFound();
                 }
 
                 // Check if person is locked
                 if (!user.Access)
                 {
+                    // give error message that user is locked
                     return HttpNotFound();
                 }
 
-                //HashPassword
-                //string salt = PasswordHandler.GenerateSalt();
-                //user.Password = PasswordHandler.HashPassword("Damian123", salt);
-
-                //db.Entry(user).State = EntityState.Modified;
-                //db.SaveChanges();
-
-                // Check if user entered the correct password
+                // Check if user's password is correct
                 if (!PasswordHandler.VerifyPassword(login.Password, user.Password))
                 {
                     ModelState.AddModelError("Password", "Your Password is Incorrect");
                     return View();
                 }
 
+                // Add record to user tracking
+                UserLoginTracking userLoginTracking = new UserLoginTracking
+                {
+                    UserId = user.Id,
+                    UserLoginDateTime = DateTime.Now
+                };
+                db.UserLoginTracking.Add(userLoginTracking);
+                db.SaveChanges();
+
                 // Create a session for the user
                 Session["User"] = user;
+                Session["Login"] = userLoginTracking;
 
-                return View(nameof(About));
+                return RedirectToAction(nameof(About));
 
             }
 
@@ -64,8 +76,19 @@ namespace Group20_IoT.Controllers
 
         public ActionResult Logout()
         {
+            // Add logout time and duration logged in in seconds
+            UserLoginTracking userLoginTracking = Session["Login"] as UserLoginTracking;
+            userLoginTracking.UserLogoutDateTime = DateTime.Now;
+            TimeSpan duration = userLoginTracking.UserLogoutDateTime.Value - userLoginTracking.UserLoginDateTime.Value;
+            userLoginTracking.Duration = duration.TotalSeconds;
+            db.Entry(userLoginTracking).State = EntityState.Modified;
+            db.SaveChanges();
+
+            // Dispose of sessions
+            Session.Remove("Login");
             Session.Remove("User");
-            return View(nameof(Index));
+
+            return RedirectToAction(nameof(Index));
         }
 
         public ActionResult About()

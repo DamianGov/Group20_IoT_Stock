@@ -26,5 +26,6 @@ namespace Group20_IoT.Models
 
         public bool Active { get; set; } = true;
 
+        public int CreatedBy { get; set; }
     }
 }

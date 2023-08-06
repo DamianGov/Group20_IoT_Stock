@@ -12,12 +12,14 @@ using Group20_IoT.Models.ViewModel;
 
 namespace Group20_IoT.Controllers
 {
+    [SessionChecker]
     public class StocksController : Controller
     {
         private IoTContext db = new IoTContext();
 
         public ActionResult Index()
         {
+            // Get stock and format room so user knows which room they are assigned to
             var stock =  db.Stock.Include(s => s.StorageArea).Include(s=>s.StorageArea.Room).ToList().Select(
                 s => new StockViewModel
                 {
@@ -51,11 +53,13 @@ namespace Group20_IoT.Controllers
         }
 
 
-
+        [SessionCheckerAdmin]
         public ActionResult Create()
         {
+            // Retrieve distinct roomids for all storage areas (so we know which rooms actually have storage areas)
             var roomWithStorageAreas = db.StorageArea.Select(s => s.RoomId).Distinct().ToList();
             
+            // Only gather details of rooms that have storage areas
             var rooms = db.Room.Where(r => roomWithStorageAreas.Contains(r.Id) && r.Active).ToList().Select(r => new
             {
                 r.Id,
@@ -66,8 +70,10 @@ namespace Group20_IoT.Controllers
             return View();
         }
 
+        [SessionCheckerAdmin]
         public ActionResult GetStorageAreasByRoom(int roomId)
         {
+            // Get all storage areas for specific room
             var storageAreas = db.StorageArea
                 .Where(sa => sa.RoomId == roomId)
                 .Select(sa => new
@@ -80,17 +86,21 @@ namespace Group20_IoT.Controllers
             return Json(storageAreas, JsonRequestBehavior.AllowGet);
         }
 
+        [SessionCheckerAdmin]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Create([Bind(Include = "Id,StockCode,Name,Quantity,QuantityBorrowed,StorageAreaId")] Stock stock)
+        public async Task<ActionResult> Create(Stock stock)
         {
+            // Get logged in user
             Users user = Session["User"] as Users;
             //stock.UserId = user.Id;
 
             //stock.DateCreated = DateTime.Now.Date;
 
+            // Remove white spaces at end of stock code
             stock.StockCode = stock.StockCode.Trim();
 
+            // Check if there is any stock with the same stock code (prevent clashes)
             if (db.Stock.Any(s => s.StockCode == stock.StockCode))
             {
                 ModelState.AddModelError("StockCode","This Stock Code already exists for another item");
@@ -98,6 +108,8 @@ namespace Group20_IoT.Controllers
 
             if (ModelState.IsValid)
             {
+                // User that created this stock item
+                stock.CreatedBy = user.Id;
                 db.Stock.Add(stock);
                 await db.SaveChangesAsync();
                 return RedirectToAction("Index");
@@ -116,6 +128,7 @@ namespace Group20_IoT.Controllers
             return View(stock);
         }
 
+        [SessionCheckerAdmin]
         public ActionResult Edit(int? id)
         {
             if (id == null)
@@ -139,9 +152,10 @@ namespace Group20_IoT.Controllers
             return View(stock);
         }
 
+        [SessionCheckerAdmin]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,StockCode,Name,Quantity,QuantityBorrowed,LastBorrowedDate,LastReturnedDate,StorageAreaId")] Stock stock)
+        public ActionResult Edit(Stock stock)
         {
             if (ModelState.IsValid)
             {
@@ -164,13 +178,5 @@ namespace Group20_IoT.Controllers
 
         
 
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing)
-            {
-                db.Dispose();
-            }
-            base.Dispose(disposing);
-        }
     }
 }

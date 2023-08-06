@@ -9,6 +9,7 @@ using System.EnterpriseServices.Internal;
 
 namespace Group20_IoT.Models
 {
+    [SessionCheckerAdmin]
     public class Users
     {
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
@@ -39,6 +40,8 @@ namespace Group20_IoT.Models
         public int RoleId { get; set; }
 
         public Role Role { get; set; }
+
+        public int CreatedBy { get; set; }
 
     }
 }

@@ -23,6 +23,7 @@ namespace Group20_IoT.Controllers
 
         public ActionResult Create()
         {
+            // Set Room to active automatically
             Room room = new Room
             {
                 Active = true
@@ -32,10 +33,12 @@ namespace Group20_IoT.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,Room_Number,Room_Description")] Room room)
+        public ActionResult Create(Room room)
         {
             if (ModelState.IsValid)
             {
+                // Record who created this room
+                room.CreatedBy = (Session["User"] as Users).Id;
                 db.Room.Add(room);
                 db.SaveChanges();
                 return RedirectToAction("Index");
@@ -44,6 +47,7 @@ namespace Group20_IoT.Controllers
             return View(room);
         }
 
+        // Need to sort this out
         public ActionResult Edit(int? id)
         {
             if (id == null)
@@ -61,7 +65,7 @@ namespace Group20_IoT.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,Room_Number,Room_Description,Active")] Room room)
+        public ActionResult Edit(Room room)
         {
             if (ModelState.IsValid)
             {
@@ -72,13 +76,5 @@ namespace Group20_IoT.Controllers
             return View(room);
         }
 
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing)
-            {
-                db.Dispose();
-            }
-            base.Dispose(disposing);
-        }
     }
 }

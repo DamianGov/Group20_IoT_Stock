@@ -147,6 +147,7 @@
     <Compile Include="Controllers\RoomsController.cs" />
     <Compile Include="Controllers\StocksController.cs" />
     <Compile Include="Controllers\StorageAreasController.cs" />
+    <Compile Include="Controllers\UsersController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -158,6 +159,18 @@
     <Compile Include="Migrations\202308052003475_AddedActiveField.designer.cs">
       <DependentUpon>202308052003475_AddedActiveField.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202308060830529_AddedUserTracking.cs" />
+    <Compile Include="Migrations\202308060830529_AddedUserTracking.designer.cs">
+      <DependentUpon>202308060830529_AddedUserTracking.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202308060839528_AddDurationToUserTracking.cs" />
+    <Compile Include="Migrations\202308060839528_AddDurationToUserTracking.designer.cs">
+      <DependentUpon>202308060839528_AddDurationToUserTracking.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202308060907111_AddedTrackingForRelevantTbls.cs" />
+    <Compile Include="Migrations\202308060907111_AddedTrackingForRelevantTbls.designer.cs">
+      <DependentUpon>202308060907111_AddedTrackingForRelevantTbls.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\IoTContext.cs" />
     <Compile Include="Models\Login.cs" />
@@ -166,6 +179,7 @@
     <Compile Include="Models\SessionChecker.cs" />
     <Compile Include="Models\Stock.cs" />
     <Compile Include="Models\StorageArea.cs" />
+    <Compile Include="Models\UserLoginTracking.cs" />
     <Compile Include="Models\Users.cs" />
     <Compile Include="Models\Role.cs" />
     <Compile Include="Models\ViewModel\StockViewModel.cs" />
@@ -234,6 +248,11 @@
     <Content Include="Views\Rooms\Create.cshtml" />
     <Content Include="Views\Rooms\Edit.cshtml" />
     <Content Include="Views\Rooms\Index.cshtml" />
+    <Content Include="Views\Users\Create.cshtml" />
+    <Content Include="Views\Users\Delete.cshtml" />
+    <Content Include="Views\Users\Details.cshtml" />
+    <Content Include="Views\Users\Edit.cshtml" />
+    <Content Include="Views\Users\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -271,6 +290,15 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202308052003475_AddedActiveField.resx">
       <DependentUpon>202308052003475_AddedActiveField.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202308060830529_AddedUserTracking.resx">
+      <DependentUpon>202308060830529_AddedUserTracking.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202308060839528_AddDurationToUserTracking.resx">
+      <DependentUpon>202308060839528_AddDurationToUserTracking.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202308060907111_AddedTrackingForRelevantTbls.resx">
+      <DependentUpon>202308060907111_AddedTrackingForRelevantTbls.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

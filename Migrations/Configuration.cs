@@ -17,7 +17,8 @@
         {
             context.Role.AddOrUpdate(u => u.Type,
                 new Role { Type = "Admin" },
-                new Role { Type = "Standard" });
+                new Role { Type = "Standard" },
+                new Role { Type = "SuperUser" });
 
             context.SaveChanges();
 
@@ -27,7 +28,8 @@
                 Email = "govdamian@gmail.com",
                 Password = "$2a$11$whipL/4TlRNmEYIm0T0Ha.3eXZjstkTj8uI79/omgrIAybqmTHkYa",
                 Access = true,
-                RoleId = context.Role.Single(u => u.Type == "Admin").Id
+                RoleId = context.Role.Single(u => u.Type == "SuperUser").Id,
+                CreatedBy = 0
             };
 
             context.Users.AddOrUpdate(u => u.Email, adminU);
