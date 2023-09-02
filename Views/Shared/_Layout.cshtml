@@ -3,9 +3,12 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@ViewBag.Title - My ASP.NET Application</title>
+    <title>@ViewBag.Title - IoT Management System</title>
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
+    <link href="~/Content/style.css" rel="stylesheet" />
+    <link href="~/Content/alert-toast.css" rel="stylesheet" />
+    <script src="~/Scripts/alertdialog.js"></script>
 </head>
 <body>
     <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-dark bg-dark">
@@ -20,16 +23,27 @@
                     <li>@Html.ActionLink("Home", "Index", "Home", new { area = "" }, new { @class = "nav-link" })</li>
                     <li>@Html.ActionLink("About", "About", "Home", new { area = "" }, new { @class = "nav-link" })</li>
                     <li>@Html.ActionLink("Contact", "Contact", "Home", new { area = "" }, new { @class = "nav-link" })</li>
+                    <li>@Html.ActionLink("Logout","Logout","Login")</li>
                 </ul>
             </div>
         </div>
     </nav>
+
+
     <div class="container body-content">
-        @RenderBody()
-        <hr />
-        <footer>
-            <p>&copy; @DateTime.Now.Year - My ASP.NET Application</p>
-        </footer>
+        <div class="wrapper">
+            <div class="content">
+                @RenderBody()
+                <div id="notification-area">
+                </div>
+            </div>
+            <div class="footer">
+                <hr />
+                <p>&copy; @DateTime.Now.Year - Made with <span class="heart">&hearts;</span> by the <span class="rainbow-text">IoT Group</span></p>
+            </div>
+        </div>
+        
+
     </div>
 
     @Scripts.Render("~/bundles/jquery")

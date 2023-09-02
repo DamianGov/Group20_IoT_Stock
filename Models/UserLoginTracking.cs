@@ -13,12 +13,17 @@ namespace Group20_IoT.Models
         [Key]
         public int Id { get; set; }
 
-        public int UserId { get; set; }
 
         public DateTime? UserLoginDateTime { get; set; }
 
         public DateTime? UserLogoutDateTime { get; set; }
 
-        public double? Duration { get; set; } 
+        public double? Duration { get; set; }
+
+        [ForeignKey("Users")]
+        public int UserId { get; set; }
+
+        public Users Users { get; set; }
+
     }
 }

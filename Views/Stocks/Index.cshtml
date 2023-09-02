@@ -34,7 +34,7 @@
                         $("#stockTable").html(data);
                     },
                     error: function () {
-                        console.log("Error occurred while searching.");
+                        notifyError("Error occurred while searching.");
                     }
                 });
             });

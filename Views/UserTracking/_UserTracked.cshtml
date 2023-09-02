@@ -1,27 +1,26 @@
-﻿@model List<Group20_IoT.Models.ViewModel.StockViewModel>
+﻿@model List<Group20_IoT.Models.ViewModel.UserTrackingViewModel>
 
 
 <table class="table">
     <tr>
         <th>
-            Stock Code
-        </th>
-        <th>
             Name
         </th>
         <th>
-            Quantity
+            Email
         </th>
         <th>
-            Quantity Borrowed
+            Logged In
         </th>
         <th>
-            Room
+            Logged Out
         </th>
         <th>
-            Storage Area
+            Duration
         </th>
-        <th></th>
+        <th>
+            User Type
+        </th>
     </tr>
     @if (Model != null)
     {
@@ -29,25 +28,22 @@
         {
             <tr>
                 <td>
-                    @item.StockCode
-                </td>
-                <td>
                     @item.Name
                 </td>
                 <td>
-                    @item.Quantity
+                    @item.Email
                 </td>
                 <td>
-                    @item.QuantityBorrowed
+                    @item.LoggedIn
                 </td>
                 <td>
-                    @item.Room
+                    @item.LoggedOut
                 </td>
                 <td>
-                    @item.StorageArea
+                    @item.Duration
                 </td>
                 <td>
-                    @Html.ActionLink("Edit", "Edit", new { id = item.Id })
+                    @item.UserType
                 </td>
             </tr>
         }
@@ -55,7 +51,7 @@
     else
     {
         <tr>
-            <td colspan="7" style="text-align:center;font-size:16px"><strong>Sorry, no stock available</strong></td>
+            <td colspan="7" style="text-align:center;font-size:16px"><strong>No User Tracking Information Found!</strong></td>
         </tr>
     }
-    </table>
+</table>

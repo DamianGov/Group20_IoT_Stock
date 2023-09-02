@@ -21,7 +21,6 @@ namespace Group20_IoT.Controllers
             var currentU = Session["User"] as Users;
             IQueryable<Users> users;
 
-
             // Check if the user is Super User if they are they can view all users, including Admins
             if (currentU.RoleId == db.Role.Single(r => r.Type.Equals("SuperUser")).Id)
                 users = db.Users.Include(u => u.Role).Where(u => u.Id != currentU.Id);
@@ -41,12 +40,12 @@ namespace Group20_IoT.Controllers
             {
                 return HttpNotFound();
             }
+                users.Access = false;
+                db.Entry(users).State = EntityState.Modified;
+                db.SaveChanges();
 
-            users.Access = false;
-            db.Entry(users).State = EntityState.Modified;
-            db.SaveChanges();
 
-            return Json(new {success = true});
+                return Json(new { success = true, message = "User has been restricted" });
         }
 
         [HttpPost]
@@ -58,12 +57,12 @@ namespace Group20_IoT.Controllers
             {
                 return HttpNotFound();
             }
-
             users.Access = true;
             db.Entry(users).State = EntityState.Modified;
             db.SaveChanges();
 
-            return Json(new { success = true});
+            return Json(new { success = true, message = "User has been unrestricted" });
+
         }
 
         public ActionResult Create()

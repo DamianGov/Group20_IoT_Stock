@@ -12,6 +12,7 @@ using Group20_IoT.Models.ViewModel;
 
 namespace Group20_IoT.Controllers
 {
+    // NOT ROUTING
     [SessionChecker]
     public class StocksController : Controller
     {

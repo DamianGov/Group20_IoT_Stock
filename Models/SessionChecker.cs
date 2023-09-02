@@ -13,7 +13,7 @@ namespace Group20_IoT.Models
         {
             if (filterContext.HttpContext.Session["User"] == null)
             {
-                filterContext.Result = new RedirectResult("~/Home/Index");
+                filterContext.Result = new RedirectResult("~/Login/");
                 return;
             }
 
@@ -35,7 +35,7 @@ namespace Group20_IoT.Models
             
             if (!(filterContext.HttpContext.Session["User"] is Users user) || !AdminSuperUser.Contains(user.RoleId))
             {
-                filterContext.Result = new RedirectResult("~/Home/Index");
+                filterContext.Result = new RedirectResult("~/Login/");
                 return;
             }
             // Add else>>> must go to standard user home
@@ -44,6 +44,7 @@ namespace Group20_IoT.Models
 
     public class SessionCheckerStandard : SessionChecker
     {
+        private IoTContext db = new IoTContext();
         public override void OnActionExecuting(ActionExecutingContext filterContext)
         {
             base.OnActionExecuting(filterContext);
@@ -51,9 +52,9 @@ namespace Group20_IoT.Models
 
             Users user = filterContext.HttpContext.Session["User"] as Users;
 
-            if (user == null || user.RoleId != 2)
+            if (user == null || user.RoleId != db.Role.Single(r => r.Type.Equals("Standard")).Id)
             {
-                filterContext.Result = new RedirectResult("~/Home/Index");
+                filterContext.Result = new RedirectResult("~/Login/");
                 return;
             }
             // Add else>>> must go to admin user home
@@ -72,7 +73,7 @@ namespace Group20_IoT.Models
 
             if (user == null || user.RoleId != db.Role.Single(r => r.Type.Equals("SuperUser")).Id)
             {
-                filterContext.Result = new RedirectResult("~/Home/Index");
+                filterContext.Result = new RedirectResult("~/Login/");
                 return;
             }
             // Add else>>> must go to admin user home

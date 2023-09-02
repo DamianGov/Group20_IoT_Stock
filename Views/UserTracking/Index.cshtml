@@ -1,0 +1,48 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<div>
+    <label>Filter User Type</label>
+    <select id="filterUserType">
+        <option value="">Filter By</option>
+        <option value="SuperUser">SuperUser</option>
+        <option value="Admin">Admin</option>
+        <option value="Standard">Standard</option>
+    </select>
+</div>
+
+
+<div id="userTrackingTable">
+    @Html.Partial("_UserTracked", Model as List<Group20_IoT.Models.ViewModel.UserTrackingViewModel>)
+</div>
+
+@section scripts
+{
+    <script>
+        $(document).ready(function () {
+            $("#filterUserType").change(function () {
+                var userType = $(this).val();
+                if (userType != "")
+                {
+                    $.ajax({
+                    url: '@Url.Action("Filter", "UserTracking")',
+                    type: "GET",
+                    data: { userType: userType },
+                    success: function (data) {
+                        $("#userTrackingTable").html(data);
+                    },
+                    error: function () {
+                        notifyError("Error occurred while filtering.");
+                    }
+                });
+                }
+
+            });
+        });
+    </script>
+
+}

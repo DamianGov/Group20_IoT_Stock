@@ -67,7 +67,14 @@
 @section scripts
 {
     <script>
-    $(document).ready(function () {
+        $(document).ready(function () {
+
+            var storedMessage = localStorage.getItem('notificationMessage');
+
+            if (storedMessage) {
+                notifySuccess(storedMessage);
+                localStorage.removeItem('notificationMessage');
+            }
 
         $(".restrict-button").on("click", function () {
             var userId = $(this).data("user-id");
@@ -86,22 +93,25 @@
                 data: { id: userId },
                 dataType: 'json',
                 success: function (data) {
+                    localStorage.setItem('notificationMessage', data.message);
                     location.reload();
                 },
                 error: function () {
-                    alert("An error occurred while updating user status.");
+                    notifyError("An error occurred while updating user status.");
+
                 }
             });
         }
 
         function updateUserStatusUnrestrict(userId, isActive) {
             $.ajax({
-                url: '@Url.Action("Unrestrict", "Users")', 
+                url: '@Url.Action("Unrestrict", "Users")',
                 type: 'POST',
                 data: { id: userId },
                 dataType: 'json',
                 success: function (data) {
-                    location.reload(); 
+                    localStorage.setItem('notificationMessage', data.message);
+                    location.reload();
                 },
                 error: function () {
                     alert("An error occurred while updating user status.");

@@ -1,0 +1,19 @@
+﻿@model Group20_IoT.Models.Login
+
+@{
+    ViewBag.Title = "Login";
+    Layout = null; // Please change layout 
+}
+
+<h1>Login</h1>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary()
+    <p>Enter your email: @Html.EditorFor(x => x.Email)</p>
+    <p>@Html.ValidationMessageFor(x => x.Email)</p>
+    <p>Enter your password: @Html.PasswordFor(x => x.Password)</p>
+    <p>@Html.ValidationMessageFor(x => x.Password)</p>
+    <p><input type="submit" value="Login" /></p>
+}

@@ -10,6 +10,7 @@ using Group20_IoT.Models;
 
 namespace Group20_IoT.Controllers
 {
+    // NOT ROUTING
     [SessionCheckerAdmin]
     public class StorageAreasController : Controller
     {

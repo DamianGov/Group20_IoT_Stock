@@ -1,0 +1,47 @@
+﻿
+html * {
+    font-family: 'Lato', sans-serif !important;
+}
+
+html, body {
+    height: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+.wrapper {
+    min-height: 100% !important;
+    position: relative !important;
+}
+
+.content {
+    padding-bottom: 50% !important;
+    /* Other content styles */
+}
+
+.footer {
+    position: absolute !important;
+    bottom: 0 !important;
+    width: 100% !important;
+}
+
+.rainbow-text {
+    background-image: linear-gradient(45deg, violet, indigo, blue, green, yellow, orange, red);
+    background-clip: text;
+    color: transparent;
+    animation: rainbow 5s infinite;
+}
+
+@keyframes rainbow {
+    0% {
+        background-position: 0% 50%;
+    }
+
+    100% {
+        background-position: 100% 50%;
+    }
+}
+.heart {
+    font-size: 24px;
+    color: red;
+}
