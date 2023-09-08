@@ -10,10 +10,10 @@
             Name
         </th>
         <th>
-            Quantity
+            Total Quantity
         </th>
         <th>
-            Quantity Borrowed
+            Quantity On Loan
         </th>
         <th>
             Room
@@ -21,6 +21,10 @@
         <th>
             Storage Area
         </th>
+        <th>
+            Loanable
+        </th>
+        <th></th>
         <th></th>
     </tr>
     @if (Model != null)
@@ -35,16 +39,22 @@
                     @item.Name
                 </td>
                 <td>
-                    @item.Quantity
+                    @item.TotalQuantity
                 </td>
                 <td>
-                    @item.QuantityBorrowed
+                    @item.QuantityOnLoan
                 </td>
                 <td>
                     @item.Room
                 </td>
                 <td>
                     @item.StorageArea
+                </td>
+                <td>
+                    @item.Loanable
+                </td>
+                <td>
+                    <img src="~/Content/Images/@item.Image" alt="@item.Image" style="max-height:100px;max-width:100px" />
                 </td>
                 <td>
                     @Html.ActionLink("Edit", "Edit", new { id = item.Id })

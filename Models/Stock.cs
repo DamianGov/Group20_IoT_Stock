@@ -23,15 +23,10 @@ namespace Group20_IoT.Models
         [MinLength(1),MaxLength(100)]
         public string Name { get; set; }
 
-        public int Quantity { get; set; } = 0;
+        public int TotalQuantity { get; set; } = 0;
+        public int QuantityOnLoan { get; set; } = 0;
 
-        [Display(Name = "Quantity Borrowed")]
-        public int QuantityBorrowed { get; set; } = 0;
-
-        public bool Active { get; set; } = true;
-
-        //public DateTime DateCreated { get; set; }
-
+        public bool Loanable { get; set; } = true;
 
         [ForeignKey("StorageArea")]
         [Required(ErrorMessage = "Please select a Storage Area")]
@@ -41,6 +36,9 @@ namespace Group20_IoT.Models
         public StorageArea StorageArea { get; set; }
 
         public int CreatedBy { get; set; }
+
+        [Display(Name = "Stock Image")]
+        public string ImageFile { get; set; }
 
     }
 }

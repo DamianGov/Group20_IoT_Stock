@@ -314,6 +314,22 @@
     <Compile Include="Migrations\202308131456385_AddedFKToUserTrackingTbl.designer.cs">
       <DependentUpon>202308131456385_AddedFKToUserTrackingTbl.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202309081745364_AddedChangesToStockTable.cs" />
+    <Compile Include="Migrations\202309081745364_AddedChangesToStockTable.designer.cs">
+      <DependentUpon>202309081745364_AddedChangesToStockTable.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202309081748579_AddedImageFieldToStockTable.cs" />
+    <Compile Include="Migrations\202309081748579_AddedImageFieldToStockTable.designer.cs">
+      <DependentUpon>202309081748579_AddedImageFieldToStockTable.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202309081753249_AddedImageFieldRequiredToStockTable.cs" />
+    <Compile Include="Migrations\202309081753249_AddedImageFieldRequiredToStockTable.designer.cs">
+      <DependentUpon>202309081753249_AddedImageFieldRequiredToStockTable.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202309081801117_AddedImageFieldRemRequiredToStockTable.cs" />
+    <Compile Include="Migrations\202309081801117_AddedImageFieldRemRequiredToStockTable.designer.cs">
+      <DependentUpon>202309081801117_AddedImageFieldRemRequiredToStockTable.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\IoTContext.cs" />
     <Compile Include="Models\Login.cs" />
@@ -409,6 +425,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Content\Images\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap.rtl.min.css.map" />
@@ -455,6 +472,18 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202308131456385_AddedFKToUserTrackingTbl.resx">
       <DependentUpon>202308131456385_AddedFKToUserTrackingTbl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202309081745364_AddedChangesToStockTable.resx">
+      <DependentUpon>202309081745364_AddedChangesToStockTable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202309081748579_AddedImageFieldToStockTable.resx">
+      <DependentUpon>202309081748579_AddedImageFieldToStockTable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202309081753249_AddedImageFieldRequiredToStockTable.resx">
+      <DependentUpon>202309081753249_AddedImageFieldRequiredToStockTable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202309081801117_AddedImageFieldRemRequiredToStockTable.resx">
+      <DependentUpon>202309081801117_AddedImageFieldRemRequiredToStockTable.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

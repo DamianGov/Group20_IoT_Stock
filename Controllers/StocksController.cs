@@ -9,6 +9,7 @@ using System.Web;
 using System.Web.Mvc;
 using Group20_IoT.Models;
 using Group20_IoT.Models.ViewModel;
+using System.IO;
 
 namespace Group20_IoT.Controllers
 {
@@ -26,10 +27,12 @@ namespace Group20_IoT.Controllers
                 {
                     Id = s.Id,
                     Name = s.Name,
-                    Quantity = s.Quantity,
-                    QuantityBorrowed = s.QuantityBorrowed,
+                    TotalQuantity = s.TotalQuantity,
+                    QuantityOnLoan = s.QuantityOnLoan,
                     StorageArea = s.StorageArea.Area_Name,
+                    Image = s.ImageFile,
                     StockCode =  s.StockCode,
+                    Loanable = s.Loanable ? "Yes" : "No",
                     Room = $"{s.StorageArea.Room.Room_Number} [{s.StorageArea.Room.Room_Description}]"
                 }).ToList();
 
@@ -43,10 +46,12 @@ namespace Group20_IoT.Controllers
                 {
                     Id = s.Id,
                     Name = s.Name,
-                    Quantity = s.Quantity,
-                    QuantityBorrowed = s.QuantityBorrowed,
+                    TotalQuantity = s.TotalQuantity,
+                    QuantityOnLoan = s.QuantityOnLoan,
                     StorageArea = s.StorageArea.Area_Name,
+                    Image = s.ImageFile,
                     StockCode = s.StockCode,
+                    Loanable = s.Loanable ? "Yes" : "No",
                     Room = $"{s.StorageArea.Room.Room_Number} [{s.StorageArea.Room.Room_Description}]"
                 }).ToList();
 
@@ -90,7 +95,7 @@ namespace Group20_IoT.Controllers
         [SessionCheckerAdmin]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Create(Stock stock)
+        public async Task<ActionResult> Create(Stock stock, HttpPostedFileBase image)
         {
             // Get logged in user
             Users user = Session["User"] as Users;
@@ -102,15 +107,23 @@ namespace Group20_IoT.Controllers
             stock.StockCode = stock.StockCode.Trim();
 
             // Check if there is any stock with the same stock code (prevent clashes)
-            if (db.Stock.Any(s => s.StockCode == stock.StockCode))
-            {
-                ModelState.AddModelError("StockCode","This Stock Code already exists for another item");
-            }
+            if (db.Stock.Any(s => s.StockCode == stock.StockCode)) ModelState.AddModelError("StockCode","This Stock Code already exists for another item");
+
+
+            // Check if any image is selected
+            if (image == null || image.ContentLength <= 0) ModelState.AddModelError("ImageFile", "Please select an image");
 
             if (ModelState.IsValid)
             {
+                // Special GUID for image
+                string ImageGUID = Guid.NewGuid().ToString() + "_" +Path.GetFileName(image.FileName);
+                string ImagePath = Path.Combine(Server.MapPath("~/Content/Images"), ImageGUID);
+
+                image.SaveAs(ImagePath);
+
                 // User that created this stock item
                 stock.CreatedBy = user.Id;
+                stock.ImageFile = ImageGUID;
                 db.Stock.Add(stock);
                 await db.SaveChangesAsync();
                 return RedirectToAction("Index");
@@ -156,10 +169,26 @@ namespace Group20_IoT.Controllers
         [SessionCheckerAdmin]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(Stock stock)
+        public ActionResult Edit(Stock stock, HttpPostedFileBase newImage)
         {
             if (ModelState.IsValid)
             {
+                if (newImage != null && newImage.ContentLength > 0)
+                {
+                    string ImageGUID = Guid.NewGuid().ToString() + "_" + Path.GetFileName(newImage.FileName);
+                    string ImagePath = Path.Combine(Server.MapPath("~/Content/Images"), ImageGUID);
+
+                    newImage.SaveAs(ImagePath);
+
+                    if (stock.ImageFile != null)
+                    {
+                        string OldImage = Path.Combine(Server.MapPath("~/Content/Images"), stock.ImageFile);
+                        if (System.IO.File.Exists(OldImage)) System.IO.File.Delete(OldImage);
+                    }
+
+                    stock.ImageFile = ImageGUID;
+                }
+
                 db.Entry(stock).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
