@@ -8,7 +8,6 @@ namespace Group20_IoT.Models
 {
     public class SessionChecker : ActionFilterAttribute
     {
-        
         public override void OnActionExecuting(ActionExecutingContext filterContext)
         {
             if (filterContext.HttpContext.Session["User"] == null)
