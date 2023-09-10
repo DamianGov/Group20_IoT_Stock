@@ -15,5 +15,6 @@
     <p>@Html.ValidationMessageFor(x => x.Email)</p>
     <p>Enter your password: @Html.PasswordFor(x => x.Password)</p>
     <p>@Html.ValidationMessageFor(x => x.Password)</p>
+    <p>Remember Me @Html.CheckBoxFor(x=>x.RememberMe)</p>
     <p><input type="submit" value="Login" /></p>
 }

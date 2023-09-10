@@ -10,6 +10,7 @@ using System.Web.Mvc;
 using Group20_IoT.Models;
 using Group20_IoT.Models.ViewModel;
 using System.IO;
+using Microsoft.IdentityModel.Tokens;
 
 namespace Group20_IoT.Controllers
 {
@@ -95,7 +96,7 @@ namespace Group20_IoT.Controllers
         [SessionCheckerAdmin]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Create(Stock stock, HttpPostedFileBase image)
+        public ActionResult Create(Stock stock, HttpPostedFileBase image)
         {
             // Get logged in user
             Users user = Session["User"] as Users;
@@ -104,10 +105,11 @@ namespace Group20_IoT.Controllers
             //stock.DateCreated = DateTime.Now.Date;
 
             // Remove white spaces at end of stock code
+            if (!stock.StockCode.IsNullOrEmpty())
             stock.StockCode = stock.StockCode.Trim();
 
             // Check if there is any stock with the same stock code (prevent clashes)
-            if (db.Stock.Any(s => s.StockCode == stock.StockCode)) ModelState.AddModelError("StockCode","This Stock Code already exists for another item");
+            if (db.Stock.Any(s => s.StockCode.ToLower() == stock.StockCode.ToLower())) ModelState.AddModelError("StockCode","This Stock Code already exists for another item");
 
 
             // Check if any image is selected
@@ -125,7 +127,7 @@ namespace Group20_IoT.Controllers
                 stock.CreatedBy = user.Id;
                 stock.ImageFile = ImageGUID;
                 db.Stock.Add(stock);
-                await db.SaveChangesAsync();
+                db.SaveChanges();
                 return RedirectToAction("Index");
             }
 

@@ -30,6 +30,26 @@ namespace Group20_IoT.Controllers
                     return HttpNotFound();
             }
 
+            var RememberMeCookie = Request.Cookies["RememberMeCookie"];
+            var UserTrackingCookie = Request.Cookies["UserTrackingCookie"];
+
+            if (RememberMeCookie != null && UserTrackingCookie != null)
+            {
+                var userId = int.Parse(RememberMeCookie.Value);
+                var userTrackingId = int.Parse(UserTrackingCookie.Value);
+
+                Users user = db.Users.Find(userId);
+                UserLoginTracking userLoginTracking = db.UserLoginTracking.Find(userTrackingId);
+
+                if (user != null && userLoginTracking != null)
+                {
+                    Session["User"] = user;
+                    Session["Login"] = userLoginTracking;
+                    return Index();
+                }
+
+            }
+
             return View();
         }
 
@@ -59,7 +79,8 @@ namespace Group20_IoT.Controllers
                 if (!PasswordHandler.VerifyPassword(login.Password, user.Password))
                 {
                     ModelState.AddModelError("Password", "Your Password is Incorrect");
-                    return View();
+                    login.Password = "";
+                    return View(login);
                 }
 
                 // Add record to user tracking
@@ -70,6 +91,26 @@ namespace Group20_IoT.Controllers
                 };
                 db.UserLoginTracking.Add(userLoginTracking);
                 db.SaveChanges();
+
+                if (login.RememberMe)
+                {
+                    var RememberMeCookie = new HttpCookie("RememberMeCookie")
+                    {
+                        Value = user.Id.ToString(),
+                        Expires = DateTime.Now.AddMonths(1),
+                        HttpOnly = true
+                    };
+
+                    var UserTrackingCookie = new HttpCookie("UserTrackingCookie")
+                    {
+                        Value = userLoginTracking.Id.ToString(),
+                        Expires = DateTime.Now.AddMonths(1),
+                        HttpOnly = true
+                    };
+
+                    Response.Cookies.Add(RememberMeCookie);
+                    Response.Cookies.Add(UserTrackingCookie);
+                }
 
                 // Create a session for the user
                 Session["User"] = user;
@@ -96,6 +137,22 @@ namespace Group20_IoT.Controllers
             userLoginTracking.Duration = duration.TotalSeconds;
             db.Entry(userLoginTracking).State = EntityState.Modified;
             db.SaveChanges();
+
+
+            var RememberMeCookie = new HttpCookie("RememberMeCookie")
+            {
+                Expires = DateTime.Now.AddDays(-1),
+                HttpOnly = true
+            };
+
+            var UserTrackingCookie = new HttpCookie("UserTrackingCookie")
+            {
+                Expires = DateTime.Now.AddDays(-1),
+                HttpOnly = true
+            };
+
+            Response.Cookies.Add(RememberMeCookie);
+            Response.Cookies.Add(UserTrackingCookie);
 
             // Dispose of sessions
             Session.Remove("Login");

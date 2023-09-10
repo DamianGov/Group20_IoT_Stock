@@ -19,7 +19,7 @@ namespace Group20_IoT.Controllers
         {
             var logReport = db.UserLoginTracking.Include(u => u.Users).Include(u => u.Users.Role)
                 .OrderByDescending(u => u.UserLoginDateTime)
-                .ToList()
+                .AsEnumerable()
                 .Select(
                 u => new UserTrackingViewModel
                 {
@@ -42,7 +42,7 @@ namespace Group20_IoT.Controllers
             var logReport = db.UserLoginTracking.Include(u => u.Users).Include(u => u.Users.Role)
                 .Where(u => u.Users.Role.Type.Equals(userType))
                 .OrderByDescending(u => u.UserLoginDateTime)
-                .ToList()
+                .AsEnumerable()
                 .Select(
                 u => new UserTrackingViewModel
                 {

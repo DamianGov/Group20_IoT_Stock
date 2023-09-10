@@ -17,7 +17,7 @@ namespace Group20_IoT.Models
         public int Id { get; set; }
 
         [Required]
-        [MinLength(3,ErrorMessage ="Please enter a Name with atleast 3 characters"), MaxLength(40, ErrorMessage ="Your name cannot exceed 40 characters")]
+        [MinLength(3,ErrorMessage ="Please enter a Name with at least 3 characters"), MaxLength(40, ErrorMessage ="Your name cannot exceed 40 characters")]
         public string Name { get; set; }
 
 

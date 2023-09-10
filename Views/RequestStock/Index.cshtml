@@ -1,0 +1,38 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<div>
+    <label>Enter Requested Stock Name</label>
+    <input type="text" id="searchInput" />
+    <button id="searchButton">Search</button>
+</div>
+
+<div id="rsTable">
+    @Html.Partial("_RequestStockTable", Model as List<Group20_IoT.Models.ViewModel.RequestStockViewModel>)
+</div>
+
+@section scripts {
+    <script>
+        $(document).ready(function () {
+            $("#searchButton").click(function () {
+                var searchItem = $("#searchInput").val();
+
+                $.ajax({
+                    url: '@Url.Action("Search", "RequestStock")',
+                    type: "GET",
+                    data: { searchItem: searchItem },
+                    success: function (data) {
+                        $("#rsTable").html(data);
+                    },
+                    error: function () {
+                        notifyError("Error occurred while searching.");
+                    }
+                });
+            });
+        });
+    </script>
+}

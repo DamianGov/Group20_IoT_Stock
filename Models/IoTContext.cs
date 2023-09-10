@@ -19,5 +19,19 @@ namespace Group20_IoT.Models
         public DbSet<StorageArea> StorageArea { get; set; }    
         public DbSet<Stock> Stock { get; set; }
         public DbSet<UserLoginTracking> UserLoginTracking { get; set; } 
+        public DbSet<RequestStock> RequestStock { get; set; }
+        public DbSet<ApprovalHistory> ApprovalHistory { get; set;}
+
+
+        protected override void OnModelCreating(DbModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<RequestStock>()
+                .HasRequired(r => r.Users)
+                .WithMany()
+                .HasForeignKey(r => r.UserId)
+                .WillCascadeOnDelete(false);
+
+            base.OnModelCreating(modelBuilder);
+        }
     }
 }

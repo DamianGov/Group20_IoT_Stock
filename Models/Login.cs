@@ -18,6 +18,8 @@ namespace Group20_IoT.Models
         [Required(ErrorMessage ="Please enter your Password")]
         public string Password { get; set; }
 
+        public bool RememberMe { get; set; }
+
         public Users UserExists()
         {
             return db.Users.FirstOrDefault(u => u.Email == Email);

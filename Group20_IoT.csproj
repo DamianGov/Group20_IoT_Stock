@@ -282,6 +282,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\LoginController.cs" />
+    <Compile Include="Controllers\RequestStockController.cs" />
     <Compile Include="Controllers\RoomsController.cs" />
     <Compile Include="Controllers\StocksController.cs" />
     <Compile Include="Controllers\StorageAreasController.cs" />
@@ -330,10 +331,16 @@
     <Compile Include="Migrations\202309081801117_AddedImageFieldRemRequiredToStockTable.designer.cs">
       <DependentUpon>202309081801117_AddedImageFieldRemRequiredToStockTable.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202309100911020_AddedRequestStockAndApprovalHistoryTbls.cs" />
+    <Compile Include="Migrations\202309100911020_AddedRequestStockAndApprovalHistoryTbls.designer.cs">
+      <DependentUpon>202309100911020_AddedRequestStockAndApprovalHistoryTbls.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
+    <Compile Include="Models\ApprovalHistory.cs" />
     <Compile Include="Models\IoTContext.cs" />
     <Compile Include="Models\Login.cs" />
     <Compile Include="Models\PasswordHandler.cs" />
+    <Compile Include="Models\RequestStock.cs" />
     <Compile Include="Models\Room.cs" />
     <Compile Include="Models\SessionChecker.cs" />
     <Compile Include="Models\Stock.cs" />
@@ -341,6 +348,7 @@
     <Compile Include="Models\UserLoginTracking.cs" />
     <Compile Include="Models\Users.cs" />
     <Compile Include="Models\Role.cs" />
+    <Compile Include="Models\ViewModel\RequestStockViewModel.cs" />
     <Compile Include="Models\ViewModel\StockViewModel.cs" />
     <Compile Include="Models\ViewModel\UserTrackingViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -422,10 +430,14 @@
     <Content Include="Views\UserTracking\Index.cshtml" />
     <Content Include="Views\UserTracking\_UserTracked.cshtml" />
     <Content Include="Views\Users\UserRoleControl.cshtml" />
+    <Content Include="Views\RequestStock\Index.cshtml" />
+    <Content Include="Views\RequestStock\_RequestStockTable.cshtml" />
+    <Content Include="Views\RequestStock\Create.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Content\Images\" />
+    <Folder Include="Content\Request\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap.rtl.min.css.map" />
@@ -484,6 +496,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202309081801117_AddedImageFieldRemRequiredToStockTable.resx">
       <DependentUpon>202309081801117_AddedImageFieldRemRequiredToStockTable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202309100911020_AddedRequestStockAndApprovalHistoryTbls.resx">
+      <DependentUpon>202309100911020_AddedRequestStockAndApprovalHistoryTbls.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
