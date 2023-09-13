@@ -28,6 +28,9 @@ namespace Group20_IoT.Models
 
         public bool Loanable { get; set; } = true;
 
+        [Range(0.00,10000000)]
+        public decimal UnitPrice { get; set; } = 0;
+
         [ForeignKey("StorageArea")]
         [Required(ErrorMessage = "Please select a Storage Area")]
         [Display(Name = "Storage Area")]

@@ -46,6 +46,12 @@
 
     </div>
 
+    <script>
+        function isInteger(value) {
+            return typeof value === 'number' && isFinite(value) && Math.floor(value) === value;
+        }
+    </script>
+
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
     @RenderSection("scripts", required: false)

@@ -22,6 +22,8 @@
             Approved
         </th>
         <th></th>
+        <th></th>
+        <th></th>
     </tr>
     @if (Model != null)
     {
@@ -50,7 +52,12 @@
                 <td>
                     <img src="~/Content/Request/@item.StockImage" alt="@item.StockImage" style="max-height:100px;max-width:100px" />
                 </td>
-
+                <td>
+                    Approve
+                </td>
+                <td>
+                    Reject
+                </td>
             </tr>
         }
     }

@@ -11,6 +11,7 @@ using Group20_IoT.Models;
 
 namespace Group20_IoT.Controllers
 {
+    [SessionCheckerSuperUser]
     [SessionCheckerAdmin]
     public class UsersController : Controller
     {
@@ -31,6 +32,7 @@ namespace Group20_IoT.Controllers
             return View(users.ToList());
         }
 
+        [SessionCheckerSuperUser]
         [HttpPost]
         public ActionResult Restrict(int id)
         {
@@ -48,6 +50,7 @@ namespace Group20_IoT.Controllers
                 return Json(new { success = true, message = "User has been restricted" });
         }
 
+        [SessionCheckerSuperUser]
         [HttpPost]
         public ActionResult Unrestrict(int id)
         {

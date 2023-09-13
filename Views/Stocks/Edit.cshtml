@@ -7,71 +7,79 @@
 <h2>Edit</h2>
 
 
-@using (Html.BeginForm("Edit","Stocks",FormMethod.Post, new {enctype = "multipart/form-data"}))
+@using (Html.BeginForm("Edit", "Stocks", FormMethod.Post, new { enctype = "multipart/form-data" }))
 {
     @Html.AntiForgeryToken()
 
     @Html.HiddenFor(model => model.ImageFile)
-    
-<div class="form-horizontal">
-    <h4>Stock</h4>
-    <hr />
-    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-    @Html.HiddenFor(model => model.Id)
 
-    <div class="form-group">
-        @Html.LabelFor(model => model.StockCode, htmlAttributes: new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
-            @Html.EditorFor(model => model.StockCode, new { htmlAttributes = new { @class = "form-control" } })
-            @Html.ValidationMessageFor(model => model.StockCode, "", new { @class = "text-danger" })
+    <div class="form-horizontal">
+        <h4>Stock</h4>
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        @Html.HiddenFor(model => model.Id)
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.StockCode, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.StockCode, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.StockCode, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.UnitPrice, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.UnitPrice, new { htmlAttributes = new { @class = "form-control", id = "UnitPrice" } })
+                @Html.ValidationMessageFor(model => model.UnitPrice, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.TotalQuantity, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.TotalQuantity, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.TotalQuantity, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.ImageFile, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                <input type="file" name="newImage" id="newImage" accept=".jpg, .jpeg, .png, .gif" />
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Loanable, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.CheckBoxFor(model => model.Loanable, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Loanable, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        @Html.LabelFor(model => model.StorageArea.RoomId, "Room")
+        @Html.DropDownList("Rooms", null, new { id = "ddlRoom" })
+        @Html.ValidationMessageFor(model => model.StorageArea.RoomId)
+
+        @Html.LabelFor(model => model.StorageArea, "Storage Area")
+        @Html.DropDownListFor(model => model.StorageAreaId, Enumerable.Empty<SelectListItem>(), "Select a Storage Area", new { id = "ddlStorageArea" })
+        @Html.ValidationMessageFor(model => model.StorageArea)
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Save" class="btn btn-default" />
+            </div>
         </div>
     </div>
-
-    <div class="form-group">
-        @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
-            @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })
-            @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
-        </div>
-    </div>
-
-    <div class="form-group">
-        @Html.LabelFor(model => model.TotalQuantity, htmlAttributes: new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
-            @Html.EditorFor(model => model.TotalQuantity, new { htmlAttributes = new { @class = "form-control" } })
-            @Html.ValidationMessageFor(model => model.TotalQuantity, "", new { @class = "text-danger" })
-        </div>
-    </div>
-
-    <div class="form-group">
-        @Html.LabelFor(model => model.ImageFile, htmlAttributes: new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
-            <input type="file" name="newImage" id="newImage" accept=".jpg, .jpeg, .png, .gif" />
-        </div>
-    </div>
-
-    <div class="form-group">
-        @Html.LabelFor(model => model.Loanable, htmlAttributes: new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
-            @Html.CheckBoxFor(model => model.Loanable, new { htmlAttributes = new { @class = "form-control" } })
-            @Html.ValidationMessageFor(model => model.Loanable, "", new { @class = "text-danger" })
-        </div>
-    </div>
-
-    @Html.LabelFor(model => model.StorageArea.RoomId, "Room")
-    @Html.DropDownList("Rooms", null, new { id = "ddlRoom" })
-    @Html.ValidationMessageFor(model => model.StorageArea.RoomId)
-
-    @Html.LabelFor(model => model.StorageArea, "Storage Area")
-    @Html.DropDownListFor(model => model.StorageAreaId, Enumerable.Empty<SelectListItem>(), "Select a Storage Area", new { id = "ddlStorageArea" })
-    @Html.ValidationMessageFor(model => model.StorageAreaId)
-
-    <div class="form-group">
-        <div class="col-md-offset-2 col-md-10">
-            <input type="submit" value="Save" class="btn btn-default" />
-        </div>
-    </div>
-</div>
 }
 
 <div>
@@ -80,26 +88,27 @@
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
-<script>
+    <script>
         $(document).ready(function () {
             $("#ddlRoom").change(function () {
                 var roomId = $(this).val();
+                var stockId = @Model.Id;
                 if (roomId) {
-                    loadStorageAreas(roomId);
+                    loadStorageAreas(roomId, stockId);
                 } else {
                     $("#ddlStorageArea").html("");
                     $("#ddlStorageArea").append(
-                        $("<option></option>").html("Select a Room")
+                        $("<option></option>").html("No Rooms Available")
                     );
                 }
             });
 
 
-        function loadStorageAreas(roomId) {
+        function loadStorageAreas(roomId, stockId) {
             $.ajax({
-                        url: '@Url.Action("GetStorageAreasByRoom", "Stocks")',
-                        type: "GET",
-                        data: { roomId: roomId },
+                        url: '@Url.Action("GetStorageAreasByRoomEdit", "Stocks")',
+                type: "GET",
+                data: { roomId: roomId, stockId: stockId },
                         success: function (data) {
                             $("#ddlStorageArea").html("");
                             if (data.length > 0) {
@@ -122,5 +131,22 @@
             }
             $("#ddlRoom").trigger("change");
         });
-</script>
+    </script>
+    <script type="text/javascript">
+        $("#UnitPrice").on("keypress keyup blur", function (event) {
+            // Replace a comma with a period
+            if (event.key === ',') {
+                $(this).val($(this).val() + '.');
+                event.preventDefault(); // Prevent the comma from being added
+            }
+
+            // Allow only digits and a single period
+            $(this).val($(this).val().replace(/[^0-9\.]/g, ''));
+
+            // Remove extra periods
+            if ($(this).val().match(/\./g) && $(this).val().match(/\./g).length > 1) {
+                $(this).val($(this).val().replace(/\.$/m, ''));
+            }
+        });
+    </script>
 }

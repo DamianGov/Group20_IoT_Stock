@@ -10,8 +10,7 @@ using Group20_IoT.Models;
 
 namespace Group20_IoT.Controllers
 {
-    // NOT ROUTING
-    [SessionCheckerAdmin]
+    [SessionCheckerSuperUser]
     public class RoomsController : Controller
     {
         private IoTContext db = new IoTContext();

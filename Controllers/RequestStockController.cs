@@ -17,10 +17,14 @@ namespace Group20_IoT.Controllers
     public class RequestStockController : Controller
     {
         private IoTContext db = new IoTContext();
-        // GET: RequestStock
-        public ActionResult Index()
+
+        public List<RequestStockViewModel> getRequests(string search)
         {
-            var SortedRequests = db.RequestStock.Include(x => x.Users)
+            List<RequestStockViewModel> SortedRequests = new List<RequestStockViewModel>();
+
+            if (search.IsNullOrEmpty())
+            {
+                SortedRequests = db.RequestStock.Include(x => x.Users)
                                 .OrderByDescending(x => x.RequestDate)
                                 .AsEnumerable()
                                 .Select(x => new RequestStockViewModel
@@ -35,28 +39,43 @@ namespace Group20_IoT.Controllers
                                     RequestDate = x.RequestDate.ToString("yyyy/M/d"),
                                     Approved = x.IsApproved ? "Yes" : "No"
                                 }).ToList();
+            }
+            else
+            {
+                SortedRequests = db.RequestStock.Include(x => x.Users)
+                                .OrderByDescending(x => x.RequestDate)
+                                .Where(x => x.StockName.ToLower().Contains(search.Trim().ToLower()))
+                                .AsEnumerable()
+                                .Select(x => new RequestStockViewModel
+                                {
+                                    Id = x.Id,
+                                    UserId = x.UserId,
+                                    UserName = x.Users.Name,
+                                    StockName = x.StockName,
+                                    StockPrice = x.StockPrice.ToString("C"),
+                                    StockLink = x.StockLink,
+                                    StockImage = x.StockImage,
+                                    RequestDate = x.RequestDate.ToString("yyyy/M/d"),
+                                    Approved = x.IsApproved ? "Yes" : "No"
+                                }).ToList();
+            }
 
-            return View(SortedRequests);
+            return SortedRequests;
+        }
+
+        // GET: RequestStock
+        public ActionResult Index()
+        {
+            return View(getRequests(null));
         }
 
         public ActionResult Search(string searchItem)
         {
-            var SortedRequests = db.RequestStock.Include(x => x.Users)
-                                .OrderByDescending(x => x.RequestDate)
-                                .Where(x => x.StockName.ToLower().Contains(searchItem.Trim().ToLower()))
-                                .AsEnumerable()
-                                .Select(x => new RequestStockViewModel
-                                {
-                                    Id = x.Id,
-                                    UserId = x.UserId,
-                                    UserName = x.Users.Name,
-                                    StockName = x.StockName,
-                                    StockPrice = x.StockPrice.ToString("C"),
-                                    StockLink = x.StockLink,
-                                    StockImage = x.StockImage,
-                                    RequestDate = x.RequestDate.ToString("yyyy/M/d"),
-                                    Approved = x.IsApproved ? "Yes" : "No"
-                                }).ToList();
+            Users user = Session["User"] as Users;
+
+            var SortedRequests = getRequests(searchItem);
+
+            if(user.RoleId != db.Role.Single(x=>x.Type.Equals("Standard")).Id) return PartialView("_RequestStockTableAdmin", SortedRequests);
 
             return PartialView("_RequestStockTable", SortedRequests);
         }
@@ -93,6 +112,42 @@ namespace Group20_IoT.Controllers
             }
 
             return View(stock);
+        }
+
+        public ActionResult MyRequestsOnly(bool showMyRequests)
+        {
+            Users user = Session["User"] as Users;
+
+            List<RequestStockViewModel> SortedRequests = new List<RequestStockViewModel>();
+
+            if (showMyRequests)
+            {
+                     SortedRequests = db.RequestStock.Include(x => x.Users)
+                    .OrderByDescending(x => x.RequestDate)
+                    .Where(x => x.UserId == user.Id)
+                    .AsEnumerable()
+                    .Select(x => new RequestStockViewModel
+                    {
+                        Id = x.Id,
+                        UserId = x.UserId,
+                        UserName = x.Users.Name,
+                        StockName = x.StockName,
+                        StockPrice = x.StockPrice.ToString("C"),
+                        StockLink = x.StockLink,
+                        StockImage = x.StockImage,
+                        RequestDate = x.RequestDate.ToString("yyyy/M/d"),
+                        Approved = x.IsApproved ? "Yes" : "No"
+                    }).ToList();
+
+            }
+            else
+            {
+                SortedRequests = getRequests(null);
+            }
+
+            if (user.RoleId != db.Role.Single(x => x.Type.Equals("Standard")).Id) return PartialView("_RequestStockTableAdmin", SortedRequests);
+
+            return PartialView("_RequestStockTable", SortedRequests);
         }
 
     }

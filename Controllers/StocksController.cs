@@ -14,8 +14,7 @@ using Microsoft.IdentityModel.Tokens;
 
 namespace Group20_IoT.Controllers
 {
-    // NOT ROUTING
-    [SessionChecker]
+    [SessionCheckerAdmin]
     public class StocksController : Controller
     {
         private IoTContext db = new IoTContext();
@@ -23,12 +22,13 @@ namespace Group20_IoT.Controllers
         public ActionResult Index()
         {
             // Get stock and format room so user knows which room they are assigned to
-            var stock =  db.Stock.Include(s => s.StorageArea).Include(s=>s.StorageArea.Room).ToList().Select(
+            var stock =  db.Stock.Include(s => s.StorageArea).Include(s=>s.StorageArea.Room).AsEnumerable().Select(
                 s => new StockViewModel
                 {
                     Id = s.Id,
                     Name = s.Name,
                     TotalQuantity = s.TotalQuantity,
+                    UnitPrice = s.UnitPrice.ToString("C"),
                     QuantityOnLoan = s.QuantityOnLoan,
                     StorageArea = s.StorageArea.Area_Name,
                     Image = s.ImageFile,
@@ -42,12 +42,13 @@ namespace Group20_IoT.Controllers
 
         public ActionResult Search(string searchItem)
         {
-            var stock = db.Stock.Include(s => s.StorageArea).Include(s => s.StorageArea.Room).ToList().Where(s => s.StockCode.ToLower().Contains(searchItem.Trim().ToLower())).Select(
+            var stock = db.Stock.Include(s => s.StorageArea).Include(s => s.StorageArea.Room).AsEnumerable().Where(s => s.StockCode.ToLower().Contains(searchItem.Trim().ToLower())).Select(
                 s => new StockViewModel
                 {
                     Id = s.Id,
                     Name = s.Name,
                     TotalQuantity = s.TotalQuantity,
+                    UnitPrice = s.UnitPrice.ToString("C"),
                     QuantityOnLoan = s.QuantityOnLoan,
                     StorageArea = s.StorageArea.Area_Name,
                     Image = s.ImageFile,
@@ -59,12 +60,10 @@ namespace Group20_IoT.Controllers
             return PartialView("_StockTable", stock);
         }
 
-
-        [SessionCheckerAdmin]
         public ActionResult Create()
         {
             // Retrieve distinct roomids for all storage areas (so we know which rooms actually have storage areas)
-            var roomWithStorageAreas = db.StorageArea.Select(s => s.RoomId).Distinct().ToList();
+            var roomWithStorageAreas = db.StorageArea.Where(s => s.Active).Select(s => s.RoomId).Distinct().ToList();
             
             // Only gather details of rooms that have storage areas
             var rooms = db.Room.Where(r => roomWithStorageAreas.Contains(r.Id) && r.Active).ToList().Select(r => new
@@ -77,23 +76,6 @@ namespace Group20_IoT.Controllers
             return View();
         }
 
-        [SessionCheckerAdmin]
-        public ActionResult GetStorageAreasByRoom(int roomId)
-        {
-            // Get all storage areas for specific room
-            var storageAreas = db.StorageArea
-                .Where(sa => sa.RoomId == roomId)
-                .Select(sa => new
-                {
-                    Value = sa.Id,
-                    Text = sa.Area_Name
-                })
-                .ToList();
-
-            return Json(storageAreas, JsonRequestBehavior.AllowGet);
-        }
-
-        [SessionCheckerAdmin]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Create(Stock stock, HttpPostedFileBase image)
@@ -106,11 +88,12 @@ namespace Group20_IoT.Controllers
 
             // Remove white spaces at end of stock code
             if (!stock.StockCode.IsNullOrEmpty())
-            stock.StockCode = stock.StockCode.Trim();
+                stock.StockCode = stock.StockCode.Trim();
 
             // Check if there is any stock with the same stock code (prevent clashes)
-            if (db.Stock.Any(s => s.StockCode.ToLower() == stock.StockCode.ToLower())) ModelState.AddModelError("StockCode","This Stock Code already exists for another item");
+            if (db.Stock.Any(s => s.StockCode.ToLower() == stock.StockCode.ToLower())) ModelState.AddModelError("StockCode", "This Stock Code already exists for another item");
 
+            if (stock.StorageAreaId == -1) ModelState.AddModelError("StorageArea", "Unable to create Stock because it is not assigned to a Storage Area");
 
             // Check if any image is selected
             if (image == null || image.ContentLength <= 0) ModelState.AddModelError("ImageFile", "Please select an image");
@@ -118,7 +101,7 @@ namespace Group20_IoT.Controllers
             if (ModelState.IsValid)
             {
                 // Special GUID for image
-                string ImageGUID = Guid.NewGuid().ToString() + "_" +Path.GetFileName(image.FileName);
+                string ImageGUID = Guid.NewGuid().ToString() + "_" + Path.GetFileName(image.FileName);
                 string ImagePath = Path.Combine(Server.MapPath("~/Content/Images"), ImageGUID);
 
                 image.SaveAs(ImagePath);
@@ -131,7 +114,7 @@ namespace Group20_IoT.Controllers
                 return RedirectToAction("Index");
             }
 
-            var roomWithStorageAreas = db.StorageArea.Select(s => s.RoomId).Distinct().ToList();
+            var roomWithStorageAreas = db.StorageArea.Where(s => s.Active).Select(s => s.RoomId).Distinct().ToList();
 
             var rooms = db.Room.Where(r => roomWithStorageAreas.Contains(r.Id) && r.Active).ToList().Select(r => new
             {
@@ -144,31 +127,63 @@ namespace Group20_IoT.Controllers
             return View(stock);
         }
 
-        [SessionCheckerAdmin]
+        public ActionResult GetStorageAreasByRoom(int roomId)
+        {
+            // Get all storage areas for specific room
+            var storageAreas = db.StorageArea
+                .Where(sa => sa.RoomId == roomId && sa.Active)
+                .Select(sa => new
+                {
+                    Value = sa.Id,
+                    Text = sa.Area_Name
+                })
+                .ToList();
+
+            return Json(storageAreas, JsonRequestBehavior.AllowGet);
+        }
+
+        public ActionResult GetStorageAreasByRoomEdit(int roomId, int stockId)
+        {
+            Stock stock = db.Stock.Include(s => s.StorageArea.Room).SingleOrDefault(s => s.Id == stockId);
+            // Get all storage areas for specific room
+            var storageAreas = db.StorageArea
+                .Where(sa => sa.RoomId == roomId && (sa.Active || stock.StorageAreaId == sa.Id))
+                .Select(sa => new
+                {
+                    Value = sa.Id,
+                    Text = sa.Area_Name
+                })
+                .ToList();
+
+            return Json(storageAreas, JsonRequestBehavior.AllowGet);
+        }
+
+
         public ActionResult Edit(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Stock stock = db.Stock.Find(id);
+            Stock stock = db.Stock.Include(s => s.StorageArea.Room).SingleOrDefault(s => s.Id == id.Value);
             if (stock == null)
             {
                 return HttpNotFound();
             }
-            var roomWithStorageAreas = db.StorageArea.Select(s => s.RoomId).Distinct().ToList();
+            var roomWithStorageAreas = db.StorageArea.Where(s=>s.Active || stock.StorageAreaId == s.Id).Select(s => s.RoomId).Distinct().ToList();
 
-            var rooms = db.Room.Where(r => roomWithStorageAreas.Contains(r.Id) && r.Active).ToList().Select(r => new
+            var rooms = db.Room.Where(r => roomWithStorageAreas.Contains(r.Id) && (r.Active || stock.StorageArea.RoomId == r.Id)).ToList().Select(r => new
             {
                 r.Id,
                 RoomDetails = $"{r.Room_Number} [{r.Room_Description}]"
             }).ToList();
 
             ViewBag.Rooms = new SelectList(rooms, "Id", "RoomDetails");
+
+
             return View(stock);
         }
 
-        [SessionCheckerAdmin]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Edit(Stock stock, HttpPostedFileBase newImage)
@@ -196,9 +211,11 @@ namespace Group20_IoT.Controllers
                 return RedirectToAction("Index");
             }
 
-            var roomWithStorageAreas = db.StorageArea.Select(s => s.RoomId).Distinct().ToList();
+            int RoomId = db.StorageArea.Where(s => s.Id == stock.StorageAreaId).First().RoomId;
 
-            var rooms = db.Room.Where(r => roomWithStorageAreas.Contains(r.Id) && r.Active).ToList().Select(r => new
+            var roomWithStorageAreas = db.StorageArea.Where(s => s.Active || stock.StorageAreaId == s.Id).Select(s => s.RoomId).Distinct().ToList();
+
+            var rooms = db.Room.Where(r => roomWithStorageAreas.Contains(r.Id) && (r.Active || RoomId == r.Id)).ToList().Select(r => new
             {
                 r.Id,
                 RoomDetails = $"{r.Room_Number} [{r.Room_Description}]"

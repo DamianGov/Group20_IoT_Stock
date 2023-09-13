@@ -1,6 +1,9 @@
 ﻿
 @{
+    Group20_IoT.Models.IoTContext db = new Group20_IoT.Models.IoTContext();
     ViewBag.Title = "Index";
+    Group20_IoT.Models.Users user = Session["User"] as Group20_IoT.Models.Users;
+    int StandardRoleId = db.Role.Single(x => x.Type.Equals("Standard")).Id;
 }
 
 <h2>Index</h2>
@@ -11,9 +14,22 @@
     <button id="searchButton">Search</button>
 </div>
 
-<div id="rsTable">
-    @Html.Partial("_RequestStockTable", Model as List<Group20_IoT.Models.ViewModel.RequestStockViewModel>)
-</div>
+@if (user.RoleId != StandardRoleId)
+{
+    <div id="rsTable">
+        @Html.Partial("_RequestStockTableAdmin", Model as List<Group20_IoT.Models.ViewModel.RequestStockViewModel>)
+    </div>
+}
+else
+{
+    <div>
+        <input type="checkbox" id="showMyRequests" /> Show My Requests Only
+    </div>
+
+    <div id="rsTable">
+        @Html.Partial("_RequestStockTable", Model as List<Group20_IoT.Models.ViewModel.RequestStockViewModel>)
+    </div>
+}
 
 @section scripts {
     <script>
@@ -32,6 +48,22 @@
                         notifyError("Error occurred while searching.");
                     }
                 });
+            });
+        });
+
+        $("#showMyRequests").change(function () {
+            var ShowMyRequests = this.checked;
+
+            $.ajax({
+                url: '@Url.Action("MyRequestsOnly", "RequestStock")',
+                type: 'GET',
+                data: { showMyRequests: ShowMyRequests },
+                success: function (data) {
+                    $("#rsTable").html(data);
+                },
+                error: function () {
+                    notifyError("Error occurred while filtering.");
+                }
             });
         });
     </script>

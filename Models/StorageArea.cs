@@ -17,6 +17,8 @@ namespace Group20_IoT.Models
         [MaxLength(255)]
         public string Area_Name { get; set; }
 
+        public bool Active { get; set; } = true;
+
         [ForeignKey("Room")]
         [Required]
         public int RoomId { get; set; }

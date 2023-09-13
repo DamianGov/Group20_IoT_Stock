@@ -335,6 +335,14 @@
     <Compile Include="Migrations\202309100911020_AddedRequestStockAndApprovalHistoryTbls.designer.cs">
       <DependentUpon>202309100911020_AddedRequestStockAndApprovalHistoryTbls.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202309131728489_AddedActiveAndUnitPriceToStorageAndStock.cs" />
+    <Compile Include="Migrations\202309131728489_AddedActiveAndUnitPriceToStorageAndStock.designer.cs">
+      <DependentUpon>202309131728489_AddedActiveAndUnitPriceToStorageAndStock.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202309131955169_TestDecimalInStock.cs" />
+    <Compile Include="Migrations\202309131955169_TestDecimalInStock.designer.cs">
+      <DependentUpon>202309131955169_TestDecimalInStock.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\ApprovalHistory.cs" />
     <Compile Include="Models\IoTContext.cs" />
@@ -411,8 +419,6 @@
     <Content Include="Views\Stocks\Index.cshtml" />
     <Content Include="Views\Stocks\_StockTable.cshtml" />
     <Content Include="Views\StorageAreas\Create.cshtml" />
-    <Content Include="Views\StorageAreas\Delete.cshtml" />
-    <Content Include="Views\StorageAreas\Details.cshtml" />
     <Content Include="Views\StorageAreas\Edit.cshtml" />
     <Content Include="Views\StorageAreas\Index.cshtml" />
     <Content Include="Views\Rooms\Create.cshtml" />
@@ -429,10 +435,10 @@
     <Content Include="Views\Home\StandardHome.cshtml" />
     <Content Include="Views\UserTracking\Index.cshtml" />
     <Content Include="Views\UserTracking\_UserTracked.cshtml" />
-    <Content Include="Views\Users\UserRoleControl.cshtml" />
     <Content Include="Views\RequestStock\Index.cshtml" />
     <Content Include="Views\RequestStock\_RequestStockTable.cshtml" />
     <Content Include="Views\RequestStock\Create.cshtml" />
+    <Content Include="Views\RequestStock\_RequestStockTableAdmin.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -499,6 +505,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202309100911020_AddedRequestStockAndApprovalHistoryTbls.resx">
       <DependentUpon>202309100911020_AddedRequestStockAndApprovalHistoryTbls.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202309131728489_AddedActiveAndUnitPriceToStorageAndStock.resx">
+      <DependentUpon>202309131728489_AddedActiveAndUnitPriceToStorageAndStock.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202309131955169_TestDecimalInStock.resx">
+      <DependentUpon>202309131955169_TestDecimalInStock.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
