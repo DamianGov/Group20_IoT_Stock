@@ -13,29 +13,30 @@ namespace Group20_IoT.Models
         [Key]
         public int Id { get; set; }
 
+        // Created By
         [ForeignKey("Users")]
         public int UserId { get; set; }
 
-        [Required(ErrorMessage = "Please enter the name of the Stock")]
+        [Required(ErrorMessage = "Please enter the Stock Name")]
         [Display(Name = "Stock Name")]
-        [MaxLength(255)]
+        [StringLength(255,ErrorMessage = "The Stock Name must not exceed 255 characters")]
         public string StockName { get; set; }
 
         [Required(ErrorMessage = "Please enter the Stock Price")]
         [Display(Name = "Stock Price")]
-        [Range(0.1,double.MaxValue)]
+        [Range(0.05,double.MaxValue, ErrorMessage = "Please enter a valid Stock Price")]
         public double StockPrice { get; set; }
 
-        [Required(ErrorMessage = "Please enter the link to the Stock ")]
-        [Display(Name = "Link To Stock Item")]
-        [MaxLength(255)]
-        [RegularExpression(@"^(https?://)?([\w-]+\.)+[\w-]+(/[\w- ./?%&=]*)?$", ErrorMessage = "Please enter a valid URL")]
+        [Required(ErrorMessage = "Please enter the link to the Stock")]
+        [Display(Name = "Stock Link")]
+        [StringLength(2000, ErrorMessage = "The Stock Link should not exceed 2000 characters")]
+        [RegularExpression(@"^(https?://)?([\w-]+\.)+[\w-]+(/[\w- ./?%&=]*)?$", ErrorMessage = "Please enter a valid Stock Link")]
         public string StockLink { get; set; }
 
         public string StockImage { get; set; }
-
+        [Display(Name = "Request Date")]
         public DateTime RequestDate { get; set; } = DateTime.Now;
-
+        [Display(Name = "Approved")]
         public bool IsApproved { get; set; } = false;
 
         public virtual Users Users { get; set; }

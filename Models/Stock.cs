@@ -13,22 +13,28 @@ namespace Group20_IoT.Models
         [Key]
         public int Id { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Please enter the Stock Code")]
         [Index(IsUnique = true)]
-        [MaxLength(255)]
+        [StringLength(255, ErrorMessage = "The Stock Code must not exceed 255 characters")]
         [Display(Name = "Stock Code")]
         public string StockCode { get; set; }
 
-        [Required]
-        [MinLength(1),MaxLength(100)]
+        [Required(ErrorMessage = "Please enter the Stock Name")]
+        [StringLength(100,ErrorMessage ="The Stock Name must not exceed 100 characters")]
+        [Display(Name = "Stock Name")]
         public string Name { get; set; }
 
+        [Display(Name="Total Quantity")]
+        [Range(0,int.MaxValue,ErrorMessage = "Please enter a valid Total Quantity")]
         public int TotalQuantity { get; set; } = 0;
+
+        [Display(Name = "Quantity on Loan")]
         public int QuantityOnLoan { get; set; } = 0;
 
         public bool Loanable { get; set; } = true;
 
-        [Range(0.00,10000000)]
+        [Range(0.00,double.MaxValue,ErrorMessage ="Please enter a valid Unit Price")]
+        [Display(Name = "Unit Price")]
         public decimal UnitPrice { get; set; } = 0;
 
         [ForeignKey("StorageArea")]
@@ -37,7 +43,7 @@ namespace Group20_IoT.Models
         public int StorageAreaId { get; set; }
 
         public StorageArea StorageArea { get; set; }
-
+        [Display(Name = "Created By")]
         public int CreatedBy { get; set; }
 
         [Display(Name = "Stock Image")]

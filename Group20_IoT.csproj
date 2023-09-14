@@ -280,6 +280,7 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Controllers\DefectiveStocksController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\LoginController.cs" />
     <Compile Include="Controllers\RequestStockController.cs" />
@@ -291,60 +292,9 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\202308051948358_UpdatedRoomTbl.cs" />
-    <Compile Include="Migrations\202308051948358_UpdatedRoomTbl.designer.cs">
-      <DependentUpon>202308051948358_UpdatedRoomTbl.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\202308052003475_AddedActiveField.cs" />
-    <Compile Include="Migrations\202308052003475_AddedActiveField.designer.cs">
-      <DependentUpon>202308052003475_AddedActiveField.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\202308060830529_AddedUserTracking.cs" />
-    <Compile Include="Migrations\202308060830529_AddedUserTracking.designer.cs">
-      <DependentUpon>202308060830529_AddedUserTracking.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\202308060839528_AddDurationToUserTracking.cs" />
-    <Compile Include="Migrations\202308060839528_AddDurationToUserTracking.designer.cs">
-      <DependentUpon>202308060839528_AddDurationToUserTracking.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\202308060907111_AddedTrackingForRelevantTbls.cs" />
-    <Compile Include="Migrations\202308060907111_AddedTrackingForRelevantTbls.designer.cs">
-      <DependentUpon>202308060907111_AddedTrackingForRelevantTbls.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\202308131456385_AddedFKToUserTrackingTbl.cs" />
-    <Compile Include="Migrations\202308131456385_AddedFKToUserTrackingTbl.designer.cs">
-      <DependentUpon>202308131456385_AddedFKToUserTrackingTbl.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\202309081745364_AddedChangesToStockTable.cs" />
-    <Compile Include="Migrations\202309081745364_AddedChangesToStockTable.designer.cs">
-      <DependentUpon>202309081745364_AddedChangesToStockTable.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\202309081748579_AddedImageFieldToStockTable.cs" />
-    <Compile Include="Migrations\202309081748579_AddedImageFieldToStockTable.designer.cs">
-      <DependentUpon>202309081748579_AddedImageFieldToStockTable.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\202309081753249_AddedImageFieldRequiredToStockTable.cs" />
-    <Compile Include="Migrations\202309081753249_AddedImageFieldRequiredToStockTable.designer.cs">
-      <DependentUpon>202309081753249_AddedImageFieldRequiredToStockTable.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\202309081801117_AddedImageFieldRemRequiredToStockTable.cs" />
-    <Compile Include="Migrations\202309081801117_AddedImageFieldRemRequiredToStockTable.designer.cs">
-      <DependentUpon>202309081801117_AddedImageFieldRemRequiredToStockTable.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\202309100911020_AddedRequestStockAndApprovalHistoryTbls.cs" />
-    <Compile Include="Migrations\202309100911020_AddedRequestStockAndApprovalHistoryTbls.designer.cs">
-      <DependentUpon>202309100911020_AddedRequestStockAndApprovalHistoryTbls.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\202309131728489_AddedActiveAndUnitPriceToStorageAndStock.cs" />
-    <Compile Include="Migrations\202309131728489_AddedActiveAndUnitPriceToStorageAndStock.designer.cs">
-      <DependentUpon>202309131728489_AddedActiveAndUnitPriceToStorageAndStock.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\202309131955169_TestDecimalInStock.cs" />
-    <Compile Include="Migrations\202309131955169_TestDecimalInStock.designer.cs">
-      <DependentUpon>202309131955169_TestDecimalInStock.cs</DependentUpon>
-    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\ApprovalHistory.cs" />
+    <Compile Include="Models\DefectiveStock.cs" />
     <Compile Include="Models\IoTContext.cs" />
     <Compile Include="Models\Login.cs" />
     <Compile Include="Models\PasswordHandler.cs" />
@@ -439,6 +389,11 @@
     <Content Include="Views\RequestStock\_RequestStockTable.cshtml" />
     <Content Include="Views\RequestStock\Create.cshtml" />
     <Content Include="Views\RequestStock\_RequestStockTableAdmin.cshtml" />
+    <Content Include="Views\DefectiveStocks\Create.cshtml" />
+    <Content Include="Views\DefectiveStocks\Delete.cshtml" />
+    <Content Include="Views\DefectiveStocks\Details.cshtml" />
+    <Content Include="Views\DefectiveStocks\Edit.cshtml" />
+    <Content Include="Views\DefectiveStocks\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -471,47 +426,6 @@
     <Content Include="Scripts\bootstrap.bundle.js.map" />
     <Content Include="Scripts\jquery-3.4.1.slim.min.map" />
     <Content Include="Scripts\jquery-3.4.1.min.map" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Migrations\202308051948358_UpdatedRoomTbl.resx">
-      <DependentUpon>202308051948358_UpdatedRoomTbl.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202308052003475_AddedActiveField.resx">
-      <DependentUpon>202308052003475_AddedActiveField.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202308060830529_AddedUserTracking.resx">
-      <DependentUpon>202308060830529_AddedUserTracking.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202308060839528_AddDurationToUserTracking.resx">
-      <DependentUpon>202308060839528_AddDurationToUserTracking.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202308060907111_AddedTrackingForRelevantTbls.resx">
-      <DependentUpon>202308060907111_AddedTrackingForRelevantTbls.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202308131456385_AddedFKToUserTrackingTbl.resx">
-      <DependentUpon>202308131456385_AddedFKToUserTrackingTbl.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202309081745364_AddedChangesToStockTable.resx">
-      <DependentUpon>202309081745364_AddedChangesToStockTable.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202309081748579_AddedImageFieldToStockTable.resx">
-      <DependentUpon>202309081748579_AddedImageFieldToStockTable.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202309081753249_AddedImageFieldRequiredToStockTable.resx">
-      <DependentUpon>202309081753249_AddedImageFieldRequiredToStockTable.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202309081801117_AddedImageFieldRemRequiredToStockTable.resx">
-      <DependentUpon>202309081801117_AddedImageFieldRemRequiredToStockTable.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202309100911020_AddedRequestStockAndApprovalHistoryTbls.resx">
-      <DependentUpon>202309100911020_AddedRequestStockAndApprovalHistoryTbls.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202309131728489_AddedActiveAndUnitPriceToStorageAndStock.resx">
-      <DependentUpon>202309131728489_AddedActiveAndUnitPriceToStorageAndStock.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202309131955169_TestDecimalInStock.resx">
-      <DependentUpon>202309131955169_TestDecimalInStock.cs</DependentUpon>
-    </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

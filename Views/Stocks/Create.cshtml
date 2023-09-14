@@ -92,7 +92,6 @@
         $(document).ready(function () {
             $("#ddlRoom").change(function () {
                 var roomId = $(this).val();
-                console.log(roomId);
                 if (isInteger(roomId)) {
                     loadStorageAreas(roomId);
                 } else {
@@ -131,19 +130,6 @@
             }
             $("#ddlRoom").trigger("change");
         });
-    function addBlankOptionIfEmpty() {
-        var dropdown = document.getElementById("ddlRoom");
-
-        if (dropdown.options.length === 0) {
-            $("#ddlRoom").html("");
-            $("#ddlRoom").append(
-                $("<option></option>").val(-1).html("No Rooms Available")
-            );
-        }
-    }
-    window.onload = function () {
-        addBlankOptionIfEmpty();
-    };
     </script>
     <script type="text/javascript">
         $("#UnitPrice").on("keypress keyup blur", function (event) {

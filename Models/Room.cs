@@ -16,16 +16,16 @@ namespace Group20_IoT.Models
         [Required]
         [Index(IsUnique = true)]
         [Display(Name = "Room Number")]
-        [MaxLength(255)]
+        [StringLength(255, ErrorMessage = "The Room Number must not exceed 255 characters")]
         public string Room_Number { get; set; }
 
         [Required]
         [Display(Name = "Room Description")]
-        [MinLength(5,ErrorMessage = "The Description must be atleast 5 characters"),MaxLength(20,ErrorMessage = "The Description cannot exceed 20 characters")]
+        [MinLength(5,ErrorMessage = "The Description must be atleast 5 characters"), StringLength(25,ErrorMessage = "The Description must not exceed 25 characters")]
         public string Room_Description { get; set; }
 
         public bool Active { get; set; } = true;
-
+        [Display(Name = "Created By")]
         public int CreatedBy { get; set; }
     }
 }

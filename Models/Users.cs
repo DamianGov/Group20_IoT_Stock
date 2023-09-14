@@ -16,29 +16,38 @@ namespace Group20_IoT.Models
         [Key]
         public int Id { get; set; }
 
-        [Required]
-        [MinLength(3,ErrorMessage ="Please enter a Name with at least 3 characters"), MaxLength(40, ErrorMessage ="Your name cannot exceed 40 characters")]
+        [Required(ErrorMessage = "Please enter a User Name")]
+        [StringLength(40, ErrorMessage ="The User Name must not exceed 40 characters")]
+        [Display(Name = "User Name")]
         public string Name { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Please enter an Email")]
         [Index(IsUnique = true)]
-        [MaxLength(255)]
-        [EmailAddress]
+        [StringLength(255, ErrorMessage = "The Email must not exceed 255 characters")]
+        [EmailAddress(ErrorMessage = "Please enter a valid Email Address")]
         public string Email { get; set; }
 
-        [Required]
-        [MinLength(8,ErrorMessage ="Please enter a Password with atleast 8 characters"), MaxLength(128, ErrorMessage ="Your Password cannot exceed 128 characters")]
+        [Required(ErrorMessage = "Please enter a Password")]
         public string Password { get; set; }
 
-        [Required]
-        public bool Access { get; set; }
+        [Required(ErrorMessage = "Please enter a Study Year")]
+        [Range(1,10,ErrorMessage = "The Study Year should be between 1 and 10")]
+        [Display(Name = "Study Year")]
+        public int StudyYear { get; set; }
+
+        [Required(ErrorMessage = "Please enter a Qualification")]
+        [StringLength(255, ErrorMessage = "The Qualification must not exceed 255 characters")]
+        public string Qualification { get; set; }
+
+        public bool Access { get; set; } = true;
 
         [ForeignKey("Role")]
-        [Required]
+        [Required(ErrorMessage ="Please select a Role")]
         public int RoleId { get; set; }
 
         public Role Role { get; set; }
 
+        [Display(Name = "Created By")]
         public int CreatedBy { get; set; }
 
     }

@@ -9,6 +9,10 @@
     <link href="~/Content/style.css" rel="stylesheet" />
     <link href="~/Content/alert-toast.css" rel="stylesheet" />
     <script src="~/Scripts/alertdialog.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+
 </head>
 <body>
     <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-dark bg-dark">
@@ -50,6 +54,14 @@
         function isInteger(value) {
             return typeof value === 'number' && isFinite(value) && Math.floor(value) === value;
         }
+            $(".datepicker").datepicker({
+                dateFormat: 'yy/mm/dd', 
+                changeMonth: true,      
+                changeYear: true,   
+                maxDate: 0,
+                yearRange: "-1:+0"
+            }).datepicker("setDate", "0");
+            $(".datepicker").attr("readonly", true);
     </script>
 
     @Scripts.Render("~/bundles/jquery")

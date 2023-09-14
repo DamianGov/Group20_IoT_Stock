@@ -13,9 +13,10 @@ namespace Group20_IoT.Models
         [Key]
         public int Id { get; set; }
 
-
+        [Display(Name = "Login Date/Time")]
         public DateTime? UserLoginDateTime { get; set; }
 
+        [Display(Name = "Logout Date/Time")]
         public DateTime? UserLogoutDateTime { get; set; }
 
         public double? Duration { get; set; }

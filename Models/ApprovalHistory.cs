@@ -9,6 +9,7 @@ namespace Group20_IoT.Models
 {
     public class ApprovalHistory
     {
+        // TODO: Sort out the bottom
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [Key]
         public int Id { get; set; }

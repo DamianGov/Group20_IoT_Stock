@@ -18,6 +18,7 @@ namespace Group20_IoT.Models
         [Required(ErrorMessage ="Please enter your Password")]
         public string Password { get; set; }
 
+        [Display(Name = "Remember Me")]
         public bool RememberMe { get; set; }
 
         public Users UserExists()

@@ -13,7 +13,7 @@
             AutomaticMigrationsEnabled = true;
         }
 
-        protected override void Seed(IoTContext context)
+        protected override void Seed(Group20_IoT.Models.IoTContext context)
         {
             context.Role.AddOrUpdate(u => u.Type,
                 new Role { Type = "Admin" },
@@ -24,10 +24,12 @@
 
             var adminU = new Users
             {
-                Name = "Damian",
+                Name = "Super User",
                 Email = "govdamian@gmail.com",
                 Password = "$2a$11$whipL/4TlRNmEYIm0T0Ha.3eXZjstkTj8uI79/omgrIAybqmTHkYa",
                 Access = true,
+                StudyYear = 10,
+                Qualification = "No Qualification",
                 RoleId = context.Role.Single(u => u.Type == "SuperUser").Id,
                 CreatedBy = 0
             };

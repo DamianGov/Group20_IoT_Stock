@@ -131,6 +131,7 @@ namespace Group20_IoT.Controllers
         public ActionResult Logout()
         {
             // Add logout time and duration logged in in seconds
+
             UserLoginTracking userLoginTracking = Session["Login"] as UserLoginTracking;
             userLoginTracking.UserLogoutDateTime = DateTime.Now;
             TimeSpan duration = userLoginTracking.UserLogoutDateTime.Value - userLoginTracking.UserLoginDateTime.Value;

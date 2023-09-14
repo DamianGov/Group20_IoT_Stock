@@ -15,7 +15,7 @@ namespace Group20_IoT.Models
 
         [Index(IsUnique = true)]
         [MaxLength(50)]
-        [Required]
+        [Required(ErrorMessage = "Please enter the Role")]
         public string Type { get; set; }
     }
 }

@@ -13,18 +13,20 @@ namespace Group20_IoT.Models
         [Key]
         public int Id { get; set; }
 
-        [Required]
-        [MaxLength(255)]
+        [Required(ErrorMessage = "Please enter a Area Name")]
+        [StringLength(255, ErrorMessage = "The Area Name must not exceed 255 characters")]
+        [Display(Name = "Area Name")]
         public string Area_Name { get; set; }
 
         public bool Active { get; set; } = true;
 
         [ForeignKey("Room")]
-        [Required]
+        [Required(ErrorMessage = "Please select a Room")]
         public int RoomId { get; set; }
 
         public Room Room { get; set; }
 
+        [Display(Name = "Created By")]
         public int CreatedBy { get; set; }
     }
 }
