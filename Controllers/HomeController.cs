@@ -10,25 +10,24 @@ using Login = Group20_IoT.Models.Login;
 
 namespace Group20_IoT.Controllers
 {
-    [SessionChecker]
     public class HomeController : Controller
     {
         private IoTContext db = new IoTContext();
 
-        [SessionCheckerSuperUser]
+        [SessionChecker("SuperAdmin")]
         public ActionResult SuperHome()
         {
             return View();
         }
 
-        [SessionCheckerAdmin]
+        [SessionChecker("Admin")]
         public ActionResult AdminHome()
         {
             return View();
         }
 
-        [SessionCheckerStandard]
-        public ActionResult StandardHome()
+        [SessionChecker("Member")]
+        public ActionResult MemberHome()
         {
             return View();
         }

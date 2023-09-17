@@ -92,7 +92,7 @@
         $(document).ready(function () {
             $("#ddlRoom").change(function () {
                 var roomId = $(this).val();
-                if (isInteger(roomId)) {
+                if (tryParseInt(roomId)) {
                     loadStorageAreas(roomId);
                 } else {
                     $("#ddlStorageArea").html("");

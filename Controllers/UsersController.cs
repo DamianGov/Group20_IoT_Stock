@@ -11,8 +11,7 @@ using Group20_IoT.Models;
 
 namespace Group20_IoT.Controllers
 {
-    [SessionCheckerSuperUser]
-    [SessionCheckerAdmin]
+    [SessionChecker("SuperAdmin","Admin")]
     public class UsersController : Controller
     {
         private IoTContext db = new IoTContext();
@@ -23,16 +22,16 @@ namespace Group20_IoT.Controllers
             IQueryable<Users> users;
 
             // Check if the user is Super User if they are they can view all users, including Admins
-            if (currentU.RoleId == db.Role.Single(r => r.Type.Equals("SuperUser")).Id)
+            if (currentU.Role.Type == "SuperAdmin")
                 users = db.Users.Include(u => u.Role).Where(u => u.Id != currentU.Id);
             else
                 // Otherwise we know this person is an Admin therefore they can only see standard users
-                users = db.Users.Include(u => u.Role).Where(u => u.Id != currentU.Id && u.Role.Type == "Standard");
+                users = db.Users.Include(u => u.Role).Where(u => u.Id != currentU.Id && u.Role.Type == "Member");
 
             return View(users.ToList());
         }
 
-        [SessionCheckerSuperUser]
+        [SessionChecker("SuperAdmin")]
         [HttpPost]
         public ActionResult Restrict(int id)
         {
@@ -50,7 +49,7 @@ namespace Group20_IoT.Controllers
                 return Json(new { success = true, message = "User has been restricted" });
         }
 
-        [SessionCheckerSuperUser]
+        [SessionChecker("SuperAdmin")]
         [HttpPost]
         public ActionResult Unrestrict(int id)
         {
@@ -72,10 +71,10 @@ namespace Group20_IoT.Controllers
         {
             Users currentUser = Session["User"] as Users;
 
-            IQueryable<Role> role = db.Role.Where(r => !r.Type.Equals("SuperUser"));
+            IQueryable<Role> role = db.Role.Where(r => !r.Type.Equals("SuperAdmin"));
 
             // Check if the user is Super User if they are they can create admin/standard users otherwise if normal Admin they can only add standard users
-            if (currentUser.RoleId != db.Role.Single(r => r.Type.Equals("SuperUser")).Id)
+            if (currentUser.Role.Type != "SuperAdmin")
                 ViewBag.RoleId = new SelectList(role.Where(r => !r.Type.Equals("Admin")), "Id", "Type");
             else
                 ViewBag.RoleId = new SelectList(role, "Id", "Type");
@@ -87,18 +86,29 @@ namespace Group20_IoT.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create(Users users)
         {
+
+            users.FirstName = users.FirstName.TrimStart().TrimEnd();
+            users.Surname = users.Surname.TrimStart().TrimEnd();  
             users.Email = users.Email.Trim();
 
-            if(db.Users.Any(u => u.Email.Equals(users.Email)))
-            {
-                ModelState.AddModelError("Email", "A user with this email already exists");
-            }
-
-
+            if(db.Users.Any(u => u.Email.Equals(users.Email))) ModelState.AddModelError("Email", "A user with this email already exists");
+           
             if (ModelState.IsValid)
             {
+                
+                Random random = new Random();
+                string GeneratedPassword = users.FirstName[0].ToString().ToUpper() + "$" + ((users.FirstName.Length * random.Next(1, 6))) + users.Surname[0].ToString().ToLower() + random.Next('a', 'z' + 1) ;
+                for (int i = 0; i < 3; i++)
+                {
+                    char randomAlphabeticChar = (char)random.Next('A', 'Z' + 1);
+                    GeneratedPassword += randomAlphabeticChar;
+                }
+                // EMAIL THE PASSWORD TO USER
                 // Must hash password, so password is not plaintext in db
-                users.Password = PasswordHandler.HashPassword(users.Password, PasswordHandler.GenerateSalt());
+
+                _ = Email.SendEmail(users.GetFullName(), users.Email, "Welcolme to the IoT System","Hello, "+users.GetFullName()+".\n\nYour account has been created.\nThis is your password: "+GeneratedPassword+"\n\nKind regards,\nIoT System.");
+
+                users.Password = PasswordHandler.HashPassword(GeneratedPassword, PasswordHandler.GenerateSalt());
                 users.CreatedBy = (Session["User"] as Users).Id;
                 db.Users.Add(users);
                 db.SaveChanges();
@@ -107,8 +117,8 @@ namespace Group20_IoT.Controllers
 
             Users currentUser = Session["User"] as Users;
 
-            if (currentUser.RoleId != db.Role.Single(r => r.Type.Equals("SuperUser")).Id)
-                ViewBag.RoleId = new SelectList(db.Role.Where(r => !r.Type.Equals("SuperUser") && !r.Type.Equals("Admin")), "Id", "Type");
+            if (currentUser.Role.Type != "SuperAdmin")
+                ViewBag.RoleId = new SelectList(db.Role.Where(r => !r.Type.Equals("SuperAdmin") && !r.Type.Equals("Admin")), "Id", "Type");
             else
                 ViewBag.RoleId = new SelectList(db.Role, "Id", "Type");
 

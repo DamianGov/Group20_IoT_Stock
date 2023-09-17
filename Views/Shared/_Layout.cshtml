@@ -30,6 +30,10 @@
                     <li>@Html.ActionLink("Logout","Logout","Login")</li>
                 </ul>
             </div>
+            @if (Session["User"] != null)
+            {
+                <p style="color:white">Welcome, @((Session["User"] as Group20_IoT.Models.Users).GetFullName())</p>
+            }
         </div>
     </nav>
 
@@ -51,8 +55,15 @@
     </div>
 
     <script>
+        function tryParseInt(value) {
+            const parsedValue = parseInt(value, 10); // The second argument specifies the radix (base 10).
+            if (!isNaN(parsedValue)) {
+                return parsedValue;
+            }
+            return null; // Return null if parsing fails.
+        }
         function isInteger(value) {
-            return typeof value === 'number' && isFinite(value) && Math.floor(value) === value;
+            return Number.isInteger(value);
         }
             $(".datepicker").datepicker({
                 dateFormat: 'yy/mm/dd', 

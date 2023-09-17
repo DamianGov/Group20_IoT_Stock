@@ -21,6 +21,9 @@
         <th>
             User Type
         </th>
+        <th>
+            Used Remember Me
+        </th>
     </tr>
     @if (Model != null)
     {
@@ -44,6 +47,9 @@
                 </td>
                 <td>
                     @item.UserType
+                </td>
+                <td>
+                    @item.UsedRememberMe
                 </td>
             </tr>
         }

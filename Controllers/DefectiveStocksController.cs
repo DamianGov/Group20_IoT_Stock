@@ -7,10 +7,11 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using Group20_IoT.Models;
+using Microsoft.IdentityModel.Tokens;
 
 namespace Group20_IoT.Controllers
 {
-    [SessionCheckerAdmin]
+    [SessionChecker("SuperAdmin","Admin")]
     public class DefectiveStocksController : Controller
     {
         private IoTContext db = new IoTContext();
@@ -54,7 +55,10 @@ namespace Group20_IoT.Controllers
                     ModelState.AddModelError("Quantity", "The Quantity exceeds the amount of Stock available for this item");
             }
             else
-                ModelState.AddModelError("StockId", "Please select the Stock");
+                ModelState.AddModelError("StockId", "Please select Stock");
+
+            if(defectiveStock.Note.IsNullOrEmpty())
+                ModelState.AddModelError("Note", "Please comment on the Defect");
 
             if (ModelState.IsValid)
             {
@@ -84,13 +88,32 @@ namespace Group20_IoT.Controllers
             return View(defectiveStock);
         }
 
-        protected override void Dispose(bool disposing)
+        [HttpPost]
+        public ActionResult ResolveDefect(int? id)
         {
-            if (disposing)
-            {
-                db.Dispose();
-            }
-            base.Dispose(disposing);
+            if (id == null) return HttpNotFound();
+
+            var DefStock = db.DefectiveStock.Find(id);
+
+            if (DefStock == null) return HttpNotFound();
+
+            DefStock.Resolved = true;
+
+            DefStock.ResolvedDate = DateTime.Now;
+
+            var Stock = db.Stock.Find(DefStock.StockId);
+
+            if (Stock == null) return HttpNotFound();
+
+            Stock.TotalQuantity += DefStock.Quantity;
+
+            db.Entry(DefStock).State = EntityState.Modified;
+            db.Entry(Stock).State = EntityState.Modified;
+            db.SaveChanges();
+
+            // Return to a different view or something?
+            return Json(new { success = true, message = "Defect has been resolved" });
         }
+
     }
 }

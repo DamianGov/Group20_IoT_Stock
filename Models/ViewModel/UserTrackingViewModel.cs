@@ -20,5 +20,7 @@ namespace Group20_IoT.Models.ViewModel
         public string Duration { get; set; }
 
         public string UserType { get; set; }
+
+        public string UsedRememberMe { get; set; }
     }
 }

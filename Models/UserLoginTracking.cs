@@ -21,6 +21,8 @@ namespace Group20_IoT.Models
 
         public double? Duration { get; set; }
 
+        public bool UsedRememberMe { get; set; } = false;
+
         [ForeignKey("Users")]
         public int UserId { get; set; }
 

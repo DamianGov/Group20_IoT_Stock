@@ -23,6 +23,8 @@ namespace Group20_IoT.Models
         public DbSet<ApprovalHistory> ApprovalHistory { get; set;}
         public DbSet<DefectiveStock> DefectiveStock { get; set; }
 
+        public DbSet<ResolvedDefect> ResolvedDefect { get; set; }
+
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             modelBuilder.Entity<RequestStock>()

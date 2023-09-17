@@ -15,7 +15,7 @@
             @Html.DisplayNameFor(model => model.Role.Type)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Name)
+            Name
         </th>
         <th>
             @Html.DisplayNameFor(model => model.Email)
@@ -33,7 +33,7 @@
                 @Html.DisplayFor(modelItem => item.Role.Type)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Name)
+                @item.GetFullName()
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Email)

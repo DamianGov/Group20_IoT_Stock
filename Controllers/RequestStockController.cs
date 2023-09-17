@@ -13,7 +13,6 @@ using System.Web.Util;
 
 namespace Group20_IoT.Controllers
 {
-    [SessionChecker]
     public class RequestStockController : Controller
     {
         private IoTContext db = new IoTContext();
@@ -31,7 +30,7 @@ namespace Group20_IoT.Controllers
                                 {
                                     Id = x.Id,
                                     UserId = x.UserId,
-                                    UserName = x.Users.Name,
+                                    UserName = x.Users.GetFullName(),
                                     StockName = x.StockName,
                                     StockPrice = x.StockPrice.ToString("C"),
                                     StockLink = x.StockLink,
@@ -50,7 +49,7 @@ namespace Group20_IoT.Controllers
                                 {
                                     Id = x.Id,
                                     UserId = x.UserId,
-                                    UserName = x.Users.Name,
+                                    UserName = x.Users.GetFullName(),
                                     StockName = x.StockName,
                                     StockPrice = x.StockPrice.ToString("C"),
                                     StockLink = x.StockLink,
@@ -71,11 +70,11 @@ namespace Group20_IoT.Controllers
 
         public ActionResult Search(string searchItem)
         {
-            Users user = Session["User"] as Users;
+            string UserType = Session["UserType"] as string;
 
             var SortedRequests = getRequests(searchItem);
 
-            if(user.RoleId != db.Role.Single(x=>x.Type.Equals("Standard")).Id) return PartialView("_RequestStockTableAdmin", SortedRequests);
+            if(UserType != "Member") return PartialView("_RequestStockTableAdmin", SortedRequests);
 
             return PartialView("_RequestStockTable", SortedRequests);
         }
@@ -130,7 +129,7 @@ namespace Group20_IoT.Controllers
                     {
                         Id = x.Id,
                         UserId = x.UserId,
-                        UserName = x.Users.Name,
+                        UserName = x.Users.GetFullName(),
                         StockName = x.StockName,
                         StockPrice = x.StockPrice.ToString("C"),
                         StockLink = x.StockLink,
@@ -145,7 +144,7 @@ namespace Group20_IoT.Controllers
                 SortedRequests = getRequests(null);
             }
 
-            if (user.RoleId != db.Role.Single(x => x.Type.Equals("Standard")).Id) return PartialView("_RequestStockTableAdmin", SortedRequests);
+            if (user.Role.Type != "Member") return PartialView("_RequestStockTableAdmin", SortedRequests);
 
             return PartialView("_RequestStockTable", SortedRequests);
         }

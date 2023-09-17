@@ -14,7 +14,7 @@ using Microsoft.IdentityModel.Tokens;
 
 namespace Group20_IoT.Controllers
 {
-    [SessionCheckerAdmin]
+    [SessionChecker("SuperAdmin","Admin")]
     public class StocksController : Controller
     {
         private IoTContext db = new IoTContext();
@@ -87,18 +87,15 @@ namespace Group20_IoT.Controllers
         {
             // Get logged in user
             Users user = Session["User"] as Users;
-            //stock.UserId = user.Id;
-
-            //stock.DateCreated = DateTime.Now.Date;
 
             // Remove white spaces at end of stock code
             if (!stock.StockCode.IsNullOrEmpty())
-                stock.StockCode = stock.StockCode.Trim();
+                stock.StockCode = stock.StockCode.TrimStart().TrimEnd();
 
             // Check if there is any stock with the same stock code (prevent clashes)
             if (db.Stock.Any(s => s.StockCode.ToLower() == stock.StockCode.ToLower())) ModelState.AddModelError("StockCode", "This Stock Code already exists for another item");
 
-            if (stock.StorageAreaId == -1) ModelState.AddModelError("StorageArea", "Unable to create Stock because it is not assigned to a Storage Area");
+            if (stock.StorageAreaId == -1) ModelState.AddModelError("StorageArea", "A Storage Area must be chosen to assign the stock to");
 
             // Check if any image is selected
             if (image == null || image.ContentLength <= 0) ModelState.AddModelError("ImageFile", "Please select an image");

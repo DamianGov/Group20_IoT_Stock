@@ -3,7 +3,7 @@
     Group20_IoT.Models.IoTContext db = new Group20_IoT.Models.IoTContext();
     ViewBag.Title = "Index";
     Group20_IoT.Models.Users user = Session["User"] as Group20_IoT.Models.Users;
-    int StandardRoleId = db.Role.Single(x => x.Type.Equals("Standard")).Id;
+    int StandardRoleId = db.Role.Single(x => x.Type.Equals("Member")).Id;
 }
 
 <h2>Index</h2>

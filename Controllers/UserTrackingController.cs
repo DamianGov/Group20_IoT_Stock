@@ -11,7 +11,7 @@ using Group20_IoT.Models.ViewModel;
 
 namespace Group20_IoT.Controllers
 {
-    [SessionCheckerSuperUser]
+    [SessionChecker("SuperAdmin")]
     public class UserTrackingController : Controller
     {
         private IoTContext db = new IoTContext();   
@@ -24,12 +24,13 @@ namespace Group20_IoT.Controllers
                 u => new UserTrackingViewModel
                 {
                     Id = u.Id,
-                    Name = u.Users.Name,
+                    Name = u.Users.GetFullName(),
                     Email = u.Users.Email,
                     LoggedIn = u.UserLoginDateTime.HasValue ? u.UserLoginDateTime.Value.ToString("yyyy/M/d HH:mm") : "-",
                     LoggedOut = u.UserLogoutDateTime.HasValue ? u.UserLogoutDateTime.Value.ToString("yyyy/M/d HH:mm") : "-",
                     Duration = FormatDuration(u.Duration),
-                    UserType = u.Users.Role.Type
+                    UserType = u.Users.Role.Type,
+                    UsedRememberMe = u.UsedRememberMe ? "Yes" : "No"
 
                 }).ToList();
 
@@ -47,12 +48,13 @@ namespace Group20_IoT.Controllers
                 u => new UserTrackingViewModel
                 {
                     Id = u.Id,
-                    Name = u.Users.Name,
+                    Name = u.Users.GetFullName(),
                     Email = u.Users.Email,
                     LoggedIn = u.UserLoginDateTime.HasValue ? u.UserLoginDateTime.Value.ToString("yyyy/M/d HH:mm") : "-",
                     LoggedOut = u.UserLogoutDateTime.HasValue ? u.UserLogoutDateTime.Value.ToString("yyyy/M/d HH:mm") : "-",
                     Duration = FormatDuration(u.Duration),
-                    UserType = u.Users.Role.Type
+                    UserType = u.Users.Role.Type,
+                    UsedRememberMe = u.UsedRememberMe ? "Yes" : "No"
 
                 }).ToList();
 

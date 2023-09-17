@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Data.Entity;
 using System.Linq;
 using System.Web;
 
@@ -23,7 +24,7 @@ namespace Group20_IoT.Models
 
         public Users UserExists()
         {
-            return db.Users.FirstOrDefault(u => u.Email == Email);
+            return db.Users.Include(u => u.Role).FirstOrDefault(u => u.Email == Email);
         }
     }
 }

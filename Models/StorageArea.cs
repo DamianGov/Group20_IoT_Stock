@@ -22,6 +22,7 @@ namespace Group20_IoT.Models
 
         [ForeignKey("Room")]
         [Required(ErrorMessage = "Please select a Room")]
+        [Display(Name = "Room")]
         public int RoomId { get; set; }
 
         public Room Room { get; set; }

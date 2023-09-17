@@ -17,20 +17,21 @@
         {
             context.Role.AddOrUpdate(u => u.Type,
                 new Role { Type = "Admin" },
-                new Role { Type = "Standard" },
-                new Role { Type = "SuperUser" });
+                new Role { Type = "Member" },
+                new Role { Type = "SuperAdmin" });
 
             context.SaveChanges();
 
             var adminU = new Users
             {
-                Name = "Super User",
+                FirstName = "Super",
+                Surname = "Admin",
                 Email = "govdamian@gmail.com",
-                Password = "$2a$11$whipL/4TlRNmEYIm0T0Ha.3eXZjstkTj8uI79/omgrIAybqmTHkYa",
+                Password = "$2a$11$Gep3kcMofnXDO.5i1VInpOwgfa0fjGXTXdmmCEPVFb32Y5t3qC0ni",
                 Access = true,
                 StudyYear = 10,
                 Qualification = "No Qualification",
-                RoleId = context.Role.Single(u => u.Type == "SuperUser").Id,
+                RoleId = context.Role.Single(u => u.Type == "SuperAdmin").Id,
                 CreatedBy = 0
             };
 

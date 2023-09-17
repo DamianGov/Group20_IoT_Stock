@@ -9,17 +9,21 @@ using System.EnterpriseServices.Internal;
 
 namespace Group20_IoT.Models
 {
-    [SessionCheckerAdmin]
+    [SessionChecker("Admin")]
     public class Users
     {
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [Key]
         public int Id { get; set; }
 
-        [Required(ErrorMessage = "Please enter a User Name")]
-        [StringLength(40, ErrorMessage ="The User Name must not exceed 40 characters")]
-        [Display(Name = "User Name")]
-        public string Name { get; set; }
+        [Required(ErrorMessage = "Please enter a First Name")]
+        [StringLength(40, ErrorMessage = "The First Name must not exceed 40 characters")]
+        [Display(Name = "First Name")]
+        public string FirstName { get; set; }
+
+        [Required(ErrorMessage = "Please enter a Surname")]
+        [StringLength(40, ErrorMessage = "The Surname must not exceed 40 characters")]
+        public string Surname { get; set; }
 
         [Required(ErrorMessage = "Please enter an Email")]
         [Index(IsUnique = true)]
@@ -27,7 +31,6 @@ namespace Group20_IoT.Models
         [EmailAddress(ErrorMessage = "Please enter a valid Email Address")]
         public string Email { get; set; }
 
-        [Required(ErrorMessage = "Please enter a Password")]
         public string Password { get; set; }
 
         [Required(ErrorMessage = "Please enter a Study Year")]
@@ -50,5 +53,10 @@ namespace Group20_IoT.Models
         [Display(Name = "Created By")]
         public int CreatedBy { get; set; }
 
+
+        public string GetFullName()
+        {
+            return FirstName + " " + Surname;
+        }
     }
 }

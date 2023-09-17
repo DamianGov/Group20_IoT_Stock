@@ -26,6 +26,8 @@ namespace Group20_IoT.Models
         [Display(Name = "Defective Category")]
         public eDefectiveCategory DefectiveCategory { get; set; }
 
+        public string Note { get; set; }
+
         [Required(ErrorMessage = "Please enter the Date the Defect was Found")]
         [Display(Name = "Date Defect Found")]
         public DateTime DefectFound { get; set; }
@@ -35,6 +37,11 @@ namespace Group20_IoT.Models
 
         [Display(Name = "Date Created")]
         public DateTime CreationDate { get; set; } = DateTime.Now;
+
+        public bool Resolved { get; set; } = false;
+
+        [Display(Name = "Resolved Date")]
+        public DateTime? ResolvedDate { get; set; }
 
         public virtual Users Users { get; set; }
 
