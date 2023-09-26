@@ -24,11 +24,13 @@
 
             var adminU = new Users
             {
+               // StudentNum = "00000000",
                 FirstName = "Super",
                 Surname = "Admin",
                 Email = "govdamian@gmail.com",
                 Password = "$2a$11$Gep3kcMofnXDO.5i1VInpOwgfa0fjGXTXdmmCEPVFb32Y5t3qC0ni",
                 Access = true,
+                Notify = true,
                 StudyYear = 10,
                 Qualification = "No Qualification",
                 RoleId = context.Role.Single(u => u.Type == "SuperAdmin").Id,

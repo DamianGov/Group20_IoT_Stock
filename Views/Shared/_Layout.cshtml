@@ -11,40 +11,211 @@
     <script src="~/Scripts/alertdialog.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+    <style>
+        .required-star::after {
+            content: " *"; /* Add a red asterisk before the label text */
+            color: red;
+        }
 
+        * {
+            margin: 0 !important;
+            padding: 0 !important;
+        }
+
+        body {
+            font-family: "Poppins", sans-serif !important;
+        }
+
+        .container {
+            max-width: auto !important;
+            width: 100% !important;
+            margin: auto !important;
+        }
+
+        .navbar {
+            width: 100% !important;
+            box-shadow: 0 1px 4px rgb(146 161 176 / 15%) !important;
+        }
+
+        .nav-container {
+            display: flex !important;
+            justify-content: space-between !important;
+            align-items: center !important;
+            height: 62px !important;
+        }
+
+        .navbar .menu-items {
+            display: flex !important;
+        }
+
+        .navbar .nav-container li {
+            list-style: none !important;
+        }
+
+        .navbar .nav-container a {
+            text-decoration: none !important;
+            color: #0e2431 !important;
+            font-weight: 500 !important;
+            font-size: 1.2rem !important;
+            padding: 0.7rem !important;
+        }
+
+            .navbar .nav-container a:hover {
+                font-weight: bolder !important;
+            }
+
+        .nav-container {
+            display: block !important;
+            position: relative !important;
+            height: 60px !important;
+        }
+
+            .nav-container .checkbox {
+                position: absolute !important;
+                display: block !important;
+                height: 32px !important;
+                width: 32px !important;
+                top: 20px !important;
+                left: 20px !important;
+                z-index: 5 !important;
+                opacity: 0 !important;
+                cursor: pointer !important;
+            }
+
+            .nav-container .hamburger-lines {
+                display: block !important;
+                height: 26px !important;
+                width: 32px !important;
+                position: absolute !important;
+                top: 17px !important;
+                left: 20px !important;
+                z-index: 2 !important;
+                display: flex !important;
+                flex-direction: column !important;
+                justify-content: space-between !important;
+            }
+
+                .nav-container .hamburger-lines .line {
+                    display: block !important;
+                    height: 4px !important;
+                    width: 100% !important;
+                    border-radius: 10px !important;
+                    background: #0e2431 !important;
+                }
+
+                .nav-container .hamburger-lines .line1 {
+                    transform-origin: 0% 0% !important;
+                    transition: transform 0.4s ease-in-out !important;
+                }
+
+                .nav-container .hamburger-lines .line2 {
+                    transition: transform 0.2s ease-in-out !important;
+                }
+
+                .nav-container .hamburger-lines .line3 {
+                    transform-origin: 0% 100%;
+                    transition: transform 0.4s ease-in-out !important;
+                }
+
+        .navbar .menu-items {
+            position: absolute;
+            top: 60px;
+            box-shadow: inset 0 0 2000px rgba(255, 255, 255, .5) !important;
+            height: 100vh !important;
+            width: 100% !important;
+            transform: translate(-150%) !important;
+            display: flex !important;
+            flex-direction: column !important;
+            margin-left: -40px !important;
+            padding-left: 50px !important;
+            transition: transform 0.5s ease-in-out !important;
+            text-align: center !important;
+            z-index: 999;
+        }
+
+            .navbar .menu-items li {
+                margin-bottom: 1.2rem !important;
+                font-size: 1.5rem !important;
+                font-weight: 500 !important;
+            }
+
+        .logo {
+            position: absolute !important;
+            top: 5px !important;
+            right: 15px !important;
+            font-size: 1.2rem !important;
+            color: #0e2431 !important;
+        }
+
+        .nav-container input[type="checkbox"]:checked ~ .menu-items {
+            transform: translateX(0) !important;
+        }
+
+        .nav-container input[type="checkbox"]:checked ~ .hamburger-lines .line1 {
+            transform: rotate(45deg) !important;
+        }
+
+        .nav-container input[type="checkbox"]:checked ~ .hamburger-lines .line2 {
+            transform: scaleY(0) !important;
+        }
+
+        .nav-container input[type="checkbox"]:checked ~ .hamburger-lines .line3 {
+            transform: rotate(-45deg) !important;
+        }
+
+        .nav-container input[type="checkbox"]:checked ~ .logo {
+            display: none !important;
+        }
+        .blurred {
+            filter: blur(5px); /* Adjust the blur amount as needed */
+            pointer-events: none; /* Prevent interactions with the blurred background */
+        }
+
+    </style>
 </head>
 <body>
-    <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-dark bg-dark">
-        <div class="container">
-            @Html.ActionLink("Application name", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
-            <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" title="Toggle navigation" aria-controls="navbarSupportedContent"
-                    aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse d-sm-inline-flex justify-content-between">
-                <ul class="navbar-nav flex-grow-1">
-                    <li>@Html.ActionLink("Home", "Index", "Home", new { area = "" }, new { @class = "nav-link" })</li>
-                    <li>@Html.ActionLink("About", "About", "Home", new { area = "" }, new { @class = "nav-link" })</li>
-                    <li>@Html.ActionLink("Contact", "Contact", "Home", new { area = "" }, new { @class = "nav-link" })</li>
-                    <li>@Html.ActionLink("Logout","Logout","Login")</li>
-                </ul>
+    <nav>
+        <div class="navbar">
+            <div class="container nav-container">
+                <input class="checkbox" type="checkbox" id="menu-toggle" />
+                <div class="hamburger-lines">
+                    <span class="line line1"></span>
+                    <span class="line line2"></span>
+                    <span class="line line3"></span>
+                </div>
+                <div class="logo">
+                    <h1>IoT Management System</h1>
+                </div>
+                <div class="menu-items">
+                    <li><i class="fa fa-user" aria-hidden="true"></i>@Html.ActionLink(((Session["User"] as Group20_IoT.Models.Users).GetFullName()),"")</li>
+                    @if (Session["UserType"] as string == "Admin" || Session["UserType"] as string == "SuperAdmin")
+                    {
+                    <li><i class="fa fa-users" aria-hidden="true"></i>@Html.ActionLink("User Management", "Index", "Users")</li>
+                    <li><i class="fa fa-archive" aria-hidden="true"></i>@Html.ActionLink("Stock Management", "Index", "Stocks")</li>
+                    <li><i class="fa fa-ban" aria-hidden="true"></i>@Html.ActionLink("Stock Discrepancies Management", "Index", "Discrepancy")</li>
+                    }
+                    @if (Session["UserType"] as string == "SuperAdmin")
+                    {
+                    <li><i class="fa fa-user-secret" aria-hidden="true"></i>@Html.ActionLink("User Tracking", "Index", "UserTracking")</li>
+                    }
+                    <li><i class="fa fa-sign-out" aria-hidden="true"></i>@Html.ActionLink("Logout","Logout","Login")</li>
+                </div>
             </div>
-            @if (Session["User"] != null)
-            {
-                <p style="color:white">Welcome, @((Session["User"] as Group20_IoT.Models.Users).GetFullName())</p>
-            }
         </div>
     </nav>
+ 
 
 
     <div class="container body-content">
         <div class="wrapper">
-            <div class="content">
-                @RenderBody()
-                <div id="notification-area">
+                <div class="content">
+                    @RenderBody()
+                    <div id="notification-area">
+                    </div>
                 </div>
-            </div>
             <div class="footer">
                 <hr />
                 <p>&copy; @DateTime.Now.Year - Made with <span class="heart">&hearts;</span> by the <span class="rainbow-text">IoT Group</span></p>
@@ -55,6 +226,23 @@
     </div>
 
     <script>
+        $(document).ready(function () {
+            // Cache the menu items element
+            var mainContent = $(".content");
+
+            // When the menu toggle checkbox is clicked
+            $("#menu-toggle").click(function () {
+                if (this.checked) {
+                    // Add the 'active' class to both the menu and the blurred background
+                    mainContent.addClass("blurred");
+                } else {
+                    // Remove the 'active' class when unchecked
+                    mainContent.removeClass("blurred");
+                }
+                console.log(mainContent);
+            });
+        });
+
         function tryParseInt(value) {
             const parsedValue = parseInt(value, 10); // The second argument specifies the radix (base 10).
             if (!isNaN(parsedValue)) {

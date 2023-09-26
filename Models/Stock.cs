@@ -24,6 +24,10 @@ namespace Group20_IoT.Models
         [Display(Name = "Stock Name")]
         public string Name { get; set; }
 
+        [Required(ErrorMessage = "Please enter a Description")]
+        [StringLength(250, ErrorMessage = "The Description must not exceed 250 characters")]
+        public string Description { get; set; }
+
         [Display(Name="Total Quantity")]
         [Range(0,int.MaxValue,ErrorMessage = "Please enter a valid Total Quantity")]
         public int TotalQuantity { get; set; } = 0;
@@ -48,6 +52,9 @@ namespace Group20_IoT.Models
 
         [Display(Name = "Stock Image")]
         public string ImageFile { get; set; }
+
+
+        public ICollection<StockDiscrepancy> stockDiscrepancies { get; set; }
 
     }
 }

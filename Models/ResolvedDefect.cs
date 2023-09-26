@@ -20,7 +20,7 @@ namespace Group20_IoT.Models
 
         public string ResolvedNote { get; set; }
 
-        public virtual DefectiveStock DefectiveStock { get; set; }
+        public virtual StockDiscrepancy DefectiveStock { get; set; }
 
     }
 }

@@ -298,7 +298,7 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
-    <Compile Include="Controllers\DefectiveStocksController.cs" />
+    <Compile Include="Controllers\DiscrepancyController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\LoginController.cs" />
     <Compile Include="Controllers\RequestStockController.cs" />
@@ -338,9 +338,26 @@
     <Compile Include="Migrations\202309171900385_AddedSurnameToUsers.designer.cs">
       <DependentUpon>202309171900385_AddedSurnameToUsers.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202309261148273_AddedDescriptionForStock.cs" />
+    <Compile Include="Migrations\202309261148273_AddedDescriptionForStock.designer.cs">
+      <DependentUpon>202309261148273_AddedDescriptionForStock.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202309261156179_UpdatedDescriptionForStock.cs" />
+    <Compile Include="Migrations\202309261156179_UpdatedDescriptionForStock.designer.cs">
+      <DependentUpon>202309261156179_UpdatedDescriptionForStock.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202309261617533_AddedNotifyToUsersTBL.cs" />
+    <Compile Include="Migrations\202309261617533_AddedNotifyToUsersTBL.designer.cs">
+      <DependentUpon>202309261617533_AddedNotifyToUsersTBL.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202309261914587_ChangedDefectToDiscrepancy.cs" />
+    <Compile Include="Migrations\202309261914587_ChangedDefectToDiscrepancy.designer.cs">
+      <DependentUpon>202309261914587_ChangedDefectToDiscrepancy.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\ApprovalHistory.cs" />
-    <Compile Include="Models\DefectiveStock.cs" />
+    <Compile Include="Models\HangfireAutomations.cs" />
+    <Compile Include="Models\StockDiscrepancy.cs" />
     <Compile Include="Models\Email.cs" />
     <Compile Include="Models\IoTContext.cs" />
     <Compile Include="Models\Login.cs" />
@@ -424,9 +441,7 @@
     <Content Include="Views\Rooms\Edit.cshtml" />
     <Content Include="Views\Rooms\Index.cshtml" />
     <Content Include="Views\Users\Create.cshtml" />
-    <Content Include="Views\Users\Delete.cshtml" />
-    <Content Include="Views\Users\Details.cshtml" />
-    <Content Include="Views\Users\Edit.cshtml" />
+    <Content Include="Views\Users\ManageUser.cshtml" />
     <Content Include="Views\Users\Index.cshtml" />
     <Content Include="Views\Login\Index.cshtml" />
     <Content Include="Views\Home\SuperHome.cshtml" />
@@ -438,13 +453,14 @@
     <Content Include="Views\RequestStock\_RequestStockTable.cshtml" />
     <Content Include="Views\RequestStock\Create.cshtml" />
     <Content Include="Views\RequestStock\_RequestStockTableAdmin.cshtml" />
-    <Content Include="Views\DefectiveStocks\Create.cshtml" />
-    <Content Include="Views\DefectiveStocks\Index.cshtml" />
+    <Content Include="Views\Discrepancy\Create.cshtml" />
+    <Content Include="Views\Discrepancy\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Content\Images\" />
     <Folder Include="Content\Request\" />
+    <Folder Include="Models\JoinedModel\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap.rtl.min.css.map" />
@@ -494,6 +510,18 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202309171900385_AddedSurnameToUsers.resx">
       <DependentUpon>202309171900385_AddedSurnameToUsers.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202309261148273_AddedDescriptionForStock.resx">
+      <DependentUpon>202309261148273_AddedDescriptionForStock.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202309261156179_UpdatedDescriptionForStock.resx">
+      <DependentUpon>202309261156179_UpdatedDescriptionForStock.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202309261617533_AddedNotifyToUsersTBL.resx">
+      <DependentUpon>202309261617533_AddedNotifyToUsersTBL.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202309261914587_ChangedDefectToDiscrepancy.resx">
+      <DependentUpon>202309261914587_ChangedDefectToDiscrepancy.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

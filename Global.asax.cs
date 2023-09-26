@@ -42,8 +42,10 @@ namespace Group20_IoT
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
 
+            TimeZoneInfo saTimeZone = TimeZoneInfo.FindSystemTimeZoneById("South Africa Standard Time");
+
             HangfireAspNet.Use(GetHangfireServers);
-            BackgroundJob.Enqueue(() => Debug.WriteLine("Hello world from Hangfire!"));
+            RecurringJob.AddOrUpdate(() => HangfireAutomations.CheckStockLevelLowAndSendEmail(), Cron.Daily, saTimeZone);
         }
     }
 }

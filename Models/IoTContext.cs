@@ -21,7 +21,7 @@ namespace Group20_IoT.Models
         public DbSet<UserLoginTracking> UserLoginTracking { get; set; } 
         public DbSet<RequestStock> RequestStock { get; set; }
         public DbSet<ApprovalHistory> ApprovalHistory { get; set;}
-        public DbSet<DefectiveStock> DefectiveStock { get; set; }
+        public DbSet<StockDiscrepancy> StockDiscrepancy { get; set; }
 
         public DbSet<ResolvedDefect> ResolvedDefect { get; set; }
 

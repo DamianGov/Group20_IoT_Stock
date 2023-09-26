@@ -12,19 +12,19 @@ using Microsoft.IdentityModel.Tokens;
 namespace Group20_IoT.Controllers
 {
     [SessionChecker("SuperAdmin","Admin")]
-    public class DefectiveStocksController : Controller
+    public class DiscrepancyController : Controller
     {
         private IoTContext db = new IoTContext();
 
-        // GET: DefectiveStocks
+        // GET: Discrepancy
         public ActionResult Index()
         {
-            var defectiveStock = db.DefectiveStock.Include(d => d.Stock).Include(d => d.Users).OrderByDescending(d =>d.CreationDate);
-            return View(defectiveStock.ToList());
+            var discrepancyStock = db.StockDiscrepancy.Include(d => d.Stock).Include(d => d.Users).OrderByDescending(d =>d.CreationDate);
+            return View(discrepancyStock.ToList());
         }
 
 
-        // GET: DefectiveStocks/Create
+        // GET: DeveStocks/Create
         public ActionResult Create()
         {
             var StockWithQuantity = db.Stock.Where(s => (s.TotalQuantity - s.QuantityOnLoan) > 0).ToList().Select(s => new
@@ -44,31 +44,31 @@ namespace Group20_IoT.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(DefectiveStock defectiveStock)
+        public ActionResult Create(StockDiscrepancy discrepancyStock)
         {
             Users user = Session["User"] as Users;
 
-            if (defectiveStock.StockId > 0)
+            if (discrepancyStock.StockId > 0)
             {
-                var StockRec = db.Stock.Find(defectiveStock.StockId);
-                if (defectiveStock.Quantity > (StockRec.TotalQuantity - StockRec.QuantityOnLoan))
+                var StockRec = db.Stock.Find(discrepancyStock.StockId);
+                if (discrepancyStock.Quantity > (StockRec.TotalQuantity - StockRec.QuantityOnLoan))
                     ModelState.AddModelError("Quantity", "The Quantity exceeds the amount of Stock available for this item");
             }
             else
                 ModelState.AddModelError("StockId", "Please select Stock");
 
-            if(defectiveStock.Note.IsNullOrEmpty())
-                ModelState.AddModelError("Note", "Please comment on the Defect");
+            if(discrepancyStock.Note.IsNullOrEmpty())
+                ModelState.AddModelError("Note", "Please comment on the Discrepancy");
 
             if (ModelState.IsValid)
             {
                
-                defectiveStock.CreatedBy = user.Id;
+                discrepancyStock.CreatedBy = user.Id;
 
-                var stock = db.Stock.Find(defectiveStock.StockId);
-                stock.TotalQuantity -= defectiveStock.Quantity;
+                var stock = db.Stock.Find(discrepancyStock.StockId);
+                stock.TotalQuantity -= discrepancyStock.Quantity;
                 db.Entry(stock).State = EntityState.Modified;
-                db.DefectiveStock.Add(defectiveStock);
+                db.StockDiscrepancy.Add(discrepancyStock);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
@@ -85,7 +85,7 @@ namespace Group20_IoT.Controllers
                 ViewBag.Stocks = new SelectList(new List<SelectListItem>{
                                  new SelectListItem { Value = "-1", Text = "No Stock Available" }}, "Value", "Text");
 
-            return View(defectiveStock);
+            return View(discrepancyStock);
         }
 
         [HttpPost]
@@ -93,7 +93,7 @@ namespace Group20_IoT.Controllers
         {
             if (id == null) return HttpNotFound();
 
-            var DefStock = db.DefectiveStock.Find(id);
+            var DefStock = db.StockDiscrepancy.Find(id);
 
             if (DefStock == null) return HttpNotFound();
 
@@ -112,7 +112,7 @@ namespace Group20_IoT.Controllers
             db.SaveChanges();
 
             // Return to a different view or something?
-            return Json(new { success = true, message = "Defect has been resolved" });
+            return Json(new { success = true, message = "Discrepancy has been resolved" });
         }
 
     }

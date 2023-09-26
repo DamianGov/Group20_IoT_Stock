@@ -9,7 +9,7 @@ namespace Group20_IoT.Models
 {
     public static class Email
     {
-        public static bool SendEmail(string UserName, string UserEmail, string EmailSubject, string EmailBody)
+        public static bool SendEmail(string UserName, string UserEmail, string EmailSubject, string EmailBody, bool InHtml)
         {
             try
             {
@@ -30,6 +30,7 @@ namespace Group20_IoT.Models
                 using (var message = new MailMessage(IoTDetail, UserDetail)
                 {
                     Subject = EmailSubject,
+                    IsBodyHtml = InHtml,
                     Body = EmailBody
                 })
                 {

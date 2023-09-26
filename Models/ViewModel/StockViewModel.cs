@@ -10,6 +10,7 @@ namespace Group20_IoT.Models.ViewModel
         public int? Id { get; set; }
         public string StockCode { get; set; }
         public string Name { get; set; }
+        public string Description { get; set; }
         public string UnitPrice { get; set; }
         public string Loanable { get; set; }
         public int TotalQuantity { get; set; }  

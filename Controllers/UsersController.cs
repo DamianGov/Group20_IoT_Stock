@@ -106,7 +106,7 @@ namespace Group20_IoT.Controllers
                 // EMAIL THE PASSWORD TO USER
                 // Must hash password, so password is not plaintext in db
 
-                _ = Email.SendEmail(users.GetFullName(), users.Email, "Welcolme to the IoT System","Hello, "+users.GetFullName()+".\n\nYour account has been created.\nThis is your password: "+GeneratedPassword+"\n\nKind regards,\nIoT System.");
+                _ = Email.SendEmail(users.GetFullName(), users.Email, "Welcolme to the IoT System","Hello, "+users.GetFullName()+".\n\nYour account has been created.\nThis is your password: "+GeneratedPassword+"\n\nKind regards,\nIoT System.",false);
 
                 users.Password = PasswordHandler.HashPassword(GeneratedPassword, PasswordHandler.GenerateSalt());
                 users.CreatedBy = (Session["User"] as Users).Id;
@@ -125,6 +125,51 @@ namespace Group20_IoT.Controllers
             return View(users);
         }
 
-    
+        public ActionResult ManageUser(int? id)
+        {
+            if (id == null) return RedirectToAction("Index");
+
+            Users users = db.Users.Find(id);
+            
+            if (users==null) return RedirectToAction("Index");
+
+            Users currentUser = Session["User"] as Users;
+
+            IQueryable<Role> role = db.Role.Where(r => !r.Type.Equals("SuperAdmin"));
+
+            // Check if the user is Super User if they are they can create admin/standard users otherwise if normal Admin they can only add standard users
+            if (currentUser.Role.Type != "SuperAdmin")
+                ViewBag.RoleId = new SelectList(role.Where(r => !r.Type.Equals("Admin")), "Id", "Type", users.RoleId);
+            else
+                ViewBag.RoleId = new SelectList(role, "Id", "Type", users.RoleId);
+
+            return View(users);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult ManageUser(Users users)
+        {
+            
+            if(ModelState.IsValid)
+            {
+                db.Entry(users).State = EntityState.Modified;
+                db.SaveChanges();
+                return RedirectToAction("Index");
+            }
+
+            Users currentUser = Session["User"] as Users;
+
+            IQueryable<Role> role = db.Role.Where(r => !r.Type.Equals("SuperAdmin"));
+
+            // Check if the user is Super User if they are they can create admin/standard users otherwise if normal Admin they can only add standard users
+            if (currentUser.Role.Type != "SuperAdmin")
+                ViewBag.RoleId = new SelectList(role.Where(r => !r.Type.Equals("Admin")), "Id", "Type", users.RoleId);
+            else
+                ViewBag.RoleId = new SelectList(role, "Id", "Type", users.RoleId);
+
+            return View(users);
+        }
+
     }
 }

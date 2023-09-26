@@ -23,7 +23,12 @@
         <th>
             @Html.DisplayNameFor(model => model.Access)
         </th>
-        <th></th>
+        <th>
+            @Html.DisplayNameFor(model => model.Notify)
+        </th>
+        <th>
+
+        </th>
     </tr>
 
     @foreach (var item in Model)
@@ -43,9 +48,17 @@
                 <td>
                     Yes
                 </td>
+            }
+            else
+            {
                 <td>
-                    <button class="restrict-button" data-user-id="@item.Id">Restrict</button>
-                   
+                    No
+                </td>
+            }
+            @if (item.Notify)
+            {
+                <td>
+                    Yes
                 </td>
             }
             else
@@ -53,12 +66,11 @@
                 <td>
                     No
                 </td>
-                <td>
-                    <button class="unrestrict-button" data-user-id="@item.Id">Unrestrict</button>
-                </td>
             }
+        <td>
+            @Html.ActionLink("Manage User", "ManageUser", new { id = item.Id })
+        </td>
 
-           
         </tr>
     }
 

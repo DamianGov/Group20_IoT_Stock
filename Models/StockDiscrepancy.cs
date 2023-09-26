@@ -7,7 +7,7 @@ using System.Web;
 
 namespace Group20_IoT.Models
 {
-    public class DefectiveStock
+    public class StockDiscrepancy
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
@@ -18,19 +18,19 @@ namespace Group20_IoT.Models
         [Display(Name = "Stock")]
         public int StockId { get; set; }
 
-        [Required(ErrorMessage = "Please enter the Quantity Defective")]
+        [Required(ErrorMessage = "Please enter the Quantity")]
         [Range(1,int.MaxValue,ErrorMessage = "Please enter a Quantity more than 0")]
-        [Display(Name = "Quantity Defective")]
+        [Display(Name = "Quantity")]
         public int Quantity { get; set; }
 
-        [Display(Name = "Defective Category")]
-        public eDefectiveCategory DefectiveCategory { get; set; }
+        [Display(Name = "Discrepancy Category")]
+        public eDiscrepancyCategory DiscrepancyCategory { get; set; }
 
         public string Note { get; set; }
 
-        [Required(ErrorMessage = "Please enter the Date the Defect was Found")]
-        [Display(Name = "Date Defect Found")]
-        public DateTime DefectFound { get; set; }
+        [Required(ErrorMessage = "Please enter the Date the Discrepancy was Found")]
+        [Display(Name = "Date Discrepancy Found")]
+        public DateTime DiscrepancyFound { get; set; }
 
         [ForeignKey("Users")]
         public int CreatedBy { get; set; }
@@ -47,12 +47,16 @@ namespace Group20_IoT.Models
 
         public virtual Stock Stock { get; set; }
 
-        public enum eDefectiveCategory
+        public enum eDiscrepancyCategory
         {
             [Display(Name = "Minor Defect")]
-            Minor,
+            Minor_Defect,
+            [Display(Name = "Mediocre Defect")]
+            Mediocre_Defect,
             [Display(Name = "Major Defect")]
-            Major
+            Major_Defect,
+            [Display(Name = "Missing/Stolen")]
+            Missing
         }
     }
 }

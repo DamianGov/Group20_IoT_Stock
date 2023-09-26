@@ -27,6 +27,7 @@ namespace Group20_IoT.Controllers
                 {
                     Id = s.Id,
                     Name = s.Name,
+                    Description = s.Description,
                     TotalQuantity = s.TotalQuantity,
                     UnitPrice = s.UnitPrice.ToString("C"),
                     QuantityOnLoan = s.QuantityOnLoan,
@@ -47,6 +48,7 @@ namespace Group20_IoT.Controllers
                 {
                     Id = s.Id,
                     Name = s.Name,
+                    Description = s.Description,
                     TotalQuantity = s.TotalQuantity,
                     UnitPrice = s.UnitPrice.ToString("C"),
                     QuantityOnLoan = s.QuantityOnLoan,
@@ -91,6 +93,10 @@ namespace Group20_IoT.Controllers
             // Remove white spaces at end of stock code
             if (!stock.StockCode.IsNullOrEmpty())
                 stock.StockCode = stock.StockCode.TrimStart().TrimEnd();
+
+            // Remove white spaces at end of description
+            if (!stock.Description.IsNullOrEmpty())
+                stock.Description = stock.Description.TrimStart().TrimEnd();
 
             // Check if there is any stock with the same stock code (prevent clashes)
             if (db.Stock.Any(s => s.StockCode.ToLower() == stock.StockCode.ToLower())) ModelState.AddModelError("StockCode", "This Stock Code already exists for another item");
@@ -195,6 +201,9 @@ namespace Group20_IoT.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit(Stock stock, HttpPostedFileBase newImage)
         {
+            // Remove white spaces at end of description
+            if (!stock.Description.IsNullOrEmpty())
+                stock.Description = stock.Description.TrimStart().TrimEnd();
             if (ModelState.IsValid)
             {
                 if (newImage != null && newImage.ContentLength > 0)

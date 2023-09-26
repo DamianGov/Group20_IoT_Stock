@@ -1,4 +1,4 @@
-﻿@model IEnumerable<Group20_IoT.Models.DefectiveStock>
+﻿@model IEnumerable<Group20_IoT.Models.StockDiscrepancy>
 
 @{
     ViewBag.Title = "Index";
@@ -21,13 +21,13 @@
             @Html.DisplayNameFor(model => model.Quantity)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.DefectiveCategory)
+            @Html.DisplayNameFor(model => model.DiscrepancyCategory)
         </th>
         <th>
             @Html.DisplayNameFor(model => model.Note)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.DefectFound)
+            @Html.DisplayNameFor(model => model.DiscrepancyFound)
         </th>
         <th>
             @Html.DisplayNameFor(model => model.CreationDate)
@@ -54,13 +54,13 @@
                 @Html.DisplayFor(modelItem => item.Quantity)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.DefectiveCategory)
+                @Html.DisplayFor(modelItem => item.DiscrepancyCategory)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Note)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.DefectFound)
+                @Html.DisplayFor(modelItem => item.DiscrepancyFound)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.CreationDate)
@@ -127,7 +127,7 @@ else
                     location.reload();
                 },
                 error: function () {
-                    notifyError("An error occurred while resolving defect.");
+                    notifyError("An error occurred while resolving discrepancy.");
 
                 }
             });

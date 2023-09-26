@@ -16,6 +16,12 @@ namespace Group20_IoT.Models
         [Key]
         public int Id { get; set; }
 
+
+        //[Required(ErrorMessage = "Please enter a Student Number")]
+        //[RegularExpression(@"^\d{8}$", ErrorMessage = "The Student Number must be 8 digits long")]
+        //public string StudentNum { get; set; }
+
+
         [Required(ErrorMessage = "Please enter a First Name")]
         [StringLength(40, ErrorMessage = "The First Name must not exceed 40 characters")]
         [Display(Name = "First Name")]
@@ -43,6 +49,9 @@ namespace Group20_IoT.Models
         public string Qualification { get; set; }
 
         public bool Access { get; set; } = true;
+
+        [Display(Name = "Receive Notifications")]
+        public bool Notify { get;set; } = false;
 
         [ForeignKey("Role")]
         [Required(ErrorMessage ="Please select a Role")]
