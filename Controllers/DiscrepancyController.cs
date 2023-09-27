@@ -88,8 +88,9 @@ namespace Group20_IoT.Controllers
             return View(discrepancyStock);
         }
 
+        [SessionChecker("SuperAdmin")]
         [HttpPost]
-        public ActionResult ResolveDefect(int? id)
+        public ActionResult ResolveDiscrepancy(int? id)
         {
             if (id == null) return HttpNotFound();
 

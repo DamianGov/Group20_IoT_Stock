@@ -18,5 +18,7 @@ namespace Group20_IoT.Models.ViewModel
         public string Room { get; set; }
         public string StorageArea { get; set; }
         public string Image { get; set; }
+        public string CreatedBy { get; set; }
+        public string CreatedOn { get;set; }
     }
 }

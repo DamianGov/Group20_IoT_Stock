@@ -47,6 +47,8 @@ namespace Group20_IoT.Models
         public int StorageAreaId { get; set; }
 
         public StorageArea StorageArea { get; set; }
+
+        [ForeignKey("Users")]
         [Display(Name = "Created By")]
         public int CreatedBy { get; set; }
 
@@ -55,8 +57,11 @@ namespace Group20_IoT.Models
         [Display(Name = "Stock Image")]
         public string ImageFile { get; set; }
 
+        public virtual Users Users { get; set; }
 
         public ICollection<StockDiscrepancy> stockDiscrepancies { get; set; }
+
+        
 
     }
 }

@@ -1,0 +1,102 @@
+﻿@model IEnumerable<Group20_IoT.Models.RequestLoanStock>
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>My Loan Requests</h2>
+
+<table class="table">
+    <tr>
+        <th>
+            Stock Code
+        </th>
+        <th>
+            Stock Name
+        </th>
+        <th>
+            Quantity
+        </th>
+        <th>
+            Date Requested
+        </th>
+        <th>
+            Loan Date
+        </th>
+        <th>
+            Due Date
+        </th>
+        <th>
+            Status
+        </th>
+        <th></th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Stock.StockCode)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Stock.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Quantity)
+            </td>
+            <td>
+                @item.DateRequested.ToString("yyyy/M/d")
+            </td>
+            <td>
+                @item.FromDate.ToString("yyyy/M/d")
+            </td>
+            <td>
+                @item.DueDate.ToString("yyyy/M/d")
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Status)
+            </td>
+            @if (item.Status == Group20_IoT.Models.RequestLoanStock.RequestStatus.Pending)
+            {
+                <td>
+                    <button class="cancel-button" data-id="@item.Id">Cancel</button>
+                </td>
+            }
+            <td>
+            </td>
+        </tr>
+    }
+
+</table>
+
+@section scripts
+{
+    <script>
+        $(document).ready(function () {
+
+            $(".cancel-button").on("click", function () {
+            var ID = $(this).data("id");
+                cancelLoan(ID, false);
+        });
+
+        function cancelLoan(ID) {
+            $.ajax({
+                url: '@Url.Action("CancelRequest", "RequestLoan")',
+                type: 'POST',
+                data: { id: ID },
+                dataType: 'json',
+                success: function (data) {
+                    localStorage.setItem('notificationMessage', data.message);
+                    location.reload();
+                },
+                error: function () {
+                    notifyError("An error occurred while cancelling the loan.");
+
+                }
+            });
+        }
+    });
+    </script>
+
+
+}

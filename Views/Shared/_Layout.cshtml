@@ -13,6 +13,7 @@
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <script src="https://kit.fontawesome.com/ca5a92997d.js" crossorigin="anonymous"></script>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
     <style>
         .required-star::after {
@@ -169,11 +170,11 @@
         .nav-container input[type="checkbox"]:checked ~ .logo {
             display: none !important;
         }
+
         .blurred {
             filter: blur(5px); /* Adjust the blur amount as needed */
             pointer-events: none; /* Prevent interactions with the blurred background */
         }
-
     </style>
 </head>
 <body>
@@ -190,42 +191,49 @@
                     <h1>IoT Management System</h1>
                 </div>
                 <div class="menu-items">
-                    <li><i class="fa fa-user" aria-hidden="true"></i>@Html.ActionLink(((Session["User"] as Group20_IoT.Models.Users).GetFullName()),"")</li>
-                    @if (Session["UserType"] as string == "Admin" || Session["UserType"] as string == "SuperAdmin")
+                    <li><i class="fa fa-user" aria-hidden="true"></i>@Html.ActionLink(((Session["User"] as Group20_IoT.Models.Users).GetFullName()), "")</li>
+                    @if (Session["UserType"] as string == "Admin" || Session["UserType"] as string == "Member")
                     {
-                    <li><i class="fa fa-users" aria-hidden="true"></i>@Html.ActionLink("User Management", "Index", "Users")</li>
-                    <li><i class="fa fa-archive" aria-hidden="true"></i>@Html.ActionLink("Stock Management", "Index", "Stocks")</li>
-                    <li><i class="fa fa-ban" aria-hidden="true"></i>@Html.ActionLink("Stock Discrepancies Management", "Index", "Discrepancy")</li>
-                    }
-                    @if(Session["UserType"] as string == "Admin" || Session["UserType"] as string == "Member")
-                    {
-                        <li><i class="fa fa-stack-overflow" aria-hidden="true"></i>@Html.ActionLink("Loan Stock","Index","LoanStock")</li>
+                        <li><i class="fa fa-stack-overflow" aria-hidden="true"></i>@Html.ActionLink("Loan Stock", "Index", "LoanStock")</li>
+                        <li><i class="fa fa-list"></i>@Html.ActionLink("My Loan Requests", "Index", "RequestLoan")</li>
                     }
                     @if (Session["UserType"] as string == "SuperAdmin")
                     {
-                    <li><i class="fa fa-user-secret" aria-hidden="true"></i>@Html.ActionLink("User Tracking", "Index", "UserTracking")</li>
+                        <li><i class="fa-solid fa-door-open"></i>@Html.ActionLink("Room Management", "Index", "Rooms")</li>
+                        <li><i class="fa-solid fa-boxes-stacked"></i>@Html.ActionLink("Storage Area Management", "Index", "StorageAreas")</li>
                     }
-                    <li><i class="fa fa-sign-out" aria-hidden="true"></i>@Html.ActionLink("Logout","Logout","Login")</li>
+                    @if (Session["UserType"] as string == "Admin" || Session["UserType"] as string == "SuperAdmin")
+                    {
+                        <li><i class="fa fa-users" aria-hidden="true"></i>@Html.ActionLink("User Management", "Index", "Users")</li>
+                        <li><i class="fa fa-archive" aria-hidden="true"></i>@Html.ActionLink("Stock Management", "Index", "Stocks")</li>
+                        <li><i class="fa fa-ban" aria-hidden="true"></i>@Html.ActionLink("Stock Discrepancies Management", "Index", "Discrepancy")</li>
+                    }
+
+                    @if (Session["UserType"] as string == "SuperAdmin")
+                    {
+                        <li><i class="fa fa-user-secret" aria-hidden="true"></i>@Html.ActionLink("User Tracking", "Index", "UserTracking")</li>
+                    }
+                    <li><i class="fa fa-sign-out" aria-hidden="true"></i>@Html.ActionLink("Logout", "Logout", "Login")</li>
                 </div>
             </div>
         </div>
     </nav>
- 
+
 
 
     <div class="container body-content">
         <div class="wrapper">
-                <div class="content">
-                    @RenderBody()
-                    <div id="notification-area">
-                    </div>
+            <div class="content">
+                @RenderBody()
+                <div id="notification-area">
                 </div>
+            </div>
             <div class="footer">
                 <hr />
                 <p>&copy; @DateTime.Now.Year - Made with <span class="heart">&hearts;</span> by the <span class="rainbow-text">IoT Group</span></p>
             </div>
         </div>
-        
+
 
     </div>
 
@@ -243,8 +251,14 @@
                     // Remove the 'active' class when unchecked
                     mainContent.removeClass("blurred");
                 }
-                console.log(mainContent);
+                
             });
+                var storedMessage = localStorage.getItem('notificationMessage');
+
+                if (storedMessage) {
+                    notifySuccess(storedMessage);
+                    localStorage.removeItem('notificationMessage');
+                }
         });
 
         function tryParseInt(value) {
@@ -257,18 +271,11 @@
         function isInteger(value) {
             return Number.isInteger(value);
         }
-            $(".datepicker").datepicker({
-                dateFormat: 'yy/mm/dd', 
-                changeMonth: true,      
-                changeYear: true,   
-                maxDate: 0,
-                yearRange: "-1:+0"
-            }).datepicker("setDate", "0");
-            $(".datepicker").attr("readonly", true);
-    </script>
 
+    </script>
+    @RenderSection("scripts", required: false)
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
-    @RenderSection("scripts", required: false)
+
 </body>
 </html>

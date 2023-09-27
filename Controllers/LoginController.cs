@@ -82,7 +82,7 @@ namespace Group20_IoT.Controllers
                     }
 
                     // Check if user's password is correct
-                    if (!PasswordHandler.VerifyPassword(login.Password, user.Password))
+                    if (!SharedMethods.VerifyPassword(login.Password, user.Password))
                     {
                         ModelState.AddModelError("Password", "Your Password is Incorrect");
                         login.Password = "";
@@ -177,7 +177,7 @@ namespace Group20_IoT.Controllers
                 {
                     string GeneratedPassword = SharedMethods.GeneratePassword(users.FirstName, users.Surname);
                     _ = SharedMethods.SendEmail(users.GetFullName(), users.Email, "Forgot Password", "Hello, " + users.GetFullName() + ".\n\nA new password has been generated for you.\nThis is your password: " + GeneratedPassword + "\n\nKind regards,\nIoT System.", false);
-                    users.Password = PasswordHandler.HashPassword(GeneratedPassword, PasswordHandler.GenerateSalt());
+                    users.Password = SharedMethods.HashPassword(GeneratedPassword, SharedMethods.GenerateSalt());
                     db.Entry(users).State = EntityState.Modified;
                     await db.SaveChangesAsync();
                 }

@@ -3,7 +3,9 @@
     ViewBag.Title = "Stock Loan";
 }
 
-
+<div>
+    <label>Can&rsquo;t find what you&rsquo;re looking for? @Html.ActionLink("Request Stock", "Create", "RequestStock")</label>
+</div>
 <table class="table">
     <tr>
         <th>
@@ -43,14 +45,14 @@
             @if (item.QuantityCanLoan == 0)
             {
                 <td>
-                    Cannot Loan
+                    &nbsp;
                 </td>
             }
             else
             {
-                <td>
-                    Button to loan
-                </td>
+        <td>
+            @Html.ActionLink("Loan", "Details", new { id = item.Id })
+        </td>
 
             }
 

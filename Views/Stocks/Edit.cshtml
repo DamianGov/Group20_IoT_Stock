@@ -12,90 +12,93 @@
     @Html.AntiForgeryToken()
 
     @Html.HiddenFor(model => model.ImageFile)
+    @Html.HiddenFor(model => model.CreatedBy)
+    @Html.HiddenFor(model => model.CreatedOn)
+    @Html.HiddenFor(model => model.QuantityOnLoan)
 
-<div class="form-horizontal">
-    <h4>Stock</h4>
-    <hr />
-    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-    @Html.HiddenFor(model => model.Id)
+    <div class="form-horizontal">
+        <h4>Stock</h4>
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        @Html.HiddenFor(model => model.Id)
 
-    <div class="form-group">
-        @Html.LabelFor(model => model.StockCode, htmlAttributes: new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
-            @Html.EditorFor(model => model.StockCode, new { htmlAttributes = new { @class = "form-control readonly", @readonly = true } })
-            @Html.ValidationMessageFor(model => model.StockCode, "", new { @class = "text-danger" })
+        <div class="form-group">
+            @Html.LabelFor(model => model.StockCode, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.StockCode, new { htmlAttributes = new { @class = "form-control readonly", @readonly = true } })
+                @Html.ValidationMessageFor(model => model.StockCode, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.TextAreaFor(model => model.Description, new { htmlAttributes = new { @class = "form-control", id = "descriptionTextArea" } })
+                <div id="charCount"></div>
+                @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.UnitPrice, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.UnitPrice, new { htmlAttributes = new { @class = "form-control", id = "UnitPrice" } })
+                @Html.ValidationMessageFor(model => model.UnitPrice, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.TotalQuantity, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.TotalQuantity, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.TotalQuantity, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.ImageFile, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                <input type="file" name="newImage" id="newImage" accept=".jpg, .jpeg, .png, .gif" />
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Loanable, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.CheckBoxFor(model => model.Loanable, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Loanable, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.StorageArea.RoomId, "Room", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownList("Rooms", null, new { id = "ddlRoom" })
+                @Html.ValidationMessageFor(model => model.StorageArea.RoomId)
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.StorageArea, "Storage Area", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownListFor(model => model.StorageAreaId, Enumerable.Empty<SelectListItem>(), "Select a Storage Area", new { id = "ddlStorageArea" })
+                @Html.ValidationMessageFor(model => model.StorageArea)
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Save" class="btn btn-default" />
+            </div>
         </div>
     </div>
-
-    <div class="form-group">
-        @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
-            @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })
-            @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
-        </div>
-    </div>
-
-    <div class="form-group">
-        @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
-            @Html.TextAreaFor(model => model.Description, new { htmlAttributes = new { @class = "form-control", id = "descriptionTextArea" } })
-            <div id="charCount"></div>
-            @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
-        </div>
-    </div>
-
-    <div class="form-group">
-        @Html.LabelFor(model => model.UnitPrice, htmlAttributes: new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
-            @Html.EditorFor(model => model.UnitPrice, new { htmlAttributes = new { @class = "form-control", id = "UnitPrice" } })
-            @Html.ValidationMessageFor(model => model.UnitPrice, "", new { @class = "text-danger" })
-        </div>
-    </div>
-
-    <div class="form-group">
-        @Html.LabelFor(model => model.TotalQuantity, htmlAttributes: new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
-            @Html.EditorFor(model => model.TotalQuantity, new { htmlAttributes = new { @class = "form-control" } })
-            @Html.ValidationMessageFor(model => model.TotalQuantity, "", new { @class = "text-danger" })
-        </div>
-    </div>
-
-    <div class="form-group">
-        @Html.LabelFor(model => model.ImageFile, htmlAttributes: new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
-            <input type="file" name="newImage" id="newImage" accept=".jpg, .jpeg, .png, .gif" />
-        </div>
-    </div>
-
-    <div class="form-group">
-        @Html.LabelFor(model => model.Loanable, htmlAttributes: new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
-            @Html.CheckBoxFor(model => model.Loanable, new { htmlAttributes = new { @class = "form-control" } })
-            @Html.ValidationMessageFor(model => model.Loanable, "", new { @class = "text-danger" })
-        </div>
-    </div>
-
-    <div class="form-group">
-        @Html.LabelFor(model => model.StorageArea.RoomId, "Room", htmlAttributes: new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
-            @Html.DropDownList("Rooms", null, new { id = "ddlRoom" })
-            @Html.ValidationMessageFor(model => model.StorageArea.RoomId)
-        </div>
-    </div>
-    <div class="form-group">
-        @Html.LabelFor(model => model.StorageArea, "Storage Area", htmlAttributes: new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
-            @Html.DropDownListFor(model => model.StorageAreaId, Enumerable.Empty<SelectListItem>(), "Select a Storage Area", new { id = "ddlStorageArea" })
-            @Html.ValidationMessageFor(model => model.StorageArea)
-        </div>
-    </div>
-
-    <div class="form-group">
-        <div class="col-md-offset-2 col-md-10">
-            <input type="submit" value="Save" class="btn btn-default" />
-        </div>
-    </div>
-</div>
 }
 
 <div>
@@ -104,7 +107,7 @@
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
-    <script>
+<script>
         $(document).ready(function () {
             $("#ddlRoom").change(function () {
                 var roomId = $(this).val();
@@ -159,6 +162,12 @@
                                         $("<option></option>").val(item.Value).html(item.Text)
                                     );
                                 });
+
+                                if (roomId == @Model.StorageArea.RoomId) {
+                                    var storageAreaIdToSelect = @Model.StorageAreaId; // Replace this with the actual value
+                                    // Set the selected option in the dropdown
+                                    $("#ddlStorageArea").val(storageAreaIdToSelect);
+                                }
                             } else {
                                 $("#ddlStorageArea").append(
                                     $("<option></option>").html("No Storage Areas in this Room")
@@ -173,7 +182,7 @@
             }
             $("#ddlRoom").trigger("change");
         });
-    </script>
+</script>
     <script type="text/javascript">
         $("#UnitPrice").on("keypress keyup blur", function (event) {
             // Replace a comma with a period

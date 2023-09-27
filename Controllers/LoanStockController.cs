@@ -27,5 +27,58 @@ namespace Group20_IoT.Controllers
 
             return View(LoanableStock);
         }
+
+        public ActionResult Details(int? id)
+        {
+            if(id == null) return RedirectToAction("Index");
+
+            Stock stock = db.Stock.Find(id);
+
+            if (stock == null) return RedirectToAction("Index");
+
+            LoanStockDetailsViewModel obj = new LoanStockDetailsViewModel
+            {
+                StockId = stock.Id,
+                StockCode = stock.StockCode,
+                Name = stock.Name,
+                Description = stock.Description,
+                QuantityAva = ((stock.TotalQuantity - stock.QuantityOnLoan) <= 0) ? 0 : (stock.TotalQuantity - stock.QuantityOnLoan),
+                QuantityWantToLoan = 1,
+                Image = stock.ImageFile
+            };
+
+            return View(obj);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Details(LoanStockDetailsViewModel obj)
+        {
+            if(ModelState.IsValid)
+            {
+                if (obj.QuantityWantToLoan > obj.QuantityAva)
+                {
+                    ModelState.AddModelError("QuantityWantToLoan", "This quantity exceeds the Quantity Available to loan.");
+                    return View(obj);
+                }
+
+                RequestLoanStock requestLoanStock = new RequestLoanStock
+                {
+                    StockId=obj.StockId,
+                    FromDate = obj.BorrowStartDate,
+                    DueDate = SharedMethods.AddBusinessDays(obj.BorrowStartDate,7),
+                    Quantity = obj.QuantityWantToLoan,
+                    UserId = (Session["User"] as Users).Id
+                };
+
+                // Send Email
+
+                db.RequestLoanStock.Add(requestLoanStock);
+                db.SaveChanges();
+                return RedirectToAction("Index", "RequestLoan");
+            }
+
+            return View(obj);
+        }
     }
 }

@@ -103,7 +103,7 @@ namespace Group20_IoT.Controllers
             }).ToList();
 
             if (rooms.Any())
-                ViewBag.RoomId = new SelectList(rooms, "Id", "RoomDetails");
+                ViewBag.RoomId = new SelectList(rooms, "Id", "RoomDetails", RoomId);
             else
                 ViewBag.RoomId = new SelectList(new List<SelectListItem>{
                                  new SelectListItem { Value = "-1", Text = "No Rooms Available" }}, "Value", "Text");
@@ -137,7 +137,7 @@ namespace Group20_IoT.Controllers
             }).ToList();
 
             if (rooms.Any())
-                ViewBag.RoomId = new SelectList(rooms, "Id", "RoomDetails");
+                ViewBag.RoomId = new SelectList(rooms, "Id", "RoomDetails", RoomId);
             else
                 ViewBag.RoomId = new SelectList(new List<SelectListItem>{
                                  new SelectListItem { Value = "-1", Text = "No Rooms Available" }}, "Value", "Text");

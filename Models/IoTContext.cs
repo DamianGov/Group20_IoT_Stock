@@ -20,10 +20,9 @@ namespace Group20_IoT.Models
         public DbSet<Stock> Stock { get; set; }
         public DbSet<UserLoginTracking> UserLoginTracking { get; set; } 
         public DbSet<RequestStock> RequestStock { get; set; }
-        public DbSet<ApprovalHistory> ApprovalHistory { get; set;}
         public DbSet<StockDiscrepancy> StockDiscrepancy { get; set; }
-
-        public DbSet<ResolvedDefect> ResolvedDefect { get; set; }
+        public DbSet<RequestLoanStock> RequestLoanStock { get; set; }
+        public DbSet<LoanStatus> LoanStatus { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
@@ -32,6 +31,24 @@ namespace Group20_IoT.Models
                 .WithMany()
                 .HasForeignKey(r => r.UserId)
                 .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<RequestLoanStock>()
+                .HasRequired(r => r.Users)
+                .WithMany()
+                .HasForeignKey(r => r.UserId)
+                .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<LoanStatus>()
+        .HasRequired(ls => ls.Users)
+        .WithMany()
+        .HasForeignKey(ls => ls.AccRejBy)
+        .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<Stock>()
+        .HasRequired(ls => ls.Users)
+        .WithMany()
+        .HasForeignKey(ls => ls.CreatedBy)
+        .WillCascadeOnDelete(false);
 
             base.OnModelCreating(modelBuilder);
         }

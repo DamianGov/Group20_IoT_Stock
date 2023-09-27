@@ -1,0 +1,68 @@
+﻿@model Group20_IoT.Models.ViewModel.LoanStockDetailsViewModel
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Stock Details</h2>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(m => m.StockId)
+    @Html.HiddenFor(m=>m.Image)
+
+    <p>Stock Code: @Html.EditorFor(model => model.StockCode, new { htmlAttributes = new { @class = "form-control readonly", @readonly = true } })</p>
+    <p>Stock Name: @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control readonly", @readonly = true } })</p>
+    <p>Description: @Html.TextAreaFor(model => model.Description, new { htmlAttributes = new { @class = "form-control readonly", @readonly = true } })</p>
+    <p>Quantity Available: @Html.EditorFor(model => model.QuantityAva, new { htmlAttributes = new { @class = "form-control readonly", @readonly = true } })</p>
+    <p><img src="~/Content/Images/@Model.Image" alt="@Model.Image" style="max-height:100px;max-width:100px" /></p>
+    <p>Quantity You Want To Loan: @Html.EditorFor(model => model.QuantityWantToLoan, new { htmlAttributes = new { @class = "form-control", min = 1, max = Model.QuantityAva } })</p>
+    <p>Borrow Date: @Html.EditorFor(model => model.BorrowStartDate, new { htmlAttributes = new { @class = "datepicker" } })</p>
+    <input type="submit" value="Loan"/>
+ }
+
+@section Scripts
+{
+    <script>
+        
+            // Get the current date
+            var currentDate = new Date();
+
+            // Function to check if a date is a weekday (Monday to Friday)
+            function isWeekday(date) {
+                var day = date.getDay();
+                return day >= 1 && day <= 5; // Monday to Friday
+            }
+
+            // Function to calculate the next weekday from a given date
+            function getNextWeekday(date) {
+                var nextDay = new Date(date);
+                nextDay.setDate(date.getDate() + 1); // Start with the next day
+                while (!isWeekday(nextDay)) {
+                    nextDay.setDate(nextDay.getDate() + 1);
+                }
+                return nextDay;
+            }
+   
+        $(".datepicker").datepicker({
+            dateFormat: 'yy/mm/dd',
+            minDate: getNextWeekday(currentDate), // Set the minimum date to the next weekday
+            maxDate: "+1w", // Set the maximum date to one week from the selected date
+            beforeShowDay: function (date) {
+                // Disable weekends
+                if (!isWeekday(date)) {
+                    return [false];
+                }
+                return [true];
+            }
+        }).datepicker("setDate", "0");
+        $(".datepicker").attr("readonly", true);
+        $("#QuantityWantToLoan").on("keypress keyup blur", function (event) {
+            // Allow only digits and backspace key (code 8)
+            if (event.keyCode !== 8 && (event.keyCode < 48 || event.keyCode > 57)) {
+                event.preventDefault();
+            }
+        });
+    </script>
+    }

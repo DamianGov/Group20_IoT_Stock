@@ -22,7 +22,7 @@ namespace Group20_IoT.Controllers
         public ActionResult Index()
         {
             // Get stock and format room so user knows which room they are assigned to
-            var stock =  db.Stock.Include(s => s.StorageArea).Include(s=>s.StorageArea.Room).AsEnumerable().Select(
+            var stock =  db.Stock.Include(s => s.StorageArea).Include(s=>s.StorageArea.Room).Include(s=>s.Users).AsEnumerable().Select(
                 s => new StockViewModel
                 {
                     Id = s.Id,
@@ -35,7 +35,9 @@ namespace Group20_IoT.Controllers
                     Image = s.ImageFile,
                     StockCode =  s.StockCode,
                     Loanable = s.Loanable ? "Yes" : "No",
-                    Room = $"{s.StorageArea.Room.Room_Number} [{s.StorageArea.Room.Room_Description}]"
+                    Room = $"{s.StorageArea.Room.Room_Number} [{s.StorageArea.Room.Room_Description}]",
+                    CreatedBy = s.Users.GetFullName(),
+                    CreatedOn = s.CreatedOn.ToString("yyyy/M/d")
                 }).ToList();
 
             return View(stock);
@@ -43,7 +45,7 @@ namespace Group20_IoT.Controllers
 
         public ActionResult Search(string searchItem)
         {
-            var stock = db.Stock.Include(s => s.StorageArea).Include(s => s.StorageArea.Room).AsEnumerable().Where(s => s.StockCode.ToLower().Contains(searchItem.Trim().ToLower())).Select(
+            var stock = db.Stock.Include(s => s.StorageArea).Include(s => s.StorageArea.Room).Include(s=>s.Users).AsEnumerable().Where(s => s.StockCode.ToLower().Contains(searchItem.Trim().ToLower())).Select(
                 s => new StockViewModel
                 {
                     Id = s.Id,
@@ -56,7 +58,9 @@ namespace Group20_IoT.Controllers
                     Image = s.ImageFile,
                     StockCode = s.StockCode,
                     Loanable = s.Loanable ? "Yes" : "No",
-                    Room = $"{s.StorageArea.Room.Room_Number} [{s.StorageArea.Room.Room_Description}]"
+                    Room = $"{s.StorageArea.Room.Room_Number} [{s.StorageArea.Room.Room_Description}]",
+                    CreatedBy = s.Users.GetFullName(),
+                    CreatedOn = s.CreatedOn.ToString("yyyy/M/d")
                 }).ToList();
 
             return PartialView("_StockTable", stock);
@@ -94,6 +98,9 @@ namespace Group20_IoT.Controllers
             if (!stock.StockCode.IsNullOrEmpty())
                 stock.StockCode = stock.StockCode.TrimStart().TrimEnd();
 
+            if (stock.StockCode.Contains(" "))
+                ModelState.AddModelError("StockCode", "The Stock Code cannot have spaces");
+
             // Remove white spaces at end of description
             if (!stock.Description.IsNullOrEmpty())
                 stock.Description = stock.Description.TrimStart().TrimEnd();
@@ -109,7 +116,7 @@ namespace Group20_IoT.Controllers
             if (ModelState.IsValid)
             {
                 // Special GUID for image
-                string ImageGUID = Guid.NewGuid().ToString() + "_" + Path.GetFileName(image.FileName);
+                string ImageGUID = Guid.NewGuid().ToString() + "_" + stock.StockCode + Path.GetExtension(image.FileName);
                 string ImagePath = Path.Combine(Server.MapPath("~/Content/Images"), ImageGUID);
 
                 image.SaveAs(ImagePath);
@@ -191,7 +198,7 @@ namespace Group20_IoT.Controllers
                 RoomDetails = $"{r.Room_Number} [{r.Room_Description}]"
             }).ToList();
 
-            ViewBag.Rooms = new SelectList(rooms, "Id", "RoomDetails");
+            ViewBag.Rooms = new SelectList(rooms, "Id", "RoomDetails",stock.StorageArea.RoomId);
 
 
             return View(stock);
@@ -208,7 +215,7 @@ namespace Group20_IoT.Controllers
             {
                 if (newImage != null && newImage.ContentLength > 0)
                 {
-                    string ImageGUID = Guid.NewGuid().ToString() + "_" + Path.GetFileName(newImage.FileName);
+                    string ImageGUID = Guid.NewGuid().ToString() + "_" + stock.StockCode + Path.GetExtension(newImage.FileName);
                     string ImagePath = Path.Combine(Server.MapPath("~/Content/Images"), ImageGUID);
 
                     newImage.SaveAs(ImagePath);
@@ -237,7 +244,7 @@ namespace Group20_IoT.Controllers
                 RoomDetails = $"{r.Room_Number} [{r.Room_Description}]"
             }).ToList();
 
-            ViewBag.Rooms = new SelectList(rooms, "Id", "RoomDetails");
+            ViewBag.Rooms = new SelectList(rooms, "Id", "RoomDetails", stock.StorageArea.RoomId);
             return View(stock);
         }
 

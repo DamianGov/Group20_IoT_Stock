@@ -302,6 +302,7 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\LoanStockController.cs" />
     <Compile Include="Controllers\LoginController.cs" />
+    <Compile Include="Controllers\RequestLoanController.cs" />
     <Compile Include="Controllers\RequestStockController.cs" />
     <Compile Include="Controllers\RoomsController.cs" />
     <Compile Include="Controllers\StocksController.cs" />
@@ -359,17 +360,28 @@
     <Compile Include="Migrations\202309271224425_AddedCreatedOnToStock.designer.cs">
       <DependentUpon>202309271224425_AddedCreatedOnToStock.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202309271739116_AddedRequestLoanStockAndLoanStatusTbls.cs" />
+    <Compile Include="Migrations\202309271739116_AddedRequestLoanStockAndLoanStatusTbls.designer.cs">
+      <DependentUpon>202309271739116_AddedRequestLoanStockAndLoanStatusTbls.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202309271746564_RemoveAnnotationsFromRequestLoanStock.cs" />
+    <Compile Include="Migrations\202309271746564_RemoveAnnotationsFromRequestLoanStock.designer.cs">
+      <DependentUpon>202309271746564_RemoveAnnotationsFromRequestLoanStock.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202309272005337_AddedDateRequestedToRequestLoanStock.cs" />
+    <Compile Include="Migrations\202309272005337_AddedDateRequestedToRequestLoanStock.designer.cs">
+      <DependentUpon>202309272005337_AddedDateRequestedToRequestLoanStock.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
-    <Compile Include="Models\ApprovalHistory.cs" />
     <Compile Include="Models\ForgotPassword.cs" />
     <Compile Include="Models\HangfireAutomations.cs" />
+    <Compile Include="Models\LoanStatus.cs" />
+    <Compile Include="Models\RequestLoanStock.cs" />
     <Compile Include="Models\StockDiscrepancy.cs" />
     <Compile Include="Models\SharedMethods.cs" />
     <Compile Include="Models\IoTContext.cs" />
     <Compile Include="Models\Login.cs" />
-    <Compile Include="Models\PasswordHandler.cs" />
     <Compile Include="Models\RequestStock.cs" />
-    <Compile Include="Models\ResolvedDefect.cs" />
     <Compile Include="Models\Room.cs" />
     <Compile Include="Models\SessionChecker.cs" />
     <Compile Include="Models\Stock.cs" />
@@ -377,6 +389,7 @@
     <Compile Include="Models\UserLoginTracking.cs" />
     <Compile Include="Models\Users.cs" />
     <Compile Include="Models\Role.cs" />
+    <Compile Include="Models\ViewModel\LoanStockDetailsViewModel.cs" />
     <Compile Include="Models\ViewModel\LoanStockViewModel.cs" />
     <Compile Include="Models\ViewModel\RequestStockViewModel.cs" />
     <Compile Include="Models\ViewModel\StockViewModel.cs" />
@@ -464,6 +477,8 @@
     <Content Include="Views\Discrepancy\Index.cshtml" />
     <Content Include="Views\LoanStock\Index.cshtml" />
     <Content Include="Views\Login\ForgotPassword.cshtml" />
+    <Content Include="Views\LoanStock\Details.cshtml" />
+    <Content Include="Views\RequestLoan\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -533,6 +548,15 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202309271224425_AddedCreatedOnToStock.resx">
       <DependentUpon>202309271224425_AddedCreatedOnToStock.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202309271739116_AddedRequestLoanStockAndLoanStatusTbls.resx">
+      <DependentUpon>202309271739116_AddedRequestLoanStockAndLoanStatusTbls.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202309271746564_RemoveAnnotationsFromRequestLoanStock.resx">
+      <DependentUpon>202309271746564_RemoveAnnotationsFromRequestLoanStock.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202309272005337_AddedDateRequestedToRequestLoanStock.resx">
+      <DependentUpon>202309272005337_AddedDateRequestedToRequestLoanStock.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

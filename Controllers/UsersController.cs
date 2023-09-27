@@ -104,7 +104,7 @@ namespace Group20_IoT.Controllers
 
                 _ = SharedMethods.SendEmail(users.GetFullName(), users.Email, "Welcolme to the IoT System","Hello, "+users.GetFullName()+".\n\nYour account has been created.\nThis is your password: "+GeneratedPassword+"\n\nKind regards,\nIoT System.",false);
 
-                users.Password = PasswordHandler.HashPassword(GeneratedPassword, PasswordHandler.GenerateSalt());
+                users.Password = SharedMethods.HashPassword(GeneratedPassword, SharedMethods.GenerateSalt());
                 users.CreatedBy = (Session["User"] as Users).Id;
                 db.Users.Add(users);
                 db.SaveChanges();

@@ -38,7 +38,11 @@
         <th>
             @Html.DisplayNameFor(model => model.ResolvedDate)
         </th>
-        <th></th>
+        @if (Session["UserType"] as string == "SuperAdmin")
+        {
+            <th></th>
+        }
+
     </tr>
 
     @foreach (var item in Model)
@@ -60,39 +64,42 @@
                 @Html.DisplayFor(modelItem => item.Note)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.DiscrepancyFound)
+                @item.DiscrepancyFound.ToString("yyyy/M/d")
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.CreationDate)
+                @item.CreationDate.ToString("yyyy/M/d")
             </td>
             <td>
-                @if(item.Resolved)
+                @if (item.Resolved)
                 {
                     <p>Yes</p>
-}
-else
+                }
+                else
                 {
                     <p>No</p>
                 }
-                
+
             </td>
             <td>
-                @if (item.ResolvedDate == null)
+                @if (!item.ResolvedDate.HasValue)
                 {
                     <p>-</p>
                 }
                 else
                 {
-                    @Html.DisplayFor(modelItem => item.ResolvedDate)
+                    @item.ResolvedDate.Value.ToString("yyyy/M/d")
                 }
             </td>
-            <td>
-                @if (!item.Resolved)
-                {
-                    <button class="resolve-button" data-id="@item.Id">Resolve Defect</button>
-                }
-            </td>
-        </tr>
+            @if (Session["UserType"] as string == "SuperAdmin")
+            {
+                <td>
+                    @if (!item.Resolved)
+                    {
+                        <button class="resolve-button" data-id="@item.Id">Resolve Discrepancy</button>
+                    }
+                </td>
+            }
+            </tr>
     }
 
 </table>
@@ -104,13 +111,6 @@ else
     <script>
         $(document).ready(function () {
 
-            var storedMessage = localStorage.getItem('notificationMessage');
-
-            if (storedMessage) {
-                notifySuccess(storedMessage);
-                localStorage.removeItem('notificationMessage');
-            }
-
         $(".resolve-button").on("click", function () {
             var ID = $(this).data("id");
             updateResolve(ID, false);
@@ -118,7 +118,7 @@ else
 
         function updateResolve(ID) {
             $.ajax({
-                url: '@Url.Action("ResolveDefect", "DefectiveStocks")',
+                url: '@Url.Action("ResolveDiscrepancy", "Discrepancy")',
                 type: 'POST',
                 data: { id: ID },
                 dataType: 'json',

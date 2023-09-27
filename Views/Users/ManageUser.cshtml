@@ -15,6 +15,8 @@
     <h4>Users</h4>
     <hr />
     @Html.HiddenFor(model => model.Id)
+    @Html.HiddenFor(model => model.Password)
+    @Html.HiddenFor(model => model.CreatedBy)
 
     <div class="form-group">
         @Html.LabelFor(model => model.FirstName, htmlAttributes: new { @class = "control-label col-md-2" })
