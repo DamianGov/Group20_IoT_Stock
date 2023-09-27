@@ -1,0 +1,60 @@
+﻿@model IEnumerable<Group20_IoT.Models.ViewModel.LoanStockViewModel>
+@{
+    ViewBag.Title = "Stock Loan";
+}
+
+
+<table class="table">
+    <tr>
+        <th>
+            Stock Code
+        </th>
+        <th>
+            Stock Name
+        </th>
+        <th>
+            Description
+        </th>
+        <th>
+            Quantity Avaiable to Loan
+        </th>
+        <th></th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.StockCode)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Description)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.QuantityCanLoan)
+            </td>
+            <td>
+                <img src="~/Content/Images/@item.ImageFile" alt="@item.ImageFile" style="max-height:100px;max-width:100px" />
+            </td>
+            @if (item.QuantityCanLoan == 0)
+            {
+                <td>
+                    Cannot Loan
+                </td>
+            }
+            else
+            {
+                <td>
+                    Button to loan
+                </td>
+
+            }
+
+        </tr>
+    }
+
+</table>

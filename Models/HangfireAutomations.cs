@@ -33,7 +33,7 @@ namespace Group20_IoT.Models
 
                 foreach(var user in users)
                 {
-                    _ = Email.SendEmail(user.GetFullName(), user.Email, "IoT Report - Low Stock", $"Hello,<br><br>{message}<br><br>Kind regards,<br>IoT System.", true);      
+                    _ = SharedMethods.SendEmail(user.GetFullName(), user.Email, "IoT Report - Low Stock", $"Hello,<br><br>{message}<br><br>Kind regards,<br>IoT System.", true);      
                 }
             }
 

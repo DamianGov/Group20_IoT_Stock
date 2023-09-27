@@ -300,6 +300,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\DiscrepancyController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\LoanStockController.cs" />
     <Compile Include="Controllers\LoginController.cs" />
     <Compile Include="Controllers\RequestStockController.cs" />
     <Compile Include="Controllers\RoomsController.cs" />
@@ -354,11 +355,16 @@
     <Compile Include="Migrations\202309261914587_ChangedDefectToDiscrepancy.designer.cs">
       <DependentUpon>202309261914587_ChangedDefectToDiscrepancy.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202309271224425_AddedCreatedOnToStock.cs" />
+    <Compile Include="Migrations\202309271224425_AddedCreatedOnToStock.designer.cs">
+      <DependentUpon>202309271224425_AddedCreatedOnToStock.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\ApprovalHistory.cs" />
+    <Compile Include="Models\ForgotPassword.cs" />
     <Compile Include="Models\HangfireAutomations.cs" />
     <Compile Include="Models\StockDiscrepancy.cs" />
-    <Compile Include="Models\Email.cs" />
+    <Compile Include="Models\SharedMethods.cs" />
     <Compile Include="Models\IoTContext.cs" />
     <Compile Include="Models\Login.cs" />
     <Compile Include="Models\PasswordHandler.cs" />
@@ -371,6 +377,7 @@
     <Compile Include="Models\UserLoginTracking.cs" />
     <Compile Include="Models\Users.cs" />
     <Compile Include="Models\Role.cs" />
+    <Compile Include="Models\ViewModel\LoanStockViewModel.cs" />
     <Compile Include="Models\ViewModel\RequestStockViewModel.cs" />
     <Compile Include="Models\ViewModel\StockViewModel.cs" />
     <Compile Include="Models\ViewModel\StorageAreaViewModel.cs" />
@@ -455,12 +462,13 @@
     <Content Include="Views\RequestStock\_RequestStockTableAdmin.cshtml" />
     <Content Include="Views\Discrepancy\Create.cshtml" />
     <Content Include="Views\Discrepancy\Index.cshtml" />
+    <Content Include="Views\LoanStock\Index.cshtml" />
+    <Content Include="Views\Login\ForgotPassword.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Content\Images\" />
     <Folder Include="Content\Request\" />
-    <Folder Include="Models\JoinedModel\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap.rtl.min.css.map" />
@@ -522,6 +530,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202309261914587_ChangedDefectToDiscrepancy.resx">
       <DependentUpon>202309261914587_ChangedDefectToDiscrepancy.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202309271224425_AddedCreatedOnToStock.resx">
+      <DependentUpon>202309271224425_AddedCreatedOnToStock.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

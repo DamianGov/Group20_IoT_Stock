@@ -1,4 +1,5 @@
 ﻿using Group20_IoT.Models;
+using Microsoft.AspNet.Identity;
 using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Collections.Generic;
@@ -64,7 +65,7 @@ namespace Group20_IoT.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    Users user = login.UserExists();
+                    Users user = SharedMethods.UserExists(login.Email);
 
                     // If user doesnt exist
                     if (user == null)
@@ -158,5 +159,31 @@ namespace Group20_IoT.Controllers
 
                 return RedirectToAction(nameof(Index));
             }
+
+        public ActionResult ForgotPassword()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> ForgotPassword(ForgotPassword forgotPassword)
+        {
+            if (ModelState.IsValid)
+            {
+                Users users = SharedMethods.UserExists(forgotPassword.Email);
+
+                if (users != null)
+                {
+                    string GeneratedPassword = SharedMethods.GeneratePassword(users.FirstName, users.Surname);
+                    _ = SharedMethods.SendEmail(users.GetFullName(), users.Email, "Forgot Password", "Hello, " + users.GetFullName() + ".\n\nA new password has been generated for you.\nThis is your password: " + GeneratedPassword + "\n\nKind regards,\nIoT System.", false);
+                    users.Password = PasswordHandler.HashPassword(GeneratedPassword, PasswordHandler.GenerateSalt());
+                    db.Entry(users).State = EntityState.Modified;
+                    await db.SaveChangesAsync();
+                }
+            }
+
+            return View(forgotPassword);
+        }
     }
 }

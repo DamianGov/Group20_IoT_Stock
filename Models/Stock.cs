@@ -50,6 +50,8 @@ namespace Group20_IoT.Models
         [Display(Name = "Created By")]
         public int CreatedBy { get; set; }
 
+        public DateTime CreatedOn { get; set; } = DateTime.Now;
+
         [Display(Name = "Stock Image")]
         public string ImageFile { get; set; }
 

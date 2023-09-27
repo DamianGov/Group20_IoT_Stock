@@ -97,16 +97,12 @@ namespace Group20_IoT.Controllers
             {
                 
                 Random random = new Random();
-                string GeneratedPassword = users.FirstName[0].ToString().ToUpper() + "$" + ((users.FirstName.Length * random.Next(1, 6))) + users.Surname[0].ToString().ToLower() + random.Next('a', 'z' + 1) ;
-                for (int i = 0; i < 3; i++)
-                {
-                    char randomAlphabeticChar = (char)random.Next('A', 'Z' + 1);
-                    GeneratedPassword += randomAlphabeticChar;
-                }
+                string GeneratedPassword = SharedMethods.GeneratePassword(users.FirstName, users.Surname);
+                
                 // EMAIL THE PASSWORD TO USER
                 // Must hash password, so password is not plaintext in db
 
-                _ = Email.SendEmail(users.GetFullName(), users.Email, "Welcolme to the IoT System","Hello, "+users.GetFullName()+".\n\nYour account has been created.\nThis is your password: "+GeneratedPassword+"\n\nKind regards,\nIoT System.",false);
+                _ = SharedMethods.SendEmail(users.GetFullName(), users.Email, "Welcolme to the IoT System","Hello, "+users.GetFullName()+".\n\nYour account has been created.\nThis is your password: "+GeneratedPassword+"\n\nKind regards,\nIoT System.",false);
 
                 users.Password = PasswordHandler.HashPassword(GeneratedPassword, PasswordHandler.GenerateSalt());
                 users.CreatedBy = (Session["User"] as Users).Id;

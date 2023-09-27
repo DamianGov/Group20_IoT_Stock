@@ -197,6 +197,10 @@
                     <li><i class="fa fa-archive" aria-hidden="true"></i>@Html.ActionLink("Stock Management", "Index", "Stocks")</li>
                     <li><i class="fa fa-ban" aria-hidden="true"></i>@Html.ActionLink("Stock Discrepancies Management", "Index", "Discrepancy")</li>
                     }
+                    @if(Session["UserType"] as string == "Admin" || Session["UserType"] as string == "Member")
+                    {
+                        <li><i class="fa fa-stack-overflow" aria-hidden="true"></i>@Html.ActionLink("Loan Stock","Index","LoanStock")</li>
+                    }
                     @if (Session["UserType"] as string == "SuperAdmin")
                     {
                     <li><i class="fa fa-user-secret" aria-hidden="true"></i>@Html.ActionLink("User Tracking", "Index", "UserTracking")</li>
