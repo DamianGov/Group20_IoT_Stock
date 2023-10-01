@@ -38,7 +38,6 @@ namespace Group20_IoT.Models
             Pending,
             Accepted,
             Rejected,
-            Returned,
             Cancelled
         }
 

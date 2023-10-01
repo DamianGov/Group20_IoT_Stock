@@ -10,6 +10,9 @@
             Name
         </th>
         <th>
+            Quantity
+        </th>
+        <th>
             Price
         </th>
         <th>
@@ -23,7 +26,6 @@
         </th>
         <th></th>
         <th></th>
-        <th></th>
     </tr>
     @if (Model != null)
     {
@@ -35,6 +37,9 @@
                 </td>
                 <td>
                     @item.StockName
+                </td>
+                <td>
+                    @item.Quantity
                 </td>
                 <td>
                     @item.StockPrice
@@ -53,10 +58,24 @@
                     <img src="~/Content/Request/@item.StockImage" alt="@item.StockImage" style="max-height:100px;max-width:100px" />
                 </td>
                 <td>
-                    Approve
-                </td>
-                <td>
-                    Reject
+                    <button id="acceptButton" data-target="#AcceptModal-@item.Id" data-toggle="modal">Accept</button>
+                    <div class="modal fade" data-keyboard="false" data-backdrop="static" id="AcceptModal-@item.Id" tabindex="-1">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <input type="button" value="&#x274C;" class="close" data-dismiss="modal" />
+                                    <p class="modal-title" style="color:white">Accept Stock Request</p>
+                                </div>
+                                <div class="modal-body">
+                                    <p>Are you sure you want to accept this stock request?</p>
+                                </div>
+                                <div class="modal-footer">
+                                    <button id="confirmApproval" class="btn btn-primary" onclick="AcceptStockReq(@item.Id)" data-dismiss="modal">Yes</button>
+                                    <button class="btn btn-secondary" id="Close-@item.Id" data-dismiss="modal">Cancel</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </td>
             </tr>
         }
@@ -68,3 +87,33 @@
         </tr>
     }
 </table>
+
+
+@section scripts
+{
+    <script>
+        function AcceptStockReq(stockId)
+        {
+            $.ajax({
+                url: '@Url.Action("AcceptStockRequest", "RequestStock")',
+                type: 'POST',
+                data: { id: stockId },
+                dataType: 'json',
+                success: function (data) {
+                    if (!data.success) {
+                        notifyError(data.message);
+                    } else {
+                        localStorage.setItem('notificationMessage', data.message);
+                        location.reload();
+                    }
+
+
+                },
+                error: function () {
+                    notifyError("An error occurred while approving the Stock Request.");
+                }
+            });
+
+    }
+        </script>
+    }

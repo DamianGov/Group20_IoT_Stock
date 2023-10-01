@@ -22,6 +22,9 @@ namespace Group20_IoT.Models
         [StringLength(255,ErrorMessage = "The Stock Name must not exceed 255 characters")]
         public string StockName { get; set; }
 
+        [Range(1, int.MaxValue, ErrorMessage = "Please enter a valid Quantity")]
+        public int Quantity { get; set; }
+
         [Required(ErrorMessage = "Please enter the Stock Price")]
         [Display(Name = "Stock Price")]
         [Range(0.05,double.MaxValue, ErrorMessage = "Please enter a valid Stock Price")]

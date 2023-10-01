@@ -16,16 +16,31 @@ namespace Group20_IoT.Models
         [ForeignKey("RequestLoanStock")]
         public int RequestId { get;set; }
 
-        public string Note { get; set; }
-
         [ForeignKey("Users")]
-        public int AccRejBy { get; set; }
+        public int AccBy { get; set; }
+
+        public string Note { get; set; }    
+
+        public DateTime AccOn { get; set; } = DateTime.Now;
+
+        public bool RequestExtension { get; set; } = false;
+
+        public LoanStatusStock Status { get; set; }
 
         public virtual RequestLoanStock RequestLoanStock { get; set; }
 
         public virtual Users Users { get; set; }
 
-
+        public enum LoanStatusStock
+        {
+            [Display(Name = "Awaiting Pickup")]
+            Awaiting_Pickup,
+            [Display(Name = "Picked up")]
+            Picked_Up,
+            Returned,
+            Overdue,
+            Cancelled
+       }
         
     }
 }

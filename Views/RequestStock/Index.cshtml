@@ -14,13 +14,7 @@
     <button id="searchButton">Search</button>
 </div>
 
-@if (user.RoleId != StandardRoleId)
-{
-    <div id="rsTable">
-        @Html.Partial("_RequestStockTableAdmin", Model as List<Group20_IoT.Models.ViewModel.RequestStockViewModel>)
-    </div>
-}
-else
+@if (user.RoleId == StandardRoleId)
 {
     <div>
         <input type="checkbox" id="showMyRequests" /> Show My Requests Only
@@ -30,6 +24,13 @@ else
         @Html.Partial("_RequestStockTable", Model as List<Group20_IoT.Models.ViewModel.RequestStockViewModel>)
     </div>
 }
+else
+{
+<div id="rsTable">
+    @Html.Partial("_RequestStockTableAdmin", Model as List<Group20_IoT.Models.ViewModel.RequestStockViewModel>)
+</div>
+}
+
 
 @section scripts {
     <script>

@@ -1,0 +1,70 @@
+﻿
+@model List<Group20_IoT.Models.ViewModel.PendingLoanStockViewModel>
+
+
+<table class="table">
+    <tr>
+        <th>
+            User Name
+        </th>
+        <th>
+            User Role
+        </th>
+        <th>
+            Stock Code
+        </th>
+        <th>
+            Stock Name
+        </th>
+        <th>
+            Quantity Wanted
+        </th>
+        <th>
+            Date Requested
+        </th>
+        <th>
+            Borrow Date
+        </th>
+        <th>
+            Due Date
+        </th>
+    </tr>
+    @if (Model != null)
+    {
+        foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @item.UserName
+                </td>
+                <td>
+                    @item.UserRole
+                </td>
+                <td>
+                    @item.StockCode
+                </td>
+                <td>@item.StockName</td>
+
+                    <td>
+                        @item.QuantityWant
+                    </td>
+                
+                <td>
+                    @item.DateRequested
+                </td>
+                <td>
+                    @item.BorrowDate
+                </td>
+                <td>
+                    @item.DueDate
+                </td>
+            </tr>
+        }
+    }
+    else
+    {
+        <tr>
+            <td colspan="7" style="text-align:center;font-size:16px"><strong>No Rejected Loan Requests</strong></td>
+        </tr>
+    }
+</table>

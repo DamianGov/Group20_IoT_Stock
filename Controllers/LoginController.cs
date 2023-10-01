@@ -43,14 +43,7 @@ namespace Group20_IoT.Controllers
                             Session["Login"] = userLoginTracking;
                             Session["UserType"] = user.Role.Type;
 
-                            string Action = "";
-                            if (user.Role.Type == "SuperAdmin")
-                                Action = "SuperHome";
-                            else if (user.Role.Type == "Admin")
-                                Action = "AdminHome";
-                            else if (user.Role.Type == "Member")
-                                Action = "MemberHome";
-                            return RedirectToAction(Action, "Home");
+                            return RedirectToAction(user.Role.Type + "Home", "Home");
                         }
                     }
 
@@ -126,14 +119,8 @@ namespace Group20_IoT.Controllers
                     Session["Login"] = userLoginTracking;
                     Session["UserType"] = user.Role.Type;
 
-                string Action = "";
-                if (user.Role.Type == "SuperAdmin")
-                    Action = "SuperHome";
-                else if (user.Role.Type == "Admin")
-                    Action = "AdminHome";
-                else if (user.Role.Type == "Member")
-                    Action = "MemberHome";
-                return RedirectToAction(Action, "Home");
+               
+                return RedirectToAction(user.Role.Type + "Home", "Home");
                 }
 
                 return View(login);

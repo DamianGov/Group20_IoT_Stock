@@ -113,6 +113,8 @@ namespace Group20_IoT.Controllers
             // Check if any image is selected
             if (image == null || image.ContentLength <= 0) ModelState.AddModelError("ImageFile", "Please select an image");
 
+            
+
             if (ModelState.IsValid)
             {
                 // Special GUID for image
@@ -185,7 +187,7 @@ namespace Group20_IoT.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Stock stock = db.Stock.Include(s => s.StorageArea.Room).SingleOrDefault(s => s.Id == id.Value);
+            Stock stock = db.Stock.Include(s => s.StorageArea).Include(s => s.StorageArea.Room).SingleOrDefault(s => s.Id == id.Value);
             if (stock == null)
             {
                 return HttpNotFound();
@@ -211,6 +213,8 @@ namespace Group20_IoT.Controllers
             // Remove white spaces at end of description
             if (!stock.Description.IsNullOrEmpty())
                 stock.Description = stock.Description.TrimStart().TrimEnd();
+
+            if (stock.QuantityOnLoan > stock.TotalQuantity) ModelState.AddModelError("TotalQuantity", "The Total Quantity cannot be less than the Quantity that is on loan");
             if (ModelState.IsValid)
             {
                 if (newImage != null && newImage.ContentLength > 0)
@@ -233,6 +237,14 @@ namespace Group20_IoT.Controllers
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
+            var entry = db.Entry(stock);
+
+            if(entry.State == EntityState.Detached)
+            {
+                db.Stock.Attach(stock);
+            }
+
+            db.Entry(stock).Collection(s => s.storageAreas).Load();
 
             int RoomId = db.StorageArea.Where(s => s.Id == stock.StorageAreaId).First().RoomId;
 
@@ -244,7 +256,7 @@ namespace Group20_IoT.Controllers
                 RoomDetails = $"{r.Room_Number} [{r.Room_Description}]"
             }).ToList();
 
-            ViewBag.Rooms = new SelectList(rooms, "Id", "RoomDetails", stock.StorageArea.RoomId);
+            ViewBag.Rooms = new SelectList(rooms, "Id", "RoomDetails", RoomId);
             return View(stock);
         }
 

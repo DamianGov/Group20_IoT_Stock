@@ -1,0 +1,139 @@
+﻿
+@model List<Group20_IoT.Models.LoanStatus>
+
+
+<table class="table">
+    <tr>
+        <th>
+            User Name
+        </th>
+        <th>
+            User Role
+        </th>
+        <th>
+            Stock Code
+        </th>
+        <th>
+            Stock Name
+        </th>
+        <th>
+            Quantity Loaned
+        </th>
+        <th>
+            Accepted By
+        </th>
+        <th>
+            Accepted Date
+        </th>
+        <th>
+            Borrow Date
+        </th>
+        <th>
+            Due Date
+        </th>
+        <th>
+            Note
+        </th>
+
+        <th>
+            Loan Status
+        </th>
+        <th></th>
+    </tr>
+    @if (Model != null)
+    {
+        foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @item.RequestLoanStock.Users.GetFullName()
+                </td>
+                <td>
+                    @item.RequestLoanStock.Users.Role.Type
+                </td>
+                <td>
+                    @item.RequestLoanStock.Stock.StockCode
+                </td>
+                <td>@item.RequestLoanStock.Stock.Name</td>
+                <td>
+                    @item.RequestLoanStock.Quantity
+                </td>
+                <td>
+                    @item.Users.GetFullName()
+                </td>
+                <td>
+                    @item.AccOn.ToString("yyyy/M/d")
+                </td>
+                <td>
+                    @item.RequestLoanStock.FromDate.ToString("yyyy/M/d")
+                </td>
+                <td>
+                    @item.RequestLoanStock.DueDate.ToString("yyyy/M/d")
+                </td>
+                <td>
+                    @item.Note
+                </td>
+                <td>
+                    @item.Status
+                </td>
+                @if (item.Status != Group20_IoT.Models.LoanStatus.LoanStatusStock.Returned && item.Status != Group20_IoT.Models.LoanStatus.LoanStatusStock.Cancelled)
+                {
+                <td>
+                    <button id="changeStatusButton" data-target="#ChangeStatusModal-@item.Id" data-toggle="modal">Change Status</button>
+                    <div class="modal fade" data-keyboard="false" data-backdrop="static" id="ChangeStatusModal-@item.Id" tabindex="-1">
+                        <div class="modal-dialog  modal-dialog-centered">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <input type="button" value="&#x274C;" class="close" data-dismiss="modal" />
+                                    <p class="modal-title" style="color:white">Change Status</p>
+                                </div>
+                                <div class="modal-body">
+                                    <p>
+                                        @item.RequestLoanStock.Stock.StockCode
+                                    </p>
+                                    <p>@item.RequestLoanStock.Stock.Name</p>
+                                    <p>
+                                        @item.RequestLoanStock.Quantity
+                                    </p>
+                                    <p>
+                                        @item.Users.GetFullName()
+                                    </p>
+                                    <p>
+                                        @item.AccOn.ToString("yyyy/M/d")
+                                    </p>
+                                    <p>
+                                        @item.RequestLoanStock.FromDate.ToString("yyyy/M/d")
+                                    </p>
+                                    <p>
+                                        @item.RequestLoanStock.DueDate.ToString("yyyy/M/d")
+                                    </p>
+                                    <p>
+                                        @item.Note
+                                    </p>
+                                    <p>
+                                        @item.Status
+                                    </p>
+                                    <p>Note: @Html.TextAreaFor(model => item.Note, htmlAttributes: new { @class = "form-control", id = "statusNote-" + item.Id })</p>
+                                    <p>
+                                        Change To: @Html.EnumDropDownListFor(model => item.Status, htmlAttributes: new { @class = "form-control", @selected = item.Status, id = "statusDropdown-" + item.Id })
+                                    </p>
+                                </div>
+                                <div class="modal-footer">
+                                    <button id="changeStatus" class="btn btn-primary" onclick="ChangeStatus(@item.Id)" data-dismiss="modal">Change</button>
+                                    <button class="btn btn-secondary" id="Close-@item.Id" data-dismiss="modal">Cancel</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </td>
+                }
+            </tr>
+        }
+    }
+    else
+    {
+        <tr>
+            <td colspan="7" style="text-align:center;font-size:16px"><strong>No Accepted Loans</strong></td>
+        </tr>
+    }
+</table>

@@ -1,0 +1,16 @@
+﻿@model IEnumerable<Group20_IoT.Models.ViewModel.PendingLoanStockViewModel>
+@{
+    ViewBag.Title = "Rejected Loans";
+}
+
+<h2>Rejected Loans</h2>
+
+
+<div>
+    <!--FILTER AND SEARCH-->
+</div>
+
+<div id="pendingTable">
+    @Html.Partial("_RejectedLoansTable", Model as List<Group20_IoT.Models.ViewModel.PendingLoanStockViewModel>)
+</div>
+

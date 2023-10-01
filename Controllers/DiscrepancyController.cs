@@ -59,6 +59,7 @@ namespace Group20_IoT.Controllers
 
             if(discrepancyStock.Note.IsNullOrEmpty())
                 ModelState.AddModelError("Note", "Please comment on the Discrepancy");
+            
 
             if (ModelState.IsValid)
             {
@@ -112,7 +113,10 @@ namespace Group20_IoT.Controllers
             db.Entry(Stock).State = EntityState.Modified;
             db.SaveChanges();
 
-            // Return to a different view or something?
+            Users user = db.Users.Find(DefStock.CreatedBy);
+
+            _ = SharedMethods.SendEmail(user.GetFullName(), user.Email, "IoT System - Discrepancy Resolved", $"Hello,{user.GetFullName()}.\n\nThe discrepancy regarding {Stock.Name} that you submitted on the {DefStock.CreationDate.ToString("dd MMMM yyyy")}, where there was a {DefStock.DiscrepancyCategory}, has been resolved.\n\nThank you.\nKind regards,\nIoT System.", false);
+
             return Json(new { success = true, message = "Discrepancy has been resolved" });
         }
 

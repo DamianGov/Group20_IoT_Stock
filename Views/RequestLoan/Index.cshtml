@@ -5,6 +5,12 @@
 
 <h2>My Loan Requests</h2>
 
+@Html.ActionLink("View My Accepted Loan Requests","AcceptedLoans")
+
+<div>
+    FILTER BY ??
+</div>
+
 <table class="table">
     <tr>
         <th>
@@ -90,7 +96,7 @@
                     location.reload();
                 },
                 error: function () {
-                    notifyError("An error occurred while cancelling the loan.");
+                    notifyError("An error occurred while cancelling the request.");
 
                 }
             });

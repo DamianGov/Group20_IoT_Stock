@@ -24,6 +24,8 @@ namespace Group20_IoT.Models
         public DbSet<RequestLoanStock> RequestLoanStock { get; set; }
         public DbSet<LoanStatus> LoanStatus { get; set; }
 
+        public DbSet<ExtensionRequest> ExtensionRequest { get; set; }
+
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             modelBuilder.Entity<RequestStock>()
@@ -41,7 +43,7 @@ namespace Group20_IoT.Models
             modelBuilder.Entity<LoanStatus>()
         .HasRequired(ls => ls.Users)
         .WithMany()
-        .HasForeignKey(ls => ls.AccRejBy)
+        .HasForeignKey(ls => ls.AccBy)
         .WillCascadeOnDelete(false);
 
             modelBuilder.Entity<Stock>()
@@ -49,6 +51,7 @@ namespace Group20_IoT.Models
         .WithMany()
         .HasForeignKey(ls => ls.CreatedBy)
         .WillCascadeOnDelete(false);
+
 
             base.OnModelCreating(modelBuilder);
         }

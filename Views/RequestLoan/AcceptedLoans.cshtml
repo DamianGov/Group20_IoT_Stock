@@ -1,0 +1,174 @@
+﻿@model IEnumerable<Group20_IoT.Models.LoanStatus>
+@{
+    ViewBag.Title = "AcceptedLoans";
+}
+
+<h2>AcceptedLoans</h2>
+
+<div>
+    FILTER BY ??
+</div>
+
+<table class="table">
+    <tr>
+        <th>
+            Stock Code
+        </th>
+        <th>
+            Stock Name
+        </th>
+        <th>
+            Quantity
+        </th>
+        <th>
+            Date Requested
+        </th>
+        <th>
+            Loan Date
+        </th>
+        <th>
+            Due Date
+        </th>
+        <th>
+            Loan Status
+        </th>
+        <th>
+            Requested For an Extension?
+        </th>
+        <th></th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.RequestLoanStock.Stock.StockCode)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.RequestLoanStock.Stock.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.RequestLoanStock.Quantity)
+            </td>
+            <td>
+                @item.RequestLoanStock.DateRequested.ToString("yyyy/M/d")
+            </td>
+            <td>
+                @item.RequestLoanStock.FromDate.ToString("yyyy/M/d")
+            </td>
+            <td>
+                @item.RequestLoanStock.DueDate.ToString("yyyy/M/d")
+            </td>
+            <td>
+                @item.Status
+            </td>
+            @if (item.RequestExtension)
+            {
+
+
+                <td>Yes</td>
+            }
+            else
+            {
+                <td>No</td>
+            }
+            @if (item.Status == Group20_IoT.Models.LoanStatus.LoanStatusStock.Picked_Up || item.Status == Group20_IoT.Models.LoanStatus.LoanStatusStock.Overdue)
+            {
+                <td>
+                    <button id="requestButton" data-target="#RequestModal-@item.Id" data-toggle="modal">Request An Extension</button>
+                    <div class="modal fade" data-keyboard="false" data-backdrop="static" id="RequestModal-@item.Id" tabindex="-1">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <input type="button" value="&#x274C;" class="close" data-dismiss="modal" />
+                                    <p class="modal-title" style="color:white">Request An Extension</p>
+                                </div>
+                                <div class="modal-body">
+                                    <form id="extensionRequestForm">
+                                        <div class="form-group">
+                                            <label for="extensionReason">Reason for Extension:</label>
+                                            <textarea class="form-control" id="extensionReason" rows="4" required></textarea>
+                                        </div>
+                                        <p>P.S. If your extension request is accepted, your Due Date for this loan will be pushed by 3 working days.</p>
+                                        <p>An email will be sent to you if your extension is accepted or rejected.</p>
+                                    </form>
+                                </div>
+                                <div class="modal-footer">
+                                    <button id="confirmExtensionRequest" class="btn btn-primary" onclick="ExtensionRequest(@item.Id)" data-dismiss="modal">Request Extension</button>
+                                    <button class="btn btn-secondary" id="Close-@item.Id" data-dismiss="modal">Cancel</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </td>
+            }
+            @if (item.Status == Group20_IoT.Models.LoanStatus.LoanStatusStock.Awaiting_Pickup)
+            {
+                <button class="cancel-button" data-id="@item.Id">Cancel</button>
+            }
+        </tr>
+    }
+
+</table>
+
+
+@section scripts
+{
+    <script>
+        $(document).ready(function () {
+
+            $(".cancel-button").on("click", function () {
+            var ID = $(this).data("id");
+                cancelLoan(ID, false);
+        });
+
+        function cancelLoan(ID) {
+            $.ajax({
+                url: '@Url.Action("CancelAcceptedRequest", "RequestLoan")',
+                type: 'POST',
+                data: { id: ID },
+                dataType: 'json',
+                success: function (data) {
+                    localStorage.setItem('notificationMessage', data.message);
+                    location.reload();
+                },
+                error: function () {
+                    notifyError("An error occurred while cancelling the request.");
+
+                }
+            });
+        }
+    });
+    </script>
+
+    <script>
+        function ExtensionRequest(id)
+        {
+            var extensionReason = document.getElementById("extensionReason").value;
+
+            if (extensionReason.trim() === "")
+            {
+                notifyError("Please enter a reason for the extension.");
+                return;
+            }
+
+        $.ajax({
+    url: '@Url.Action("RequestExtension", "RequestLoan")',
+    type: 'POST',
+            data: { id: id, reason: extensionReason },
+    dataType: 'json',
+    success: function (data) {
+        localStorage.setItem('notificationMessage', data.message);
+        location.reload();
+    },
+    error: function () {
+        notifyError("An error occurred while creating a request for an extension.");
+
+    }
+});
+        }
+    </script>
+
+
+}

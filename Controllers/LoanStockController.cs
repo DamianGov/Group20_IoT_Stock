@@ -56,6 +56,7 @@ namespace Group20_IoT.Controllers
         {
             if(ModelState.IsValid)
             {
+                Users users = Session["User"] as Users;
                 if (obj.QuantityWantToLoan > obj.QuantityAva)
                 {
                     ModelState.AddModelError("QuantityWantToLoan", "This quantity exceeds the Quantity Available to loan.");
@@ -68,10 +69,12 @@ namespace Group20_IoT.Controllers
                     FromDate = obj.BorrowStartDate,
                     DueDate = SharedMethods.AddBusinessDays(obj.BorrowStartDate,7),
                     Quantity = obj.QuantityWantToLoan,
-                    UserId = (Session["User"] as Users).Id
+                    UserId = users.Id
                 };
 
-                // Send Email
+                Stock stock = db.Stock.Find(obj.StockId);
+                
+                _ = SharedMethods.SendEmail(users.GetFullName(), users.Email, "IoT System - Loan Stock Request Submitted", $"Hello,{users.GetFullName()}.\n\nYour request to loan {obj.QuantityWantToLoan} x {stock.Name} has been submitted.\nYou will receive an email when your loan request has been accepted/rejected.\n\nThank you.\nKind regards,\nIoT System.", false);
 
                 db.RequestLoanStock.Add(requestLoanStock);
                 db.SaveChanges();

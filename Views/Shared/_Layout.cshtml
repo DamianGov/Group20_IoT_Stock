@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@ViewBag.Title - IoT Management System</title>
+    <title>@ViewBag.Title | IoT Management System</title>
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
     <link href="~/Content/style.css" rel="stylesheet" />
@@ -11,6 +11,10 @@
     <script src="~/Scripts/alertdialog.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <!-- Bootstrap CSS and JavaScript -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
     <script src="https://kit.fontawesome.com/ca5a92997d.js" crossorigin="anonymous"></script>
@@ -175,6 +179,12 @@
             filter: blur(5px); /* Adjust the blur amount as needed */
             pointer-events: none; /* Prevent interactions with the blurred background */
         }
+
+        .modal-dialog.modal-dialog-centered {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
     </style>
 </head>
 <body>
@@ -191,29 +201,41 @@
                     <h1>IoT Management System</h1>
                 </div>
                 <div class="menu-items">
-                    <li><i class="fa fa-user" aria-hidden="true"></i>@Html.ActionLink(((Session["User"] as Group20_IoT.Models.Users).GetFullName()), "")</li>
-                    @if (Session["UserType"] as string == "Admin" || Session["UserType"] as string == "Member")
+                    @{
+                        string UserType = Session["UserType"] as string;
+                    }
+                    <li><i class="fa-solid fa-user" aria-hidden="true"></i>@Html.ActionLink(((Session["User"] as Group20_IoT.Models.Users).GetFullName()), "ManageAccount", "Home")</li>
+                    @if (UserType == "Admin" || UserType == "SuperAdmin")
+                    {
+                        <li><i class="fa-solid fa-users" aria-hidden="true"></i>@Html.ActionLink("User Management", "Index", "Users")</li>
+                    }
+                    @if (UserType == "Admin" || UserType == "Member")
                     {
                         <li><i class="fa fa-stack-overflow" aria-hidden="true"></i>@Html.ActionLink("Loan Stock", "Index", "LoanStock")</li>
                         <li><i class="fa fa-list"></i>@Html.ActionLink("My Loan Requests", "Index", "RequestLoan")</li>
                     }
-                    @if (Session["UserType"] as string == "SuperAdmin")
+                    @if (UserType == "SuperAdmin")
                     {
                         <li><i class="fa-solid fa-door-open"></i>@Html.ActionLink("Room Management", "Index", "Rooms")</li>
                         <li><i class="fa-solid fa-boxes-stacked"></i>@Html.ActionLink("Storage Area Management", "Index", "StorageAreas")</li>
                     }
-                    @if (Session["UserType"] as string == "Admin" || Session["UserType"] as string == "SuperAdmin")
+                    @if (UserType == "Admin" || UserType == "SuperAdmin")
                     {
-                        <li><i class="fa fa-users" aria-hidden="true"></i>@Html.ActionLink("User Management", "Index", "Users")</li>
-                        <li><i class="fa fa-archive" aria-hidden="true"></i>@Html.ActionLink("Stock Management", "Index", "Stocks")</li>
-                        <li><i class="fa fa-ban" aria-hidden="true"></i>@Html.ActionLink("Stock Discrepancies Management", "Index", "Discrepancy")</li>
+                        <li><i class="fa-solid fa-archive" aria-hidden="true"></i>@Html.ActionLink("Stock Management", "Index", "Stocks")</li>
+                        <li><i class="fa-solid fa-ban" aria-hidden="true"></i>@Html.ActionLink("Stock Discrepancies Management", "Index", "Discrepancy")</li>
+                        <li><i class="fa-solid fa-pen-to-square"></i>@Html.ActionLink("Manage Loan Requests", "Index", "ReviewLoan")</li>
+                        <li><i class="fa-solid fa-file-pen"></i>@Html.ActionLink("Manage Extension Requests", "Index", "Extensions")</li>
+                        <li><i class="fa-solid fa-boxes-packing"></i>@Html.ActionLink("Request Stock Management","Index","RequestStock")</li>
                     }
-
-                    @if (Session["UserType"] as string == "SuperAdmin")
+                    @if(UserType == "Member")
+            {
+<li><i class="fa-solid fa-boxes-packing"></i>@Html.ActionLink("My Requested Stock", "Index", "RequestStock")</li>
+            }
+                    @if (UserType == "SuperAdmin")
                     {
-                        <li><i class="fa fa-user-secret" aria-hidden="true"></i>@Html.ActionLink("User Tracking", "Index", "UserTracking")</li>
+                        <li><i class="fa-solid fa-user-secret" aria-hidden="true"></i>@Html.ActionLink("User Tracking", "Index", "UserTracking")</li>
                     }
-                    <li><i class="fa fa-sign-out" aria-hidden="true"></i>@Html.ActionLink("Logout", "Logout", "Login")</li>
+                    <li><i class="fa-solid fa-sign-out" aria-hidden="true"></i>@Html.ActionLink("Logout", "Logout", "Login")</li>
                 </div>
             </div>
         </div>

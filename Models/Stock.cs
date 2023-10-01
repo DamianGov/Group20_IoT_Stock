@@ -61,7 +61,7 @@ namespace Group20_IoT.Models
 
         public ICollection<StockDiscrepancy> stockDiscrepancies { get; set; }
 
-        
+        public ICollection<StorageArea> storageAreas { get; set; }
 
     }
 }

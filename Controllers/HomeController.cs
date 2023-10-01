@@ -15,7 +15,7 @@ namespace Group20_IoT.Controllers
         private IoTContext db = new IoTContext();
 
         [SessionChecker("SuperAdmin")]
-        public ActionResult SuperHome()
+        public ActionResult SuperAdminHome()
         {
             return View();
         }
@@ -32,7 +32,27 @@ namespace Group20_IoT.Controllers
             return View();
         }
 
+        [SessionChecker("SuperAdmin", "Admin", "Member")]
+        public ActionResult ManageAccount()
+        {
+            Users users = Session["User"] as Users;
 
+            return View(users);
+        }
+
+        [SessionChecker("SuperAdmin", "Admin", "Member")]
+        [ValidateAntiForgeryToken]
+        [HttpPost]
+        public ActionResult ManageAccount(Users users)
+        {
+            if(ModelState.IsValid)
+            {
+                db.Entry(users).State = EntityState.Modified; 
+                db.SaveChanges();
+            }
+
+            return View(users);
+        }
 
         public ActionResult About()
         {

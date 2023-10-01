@@ -299,11 +299,13 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\DiscrepancyController.cs" />
+    <Compile Include="Controllers\ExtensionsController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\LoanStockController.cs" />
     <Compile Include="Controllers\LoginController.cs" />
     <Compile Include="Controllers\RequestLoanController.cs" />
     <Compile Include="Controllers\RequestStockController.cs" />
+    <Compile Include="Controllers\ReviewLoanController.cs" />
     <Compile Include="Controllers\RoomsController.cs" />
     <Compile Include="Controllers\StocksController.cs" />
     <Compile Include="Controllers\StorageAreasController.cs" />
@@ -372,7 +374,56 @@
     <Compile Include="Migrations\202309272005337_AddedDateRequestedToRequestLoanStock.designer.cs">
       <DependentUpon>202309272005337_AddedDateRequestedToRequestLoanStock.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202309281419034_AddedChangesToLoanStatusTable.cs" />
+    <Compile Include="Migrations\202309281419034_AddedChangesToLoanStatusTable.designer.cs">
+      <DependentUpon>202309281419034_AddedChangesToLoanStatusTable.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202309281452550_AddedCollectionToStock.cs" />
+    <Compile Include="Migrations\202309281452550_AddedCollectionToStock.designer.cs">
+      <DependentUpon>202309281452550_AddedCollectionToStock.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202310011115066_MadeAccRejByNullable.cs" />
+    <Compile Include="Migrations\202310011115066_MadeAccRejByNullable.designer.cs">
+      <DependentUpon>202310011115066_MadeAccRejByNullable.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202310011333272_AddedChangesToRequestLoan.cs" />
+    <Compile Include="Migrations\202310011333272_AddedChangesToRequestLoan.designer.cs">
+      <DependentUpon>202310011333272_AddedChangesToRequestLoan.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202310011629274_AddedNoteToLoanStatus.cs" />
+    <Compile Include="Migrations\202310011629274_AddedNoteToLoanStatus.designer.cs">
+      <DependentUpon>202310011629274_AddedNoteToLoanStatus.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202310011705163_AddedExtensionTable.cs" />
+    <Compile Include="Migrations\202310011705163_AddedExtensionTable.designer.cs">
+      <DependentUpon>202310011705163_AddedExtensionTable.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202310011706322_AlteredExtensionTbl.cs" />
+    <Compile Include="Migrations\202310011706322_AlteredExtensionTbl.designer.cs">
+      <DependentUpon>202310011706322_AlteredExtensionTbl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202310011814249_AlteredExtensionTblFK.cs" />
+    <Compile Include="Migrations\202310011814249_AlteredExtensionTblFK.designer.cs">
+      <DependentUpon>202310011814249_AlteredExtensionTblFK.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202310011824495_AddedRequestExtensionToLoanStatusTable.cs" />
+    <Compile Include="Migrations\202310011824495_AddedRequestExtensionToLoanStatusTable.designer.cs">
+      <DependentUpon>202310011824495_AddedRequestExtensionToLoanStatusTable.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202310011827130_RemovedStatusByFromExtensionRequest.cs" />
+    <Compile Include="Migrations\202310011827130_RemovedStatusByFromExtensionRequest.designer.cs">
+      <DependentUpon>202310011827130_RemovedStatusByFromExtensionRequest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202310011849210_AddedExtensionSubmittedToExtensionRequest.cs" />
+    <Compile Include="Migrations\202310011849210_AddedExtensionSubmittedToExtensionRequest.designer.cs">
+      <DependentUpon>202310011849210_AddedExtensionSubmittedToExtensionRequest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202310012102303_AddedQuantityToRequestStock.cs" />
+    <Compile Include="Migrations\202310012102303_AddedQuantityToRequestStock.designer.cs">
+      <DependentUpon>202310012102303_AddedQuantityToRequestStock.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
+    <Compile Include="Models\ExtensionRequest.cs" />
     <Compile Include="Models\ForgotPassword.cs" />
     <Compile Include="Models\HangfireAutomations.cs" />
     <Compile Include="Models\LoanStatus.cs" />
@@ -389,8 +440,10 @@
     <Compile Include="Models\UserLoginTracking.cs" />
     <Compile Include="Models\Users.cs" />
     <Compile Include="Models\Role.cs" />
+    <Compile Include="Models\ViewModel\AcceptedLoansAndLoanStatusViewModel.cs" />
     <Compile Include="Models\ViewModel\LoanStockDetailsViewModel.cs" />
     <Compile Include="Models\ViewModel\LoanStockViewModel.cs" />
+    <Compile Include="Models\ViewModel\PendingLoanStockViewModel.cs" />
     <Compile Include="Models\ViewModel\RequestStockViewModel.cs" />
     <Compile Include="Models\ViewModel\StockViewModel.cs" />
     <Compile Include="Models\ViewModel\StorageAreaViewModel.cs" />
@@ -448,7 +501,6 @@
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
-    <Content Include="Views\Home\About.cshtml" />
     <Content Include="Views\Home\Contact.cshtml" />
     <Content Include="Views\Stocks\Create.cshtml" />
     <Content Include="Views\Stocks\Edit.cshtml" />
@@ -464,7 +516,7 @@
     <Content Include="Views\Users\ManageUser.cshtml" />
     <Content Include="Views\Users\Index.cshtml" />
     <Content Include="Views\Login\Index.cshtml" />
-    <Content Include="Views\Home\SuperHome.cshtml" />
+    <Content Include="Views\Home\SuperAdminHome.cshtml" />
     <Content Include="Views\Home\AdminHome.cshtml" />
     <Content Include="Views\Home\MemberHome.cshtml" />
     <Content Include="Views\UserTracking\Index.cshtml" />
@@ -479,6 +531,15 @@
     <Content Include="Views\Login\ForgotPassword.cshtml" />
     <Content Include="Views\LoanStock\Details.cshtml" />
     <Content Include="Views\RequestLoan\Index.cshtml" />
+    <Content Include="Views\ReviewLoan\Index.cshtml" />
+    <Content Include="Views\ReviewLoan\_PendingLoansTable.cshtml" />
+    <Content Include="Views\Home\ManageAccount.cshtml" />
+    <Content Include="Views\ReviewLoan\AcceptedLoans.cshtml" />
+    <Content Include="Views\ReviewLoan\_AcceptedLoansTable.cshtml" />
+    <Content Include="Views\RequestLoan\AcceptedLoans.cshtml" />
+    <Content Include="Views\Extensions\Index.cshtml" />
+    <Content Include="Views\ReviewLoan\RejectedLoans.cshtml" />
+    <Content Include="Views\ReviewLoan\_RejectedLoansTable.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -557,6 +618,42 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202309272005337_AddedDateRequestedToRequestLoanStock.resx">
       <DependentUpon>202309272005337_AddedDateRequestedToRequestLoanStock.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202309281419034_AddedChangesToLoanStatusTable.resx">
+      <DependentUpon>202309281419034_AddedChangesToLoanStatusTable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202309281452550_AddedCollectionToStock.resx">
+      <DependentUpon>202309281452550_AddedCollectionToStock.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202310011115066_MadeAccRejByNullable.resx">
+      <DependentUpon>202310011115066_MadeAccRejByNullable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202310011333272_AddedChangesToRequestLoan.resx">
+      <DependentUpon>202310011333272_AddedChangesToRequestLoan.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202310011629274_AddedNoteToLoanStatus.resx">
+      <DependentUpon>202310011629274_AddedNoteToLoanStatus.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202310011705163_AddedExtensionTable.resx">
+      <DependentUpon>202310011705163_AddedExtensionTable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202310011706322_AlteredExtensionTbl.resx">
+      <DependentUpon>202310011706322_AlteredExtensionTbl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202310011814249_AlteredExtensionTblFK.resx">
+      <DependentUpon>202310011814249_AlteredExtensionTblFK.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202310011824495_AddedRequestExtensionToLoanStatusTable.resx">
+      <DependentUpon>202310011824495_AddedRequestExtensionToLoanStatusTable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202310011827130_RemovedStatusByFromExtensionRequest.resx">
+      <DependentUpon>202310011827130_RemovedStatusByFromExtensionRequest.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202310011849210_AddedExtensionSubmittedToExtensionRequest.resx">
+      <DependentUpon>202310011849210_AddedExtensionSubmittedToExtensionRequest.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202310012102303_AddedQuantityToRequestStock.resx">
+      <DependentUpon>202310012102303_AddedQuantityToRequestStock.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

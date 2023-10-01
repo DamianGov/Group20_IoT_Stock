@@ -46,6 +46,9 @@ namespace Group20_IoT
 
             HangfireAspNet.Use(GetHangfireServers);
             RecurringJob.AddOrUpdate(() => HangfireAutomations.CheckStockLevelLowAndSendEmail(), Cron.Daily, saTimeZone);
+            RecurringJob.AddOrUpdate(() => HangfireAutomations.CheckDatePastForLoanRequest(), Cron.Daily, saTimeZone);
+            RecurringJob.AddOrUpdate(() => HangfireAutomations.LoanStockDueDateApproachingReminder(), Cron.Daily, saTimeZone);
+            RecurringJob.AddOrUpdate(() => HangfireAutomations.MarkLoanPastDateAsOverdue(), Cron.Daily, saTimeZone);
         }
     }
 }

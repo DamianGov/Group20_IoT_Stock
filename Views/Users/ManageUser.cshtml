@@ -18,6 +18,8 @@
     @Html.HiddenFor(model => model.Password)
     @Html.HiddenFor(model => model.CreatedBy)
 
+    @Html.ValidationSummary()
+
     <div class="form-group">
         @Html.LabelFor(model => model.FirstName, htmlAttributes: new { @class = "control-label col-md-2" })
         <div class="col-md-10">

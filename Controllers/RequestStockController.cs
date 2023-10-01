@@ -13,6 +13,7 @@ using System.Web.Util;
 
 namespace Group20_IoT.Controllers
 {
+    [SessionChecker("SuperAdmin","Admin","Member")]
     public class RequestStockController : Controller
     {
         private IoTContext db = new IoTContext();
@@ -32,6 +33,7 @@ namespace Group20_IoT.Controllers
                                     UserId = x.UserId,
                                     UserName = x.Users.GetFullName(),
                                     StockName = x.StockName,
+                                    Quantity = x.Quantity,
                                     StockPrice = x.StockPrice.ToString("C"),
                                     StockLink = x.StockLink,
                                     StockImage = x.StockImage,
@@ -51,6 +53,7 @@ namespace Group20_IoT.Controllers
                                     UserId = x.UserId,
                                     UserName = x.Users.GetFullName(),
                                     StockName = x.StockName,
+                                    Quantity = x.Quantity,
                                     StockPrice = x.StockPrice.ToString("C"),
                                     StockLink = x.StockLink,
                                     StockImage = x.StockImage,
@@ -149,5 +152,27 @@ namespace Group20_IoT.Controllers
             return PartialView("_RequestStockTable", SortedRequests);
         }
 
+
+        [SessionChecker("SuperAdmin","Admin")]
+        [HttpPost]
+        public ActionResult AcceptStockRequest(int? id)
+        {
+            if (id == null) return RedirectToAction(nameof(Index));
+
+            RequestStock stock = db.RequestStock.Find(id);
+
+            if(stock == null) return RedirectToAction(nameof(Index));
+
+            stock.IsApproved = true;
+
+            db.Entry(stock).State = EntityState.Modified;
+            db.SaveChanges();
+
+            Users user = db.Users.Find(stock.UserId);
+
+            _ = SharedMethods.SendEmail(user.GetFullName(), user.Email, "IoT System - Stock Request Accepted", $"Hello,{user.GetFullName()}.\n\nThe Stock you requested for, {stock.Quantity} x {stock.StockName}, has been accepted.\n\nThank you.\nKind regards,\nIoT System.", false);
+
+            return Json(new { success = true, message = "Stock Request has been approved" });
+        }
     }
 }

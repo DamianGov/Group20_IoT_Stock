@@ -1,0 +1,46 @@
+﻿@model List<Group20_IoT.Models.LoanStatus>
+@{
+    ViewBag.Title = "Accepted Loans";
+}
+
+<h2>Accepted Loans</h2>
+
+<div>
+    <!--FILTER AND SEARCH-->
+</div>
+
+<div id="acceptedTable">
+    @Html.Partial("_AcceptedLoansTable", Model as List<Group20_IoT.Models.LoanStatus>)
+</div>
+
+@section scripts
+{
+    <script>
+        function ChangeStatus(loanId)
+        {
+            var selectedValue = $("#statusDropdown-" + loanId).val();
+            var note = $("#statusNote-" + loanId).val();
+
+            $.ajax({
+                url: '@Url.Action("UpdateStatus", "ReviewLoan")',
+                type: 'POST',
+                data: { id: loanId, changeTo: selectedValue, note : note },
+                dataType: 'json',
+                success: function (data) {
+                    if (!data.success) {
+                        notifyError(data.message);
+                    } else {
+                        localStorage.setItem('notificationMessage', data.message);
+                        location.reload();
+                    }
+
+
+                },
+                error: function () {
+                    notifyError("An error occurred while changing the loan status.");
+                }
+            });
+
+    }
+   </script>
+    }

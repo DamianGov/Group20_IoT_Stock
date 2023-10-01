@@ -1,0 +1,68 @@
+﻿@model IEnumerable<Group20_IoT.Models.ViewModel.PendingLoanStockViewModel>
+@{
+    ViewBag.Title = "Review Loans";
+}
+
+<h2>Pending Loans</h2>
+
+@Html.ActionLink("View Accepted Loans", "AcceptedLoans")
+@Html.ActionLink("View Reject Loans", "RejectedLoans")
+<div>
+    <!--FILTER AND SEARCH-->
+</div>
+
+<div id="pendingTable">
+    @Html.Partial("_PendingLoansTable", Model as List<Group20_IoT.Models.ViewModel.PendingLoanStockViewModel>)
+</div>
+
+
+
+
+
+@section scripts
+{
+    <script>
+        function AcceptLoan(stockId)
+        {
+            $.ajax({
+                url: '@Url.Action("AcceptLoanRequest", "ReviewLoan")',
+                type: 'POST',
+                data: { id: stockId },
+                dataType: 'json',
+                success: function (data) {
+                    if (!data.success) {
+                        notifyError(data.message);
+                    } else {
+                        localStorage.setItem('notificationMessage', data.message);
+                        location.reload();
+                    }
+
+
+                },
+                error: function () {
+                    notifyError("An error occurred while approving the loan.");
+                }
+            });
+
+        }
+
+        function RejectLoan(stockId)
+{
+            $.ajax({
+                url: '@Url.Action("RejectLoanRequest", "ReviewLoan")',
+                type: 'POST',
+                data: { id: stockId },
+                dataType: 'json',
+                success: function (data) {
+                    localStorage.setItem('notificationMessage', data.message);
+                    location.reload();
+                },
+                error: function () {
+                    notifyError("An error occurred while rejecting the loan.");
+                }
+            });
+}
+    </script>
+
+
+}
