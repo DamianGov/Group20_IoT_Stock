@@ -1,0 +1,52 @@
+﻿@model Group20_IoT.Models.ViewModel.WalkthroughStockViewModel
+@{
+    ViewBag.Title = "SelectStock";
+}
+
+
+
+@using (Html.BeginForm())
+{
+    <h2>Select Stock For Walkthrough - @Model.Walkthrough.WalkthroughDate.ToString("dd MMMM yyyy")</h2>
+    @Html.AntiForgeryToken()
+    @Html.ValidationMessage(string.Empty)
+    @Html.HiddenFor(model => model.Walkthrough.WalkthroughDate)
+    @Html.HiddenFor(model => model.Walkthrough.WalkthroughDescription)
+    <table>
+        <tr>
+            <th>Stock Code</th>
+            <th>
+                Name
+            </th>
+            <th>Quantity Available</th>
+            <th>Quantity</th>
+            <th>Select</th>
+        </tr>
+        @for (var i = 0; i < Model.Stocks.Count; i++)
+        {
+            <tr>
+                @Html.HiddenFor(model => model.Stocks[i].Id)
+                <td>@Html.DisplayFor(model => model.Stocks[i].Stockcode)</td>
+                <td>@Html.DisplayFor(model => model.Stocks[i].Name)</td>
+                <td>@Html.DisplayFor(model => model.Stocks[i].QuantityAvailable)</td>
+                <td>@Html.EditorFor(model => model.Stocks[i].Quantity, new { htmlAttributes = new { @class = "form-control", min = 1, max = Model.Stocks[i].QuantityAvailable } })</td>
+                <td>@Html.CheckBoxFor(model => model.Stocks[i].Selected)</td>
+            </tr>
+        }
+    </table>
+    <input type="submit" value="Create Walkthrough" class="btn btn-default" />
+}
+
+@section scripts
+{
+    <script>
+        $("#Quantity").on("keypress keyup blur", function (event) {
+            // Allow only digits and backspace key (code 8)
+            if (event.keyCode !== 8 && (event.keyCode < 48 || event.keyCode > 57)) {
+                event.preventDefault();
+            }
+        });
+    </script>
+
+
+}

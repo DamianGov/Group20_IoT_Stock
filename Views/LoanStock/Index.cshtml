@@ -1,62 +1,95 @@
 ﻿@model IEnumerable<Group20_IoT.Models.ViewModel.LoanStockViewModel>
 @{
-    ViewBag.Title = "Stock Loan";
+    ViewBag.Title = "Loan Stock";
 }
+<style>
+    .card-deck {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+    }
 
+    .card {
+        width: 18rem;
+        margin-bottom: 1.7rem;
+        background-color: #2E3842;
+        color: #fff;
+    }
+
+    .card-header {
+        background-color: #003366;
+        color: #03e9f4;
+        text-align: center;
+        padding: 0.75rem;
+        font-weight: bold;
+    }
+
+    .card-body {
+        padding: 1.25rem;
+        text-align: center;
+    }
+
+    .badge {
+        margin-right: 0.5rem;
+        padding: 0.5em;
+        border-radius: 4px;
+        font-size: 14px;
+    }
+
+    .badge-success {
+        background-color: #28a745;
+        color: #fff;
+    }
+
+    .badge-danger {
+        background-color: #dc3545;
+        color: #fff;
+    }
+
+    .btn-primary {
+        display: inline-block;
+        padding: 10px 20px;
+        color: #03e9f4;
+        font-size: 13px;
+        text-decoration: none;
+        text-transform: uppercase;
+        border: none;
+        outline: none;
+        background: transparent;
+        transition: background 0.5s, color 0.5s;
+        margin-top: 20px;
+        letter-spacing: 4px;
+        cursor: pointer;
+    }
+
+        .btn-primary:hover {
+            background: #03e9f4;
+            color: #fff;
+            border-radius: 5px;
+            box-shadow: 0 0 5px #03e9f4, 0 0 25px #03e9f4, 0 0 50px #03e9f4, 0 0 100px #03e9f4;
+        }
+</style>
 <div>
     <label>Can&rsquo;t find what you&rsquo;re looking for? @Html.ActionLink("Request Stock", "Create", "RequestStock")</label>
 </div>
-<table class="table">
-    <tr>
-        <th>
-            Stock Code
-        </th>
-        <th>
-            Stock Name
-        </th>
-        <th>
-            Description
-        </th>
-        <th>
-            Quantity Avaiable to Loan
-        </th>
-        <th></th>
-        <th></th>
-    </tr>
 
+<div class="row">
     @foreach (var item in Model)
     {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.StockCode)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Description)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.QuantityCanLoan)
-            </td>
-            <td>
-                <img src="~/Content/Images/@item.ImageFile" alt="@item.ImageFile" style="max-height:100px;max-width:100px" />
-            </td>
-            @if (item.QuantityCanLoan == 0)
-            {
-                <td>
-                    &nbsp;
-                </td>
-            }
-            else
-            {
-        <td>
-            @Html.ActionLink("Loan", "Details", new { id = item.Id })
-        </td>
-
-            }
-
-        </tr>
+        <div class="col-md-4 mb-4">
+            <div class="card">
+                <img src="~/Content/Images/@item.ImageFile" class="card-img-top" alt="@item.ImageFile" style="max-height:200px;">
+                <div class="card-body">
+                    <h4 class="card-title">@Html.DisplayFor(modelItem => item.Name)</h4>
+                    <p class="card-text">@Html.DisplayFor(modelItem => item.Description)</p>
+                    <p class="card-text"><strong>Stock Code:</strong> @Html.DisplayFor(modelItem => item.StockCode)</p>
+                    <p class="card-text"><strong>Available Quantity To Loan:</strong> @Html.DisplayFor(modelItem => item.QuantityCanLoan)</p>
+                    @if (item.QuantityCanLoan > 0)
+                    {
+                        @Html.ActionLink("Loan", "Details", new { id = item.Id }, new { @class = "btn btn-primary" })
+                    }
+                </div>
+            </div>
+        </div>
     }
-
-</table>
+</div>

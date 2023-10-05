@@ -1,19 +1,43 @@
 ﻿@model Group20_IoT.Models.Stock
 
 @{
-    ViewBag.Title = "Create";
+    ViewBag.Title = "Create Stock";
 }
+<style>
+    .btn-primary {
+        display: inline-block;
+        padding: 10px 20px;
+        color: #03e9f4;
+        font-size: 13px;
+        text-decoration: none;
+        text-transform: uppercase;
+        border: none;
+        outline: none;
+        background: transparent;
+        transition: background 0.5s, color 0.5s;
+        margin-top: 20px;
+        letter-spacing: 4px;
+        cursor: pointer;
+    }
 
-<h2>Create</h2>
+        .btn-primary:hover {
+            background: #03e9f4;
+            color: #fff;
+            border-radius: 5px;
+            box-shadow: 0 0 5px #03e9f4, 0 0 25px #03e9f4, 0 0 50px #03e9f4, 0 0 100px #03e9f4;
+        }
+</style>
 
+<h2>Create Stock</h2>
 
+<br />
 
 @using (Html.BeginForm("Create", "Stocks", FormMethod.Post, new { enctype = "multipart/form-data" }))
 {
     @Html.AntiForgeryToken()
 
 <div class="form-horizontal">
-    <h4>Stock</h4>
+
     <hr />
     @Html.ValidationSummary(true, "", new { @class = "text-danger" })
     <div class="form-group">
@@ -86,18 +110,19 @@
             @Html.ValidationMessageFor(model => model.StorageArea)
         </div>
     </div>
-    
+    <br />
 
     <div class="form-group">
         <div class="col-md-offset-2 col-md-10">
-            <input type="submit" value="Create" class="btn btn-default" />
+            <input type="submit" value="Create Stock" class="btn btn-default" />
         </div>
     </div>
 </div>
 }
 
 <div>
-    @Html.ActionLink("Back to List", "Index")
+    @Html.ActionLink("Back to List of Stock", "Index", null, new { @class = "btn-primary" })
+
 </div>
 
 @section Scripts {

@@ -3,106 +3,117 @@
 @{
     ViewBag.Title = "Stock Discrepancies";
 }
-
-<h2>Index</h2>
-
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.Stock.StockCode)
-        </th>
-        <th>
-            Name
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Quantity)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.DiscrepancyCategory)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Note)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.DiscrepancyFound)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.CreationDate)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Resolved)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.ResolvedDate)
-        </th>
-        @if (Session["UserType"] as string == "SuperAdmin")
-        {
-            <th></th>
-        }
-
-    </tr>
-
-    @foreach (var item in Model)
-    {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Stock.StockCode)
-            </td>
-            <td>
-                @item.Users.GetFullName()
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Quantity)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.DiscrepancyCategory)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Note)
-            </td>
-            <td>
-                @item.DiscrepancyFound.ToString("yyyy/M/d")
-            </td>
-            <td>
-                @item.CreationDate.ToString("yyyy/M/d")
-            </td>
-            <td>
-                @if (item.Resolved)
-                {
-                    <p>Yes</p>
-                }
-                else
-                {
-                    <p>No</p>
-                }
-
-            </td>
-            <td>
-                @if (!item.ResolvedDate.HasValue)
-                {
-                    <p>-</p>
-                }
-                else
-                {
-                    @item.ResolvedDate.Value.ToString("yyyy/M/d")
-                }
-            </td>
-            @if (Session["UserType"] as string == "SuperAdmin")
-            {
-                <td>
-                    @if (!item.Resolved)
-                    {
-                        <button class="resolve-button" data-id="@item.Id">Resolve Discrepancy</button>
-                    }
-                </td>
-            }
-            </tr>
+<style>
+    .card-deck {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
     }
 
-</table>
+    .card {
+        width: 18rem;
+        margin-bottom: 1.7rem;
+        background-color: #2E3842;
+        color: #fff;
+    }
+
+    .card-header {
+        background-color: #003366;
+        color: #03e9f4;
+        text-align: center;
+        padding: 0.75rem;
+        font-weight: bold;
+    }
+
+    .card-body {
+        padding: 1.25rem;
+        text-align: center;
+    }
+
+    .badge {
+        margin-right: 0.5rem;
+        padding: 0.5em;
+        border-radius: 4px;
+        font-size: 14px;
+    }
+
+    .badge-success {
+        background-color: #28a745;
+        color: #fff;
+    }
+
+    .badge-danger {
+        background-color: #dc3545;
+        color: #fff;
+    }
+
+    .btn-primary {
+        display: inline-block;
+        padding: 10px 20px;
+        color: #03e9f4;
+        font-size: 13px;
+        text-decoration: none;
+        text-transform: uppercase;
+        border: none;
+        outline: none;
+        background: transparent;
+        transition: background 0.5s, color 0.5s;
+        margin-top: 20px;
+        letter-spacing: 4px;
+        cursor: pointer;
+    }
+
+        .btn-primary:hover {
+            background: #03e9f4;
+            color: #fff;
+            border-radius: 5px;
+            box-shadow: 0 0 5px #03e9f4, 0 0 25px #03e9f4, 0 0 50px #03e9f4, 0 0 100px #03e9f4;
+        }
+</style>
+
+
+<h2>Stock Discrepancies</h2>
+<br />
+<p>
+    @Html.ActionLink("Submit a Discrepancy", "Create", null, new { @class = "btn btn-primary text-white" })
+</p>
+<br />
+<div class="container">
+    <div class="card-deck">
+        @foreach (var item in Model)
+        {
+            <div class="card">
+                <div class="card-header">
+                    <h5>@Html.DisplayFor(modelItem => item.Stock.StockCode) - @Html.DisplayFor(modelItem => item.Stock.Name)</h5>
+                </div>
+                <div class="card-body">
+                    <p><strong>Submitted By:</strong> @item.Users.GetFullName() [@item.Users.UniNum]</p>
+                    <p><strong>Quantity:</strong> @Html.DisplayFor(modelItem => item.Quantity)</p>
+                    <p><strong>Discrepancy Category:</strong> @Html.DisplayFor(modelItem => item.DiscrepancyCategory)</p>
+                    <p><strong>Note:</strong> @Html.DisplayFor(modelItem => item.Note)</p>
+                    <p><strong>Discrepancy Found:</strong> @item.DiscrepancyFound.ToString("dd MMMM yyyy")</p>
+                    <p><strong>Creation Date</strong>: @item.CreationDate.ToString("dd MMMM yyyy")</p>
+                    <p>
+                        <strong>Resolved:</strong> @if (item.Resolved)
+                        {<span class="text-success">Yes</span> }
+                        else
+                        { <span class="text-danger">No</span>}
+                    </p>
+                    <p>
+                        <strong>Resolved Date:</strong> @if (item.ResolvedDate.HasValue)
+                        {@item.ResolvedDate.Value.ToString("dd MMMM yyyy")}
+                    else {; }
+                    </p>
+                    @if (Session["UserType"] as string == "SuperAdmin" && !item.Resolved)
+                    {
+                        <button class="btn btn-primary resolve-button" data-id="@item.Id">Resolve Discrepancy</button>
+                    }
+                </div>
+            </div>
+           
+        }
+    </div>
+</div>
 
 
 
@@ -113,7 +124,7 @@
 
         $(".resolve-button").on("click", function () {
             var ID = $(this).data("id");
-            updateResolve(ID, false);
+            updateResolve(ID);
         });
 
         function updateResolve(ID) {
@@ -134,6 +145,4 @@
         }
     });
     </script>
-
-
 }

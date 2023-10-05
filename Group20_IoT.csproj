@@ -311,6 +311,7 @@
     <Compile Include="Controllers\StorageAreasController.cs" />
     <Compile Include="Controllers\UsersController.cs" />
     <Compile Include="Controllers\UserTrackingController.cs" />
+    <Compile Include="Controllers\WalkthroughController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -422,6 +423,30 @@
     <Compile Include="Migrations\202310012102303_AddedQuantityToRequestStock.designer.cs">
       <DependentUpon>202310012102303_AddedQuantityToRequestStock.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202310050753146_AddedUniNumToUsers.cs" />
+    <Compile Include="Migrations\202310050753146_AddedUniNumToUsers.designer.cs">
+      <DependentUpon>202310050753146_AddedUniNumToUsers.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202310051511525_AddedWalkthroughAndWalkthroughStockTbls.cs" />
+    <Compile Include="Migrations\202310051511525_AddedWalkthroughAndWalkthroughStockTbls.designer.cs">
+      <DependentUpon>202310051511525_AddedWalkthroughAndWalkthroughStockTbls.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202310051523190_AddedWalkthroughDateToWalkthroughTnl.cs" />
+    <Compile Include="Migrations\202310051523190_AddedWalkthroughDateToWalkthroughTnl.designer.cs">
+      <DependentUpon>202310051523190_AddedWalkthroughDateToWalkthroughTnl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202310051535545_AddedDescriptionToWalkthroughTnl.cs" />
+    <Compile Include="Migrations\202310051535545_AddedDescriptionToWalkthroughTnl.designer.cs">
+      <DependentUpon>202310051535545_AddedDescriptionToWalkthroughTnl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202310051635481_ChangedStockAllWalkthrough.cs" />
+    <Compile Include="Migrations\202310051635481_ChangedStockAllWalkthrough.designer.cs">
+      <DependentUpon>202310051635481_ChangedStockAllWalkthrough.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202310051715311_AddedChangesToWalkthroughTbls.cs" />
+    <Compile Include="Migrations\202310051715311_AddedChangesToWalkthroughTbls.designer.cs">
+      <DependentUpon>202310051715311_AddedChangesToWalkthroughTbls.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\ExtensionRequest.cs" />
     <Compile Include="Models\ForgotPassword.cs" />
@@ -448,6 +473,10 @@
     <Compile Include="Models\ViewModel\StockViewModel.cs" />
     <Compile Include="Models\ViewModel\StorageAreaViewModel.cs" />
     <Compile Include="Models\ViewModel\UserTrackingViewModel.cs" />
+    <Compile Include="Models\ViewModel\WalkthroughDisplayViewModel.cs" />
+    <Compile Include="Models\ViewModel\WalkthroughStockViewModel.cs" />
+    <Compile Include="Models\Walkthrough.cs" />
+    <Compile Include="Models\Walkthrough_Stock.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -540,6 +569,9 @@
     <Content Include="Views\Extensions\Index.cshtml" />
     <Content Include="Views\ReviewLoan\RejectedLoans.cshtml" />
     <Content Include="Views\ReviewLoan\_RejectedLoansTable.cshtml" />
+    <Content Include="Views\Walkthrough\Index.cshtml" />
+    <Content Include="Views\Walkthrough\Create.cshtml" />
+    <Content Include="Views\Walkthrough\SelectStock.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -654,6 +686,24 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202310012102303_AddedQuantityToRequestStock.resx">
       <DependentUpon>202310012102303_AddedQuantityToRequestStock.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202310050753146_AddedUniNumToUsers.resx">
+      <DependentUpon>202310050753146_AddedUniNumToUsers.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202310051511525_AddedWalkthroughAndWalkthroughStockTbls.resx">
+      <DependentUpon>202310051511525_AddedWalkthroughAndWalkthroughStockTbls.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202310051523190_AddedWalkthroughDateToWalkthroughTnl.resx">
+      <DependentUpon>202310051523190_AddedWalkthroughDateToWalkthroughTnl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202310051535545_AddedDescriptionToWalkthroughTnl.resx">
+      <DependentUpon>202310051535545_AddedDescriptionToWalkthroughTnl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202310051635481_ChangedStockAllWalkthrough.resx">
+      <DependentUpon>202310051635481_ChangedStockAllWalkthrough.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202310051715311_AddedChangesToWalkthroughTbls.resx">
+      <DependentUpon>202310051715311_AddedChangesToWalkthroughTbls.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

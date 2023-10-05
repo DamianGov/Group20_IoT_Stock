@@ -24,7 +24,7 @@
 
             var adminU = new Users
             {
-               // StudentNum = "00000000",
+                UniNum = "11111111",
                 FirstName = "Super",
                 Surname = "Admin",
                 Email = "govdamian@gmail.com",

@@ -22,7 +22,7 @@ namespace Group20_IoT.Controllers
         public ActionResult Index()
         {
             // Get stock and format room so user knows which room they are assigned to
-            var stock =  db.Stock.Include(s => s.StorageArea).Include(s=>s.StorageArea.Room).Include(s=>s.Users).AsEnumerable().Select(
+            var stock =  db.Stock.Include(s => s.StorageArea).Include(s=>s.StorageArea.Room).Include(s=>s.Users).AsEnumerable().OrderBy(s=>s.Name).Select(
                 s => new StockViewModel
                 {
                     Id = s.Id,
@@ -37,7 +37,7 @@ namespace Group20_IoT.Controllers
                     Loanable = s.Loanable ? "Yes" : "No",
                     Room = $"{s.StorageArea.Room.Room_Number} [{s.StorageArea.Room.Room_Description}]",
                     CreatedBy = s.Users.GetFullName(),
-                    CreatedOn = s.CreatedOn.ToString("yyyy/M/d")
+                    CreatedOn = s.CreatedOn.ToString("dd MMMM yyyy")
                 }).ToList();
 
             return View(stock);
@@ -45,7 +45,7 @@ namespace Group20_IoT.Controllers
 
         public ActionResult Search(string searchItem)
         {
-            var stock = db.Stock.Include(s => s.StorageArea).Include(s => s.StorageArea.Room).Include(s=>s.Users).AsEnumerable().Where(s => s.StockCode.ToLower().Contains(searchItem.Trim().ToLower())).Select(
+            var stock = db.Stock.Include(s => s.StorageArea).Include(s => s.StorageArea.Room).Include(s=>s.Users).AsEnumerable().Where(s => s.StockCode.ToLower().Contains(searchItem.Trim().ToLower())).OrderBy(s => s.Name).Select(
                 s => new StockViewModel
                 {
                     Id = s.Id,
@@ -60,7 +60,7 @@ namespace Group20_IoT.Controllers
                     Loanable = s.Loanable ? "Yes" : "No",
                     Room = $"{s.StorageArea.Room.Room_Number} [{s.StorageArea.Room.Room_Description}]",
                     CreatedBy = s.Users.GetFullName(),
-                    CreatedOn = s.CreatedOn.ToString("yyyy/M/d")
+                    CreatedOn = s.CreatedOn.ToString("dd MMMM yyyy")
                 }).ToList();
 
             return PartialView("_StockTable", stock);

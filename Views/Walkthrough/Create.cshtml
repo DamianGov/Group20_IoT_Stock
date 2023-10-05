@@ -1,0 +1,85 @@
+﻿@model Group20_IoT.Models.Walkthrough
+@{
+    ViewBag.Title = "Create";
+}
+
+<h2>Create</h2>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <h4>Walkthrough</h4>
+        <hr />
+        <div class="form-group">
+            @Html.LabelFor(model => model.WalkthroughDate, htmlAttributes: new { @class = "control-label col-md-2 required-star" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.WalkthroughDate, new { htmlAttributes = new { @class = "datepicker" } })
+                @Html.ValidationMessageFor(model => model.WalkthroughDate, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.WalkthroughDescription, htmlAttributes: new { @class = "control-label col-md-2 required-star" })
+            <div class="col-md-10">
+                @Html.TextAreaFor(model => model.WalkthroughDescription, new { htmlAttributes = new { @class = "form-control", id = "descriptionTextArea" } })
+                <div id="charCount"></div>
+                @Html.ValidationMessageFor(model => model.WalkthroughDescription, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Go To Select Stock >" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+}
+
+
+@section Scripts
+{
+    <script>
+        $(".datepicker").datepicker({
+            dateFormat: 'yy/mm/dd',
+            minDate: "0", 
+            maxDate: "+1w",
+        }).datepicker("setDate", "0");
+        $(".datepicker").attr("readonly", true);
+    </script>
+    <script>
+        $(document).ready(function () {
+
+            // Get the textarea element and character count element
+            var textarea = $("textarea[name='Description']");
+            var charCount = $("#charCount");
+
+            // Attach an input event listener to the textarea
+            // Function to update character count
+            function updateCharCount() {
+                // Get the current character count
+                var currentCount = textarea.val().length;
+
+                // Display the character count
+                charCount.text("Character Count: " + currentCount);
+
+                // You can also check if the user exceeds the 250-character limit and provide feedback
+                if (currentCount > 250 || currentCount == 0) {
+                    charCount.css("color", "red");
+                } else {
+                    charCount.css("color", "green"); // Reset color
+                }
+            }
+
+            // Call the updateCharCount function initially
+            updateCharCount();
+
+            // Attach an input event listener to the textarea
+            textarea.on("input", function () {
+                // Call the updateCharCount function when the user types
+                updateCharCount();
+            });
+        }
+    </script>
+    }

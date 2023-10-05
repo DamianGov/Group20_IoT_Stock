@@ -1,26 +1,118 @@
 ﻿@model Group20_IoT.Models.ViewModel.LoanStockDetailsViewModel
 @{
-    ViewBag.Title = "Details";
+    ViewBag.Title = "Stock Details";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+<style>
+    .card {
+        width: 100% !important;
+        margin-bottom: 1.7rem !important;
+        background-color: #2E3842 !important;
+        color: #fff !important; /* Change text color to white */
+    }
 
-<h2>Stock Details</h2>
+    .card-header {
+        background-color: #003366 !important;
+        color: #fff !important; /* Change text color to white */
+        text-align: center !important;
+        padding: 0.75rem !important;
+        font-weight: bold !important;
+    }
 
-@using (Html.BeginForm())
-{
-    @Html.AntiForgeryToken()
-    @Html.HiddenFor(m => m.StockId)
-    @Html.HiddenFor(m=>m.Image)
+    .card-body {
+        padding: 1.25rem !important;
+    }
 
-    <p>Stock Code: @Html.EditorFor(model => model.StockCode, new { htmlAttributes = new { @class = "form-control readonly", @readonly = true } })</p>
-    <p>Stock Name: @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control readonly", @readonly = true } })</p>
-    <p>Description: @Html.TextAreaFor(model => model.Description, new { htmlAttributes = new { @class = "form-control readonly", @readonly = true } })</p>
-    <p>Quantity Available: @Html.EditorFor(model => model.QuantityAva, new { htmlAttributes = new { @class = "form-control readonly", @readonly = true } })</p>
-    <p><img src="~/Content/Images/@Model.Image" alt="@Model.Image" style="max-height:100px;max-width:100px" /></p>
-    <p>Quantity You Want To Loan: @Html.EditorFor(model => model.QuantityWantToLoan, new { htmlAttributes = new { @class = "form-control", min = 1, max = Model.QuantityAva } })</p>
-    <p>Borrow Date: @Html.EditorFor(model => model.BorrowStartDate, new { htmlAttributes = new { @class = "datepicker" } })</p>
-    <input type="submit" value="Loan"/>
- }
+    .btn-primary {
+        display: inline-block;
+        padding: 10px 20px;
+        color: #03e9f4;
+        font-size: 13px;
+        text-decoration: none;
+        text-transform: uppercase;
+        border: none;
+        outline: none;
+        background: transparent;
+        transition: background 0.5s, color 0.5s;
+        margin-top: 20px;
+        letter-spacing: 4px;
+        cursor: pointer;
+    }
+
+        .btn-primary:hover {
+            background: #03e9f4;
+            color: #fff;
+            border-radius: 5px;
+            box-shadow: 0 0 5px #03e9f4, 0 0 25px #03e9f4, 0 0 50px #03e9f4, 0 0 100px #03e9f4;
+        }
+</style>
+
+<div class="card">
+    <div class="card-header">
+        <h2 class="mb-0">Stock Details</h2>
+    </div>
+    <div class="card-body">
+        @using (Html.BeginForm())
+        {
+            @Html.AntiForgeryToken()
+            @Html.HiddenFor(m => m.StockId)
+            @Html.HiddenFor(m => m.Image)
+
+            <div class="form-group">
+                <label for="StockCode">Stock Code:</label>
+                <div class="input-group">
+                    @Html.EditorFor(model => model.StockCode, new { htmlAttributes = new { @class = "form-control readonly", @readonly = true } })
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="Name">Stock Name:</label>
+                <div class="input-group">
+                    @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control readonly", @readonly = true } })
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="Description">Description:</label>
+                <div class="input-group">
+                    @Html.TextAreaFor(model => model.Description, new { htmlAttributes = new { @class = "form-control", @disabled = "disabled" } })
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="QuantityAva">Quantity Available:</label>
+                <div class="input-group">
+                    @Html.EditorFor(model => model.QuantityAva, new { htmlAttributes = new { @class = "form-control readonly", @readonly = true } })
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="Image">Image:</label>
+                <div class="input-group">
+                    <img src="~/Content/Images/@Model.Image" alt="@Model.Image" class="img-thumbnail" style="max-height:100px;max-width:100px" />
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="QuantityWantToLoan" class="required-star">Quantity You Want To Loan:</label>
+                <div class="input-group">
+                    @Html.EditorFor(model => model.QuantityWantToLoan, new { htmlAttributes = new { @class = "form-control", min = 1, max = Model.QuantityAva } })
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="BorrowStartDate" class="required-star">Borrow Date:</label>
+                <div class="input-group">
+                    @Html.EditorFor(model => model.BorrowStartDate, new { htmlAttributes = new { @class = "form-control datepicker" } })
+                </div>
+            </div>
+
+            <div class="form-group">
+                <input type="submit" value="Loan" class="btn btn-primary" />
+            </div>
+        }
+    </div>
+</div>
 
 @section Scripts
 {

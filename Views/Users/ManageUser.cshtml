@@ -1,24 +1,45 @@
 ﻿@model Group20_IoT.Models.Users
 
 @{
-    ViewBag.Title = "Edit";
+    ViewBag.Title = "Manage User";
 }
+<style>
+    .btn-primary {
+        display: inline-block;
+        padding: 10px 20px;
+        color: #03e9f4;
+        font-size: 13 px;
+        text-decoration: none;
+        text-transform: uppercase;
+        border: none;
+        outline: none;
+        background: transparent;
+        transition: background 0.5s, color 0.5s;
+        margin-top: 20px;
+        letter-spacing: 4px;
+        cursor: pointer;
+    }
 
-<h2>Edit</h2>
-
+        .btn-primary:hover {
+            background: #03e9f4;
+            color: #fff;
+            border-radius: 5px;
+            box-shadow: 0 0 5px #03e9f4, 0 0 25px #03e9f4, 0 0 50px #03e9f4, 0 0 100px #03e9f4;
+        }
+</style>
+<h2>Manage User</h2>
+<br /> <br/>
 
 @using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
     
 <div class="form-horizontal">
-    <h4>Users</h4>
     <hr />
     @Html.HiddenFor(model => model.Id)
     @Html.HiddenFor(model => model.Password)
     @Html.HiddenFor(model => model.CreatedBy)
 
-    @Html.ValidationSummary()
 
     <div class="form-group">
         @Html.LabelFor(model => model.FirstName, htmlAttributes: new { @class = "control-label col-md-2" })
@@ -73,22 +94,22 @@
     </div>
 
     <div class="form-group">
-        @Html.LabelFor(model => model.RoleId, "RoleId", htmlAttributes: new { @class = "control-label col-md-2" })
+        <label class="control-label col-md-2">Role</label>
         <div class="col-md-10">
             @Html.DropDownList("RoleId", null, htmlAttributes: new { @class = "form-control" })
         </div>
     </div>
-
+    <br />
     <div class="form-group">
         <div class="col-md-offset-2 col-md-10">
-            <input type="submit" value="Save" class="btn btn-default" />
+            <input type="submit" value="Save" class="btn-primary" />
         </div>
     </div>
 </div>
 }
 
 <div>
-    @Html.ActionLink("Back to List", "Index")
+    @Html.ActionLink("Back to List of Users", "Index", null, new { @class = "btn-primary" })
 </div>
 
 @section Scripts {

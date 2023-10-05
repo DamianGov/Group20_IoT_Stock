@@ -91,7 +91,9 @@ namespace Group20_IoT.Controllers
             users.Surname = users.Surname.TrimStart().TrimEnd();  
             users.Email = users.Email.Trim();
 
-            if(db.Users.Any(u => u.Email.Equals(users.Email))) ModelState.AddModelError("Email", "A user with this email already exists");
+            if(db.Users.Any(u => u.Email.Equals(users.Email))) ModelState.AddModelError("Email", "A user with this Email already exists");
+
+            if (db.Users.Any(u => u.UniNum.Equals(users.UniNum))) ModelState.AddModelError("UniNum", "A user with this Number already exists");
            
             if (ModelState.IsValid)
             {

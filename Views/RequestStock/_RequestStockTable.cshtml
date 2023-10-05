@@ -1,69 +1,73 @@
 ﻿@model List<Group20_IoT.Models.ViewModel.RequestStockViewModel>
 
 
-<table class="table">
-    <tr>
-        <th>
-            User Requested
-        </th>
-        <th>
-            Name
-        </th>
-        <th>
-            Quantity
-        </th>
-        <th>
-            Price
-        </th>
-        <th>
-            Link
-        </th>
-        <th>
-            Date Requested
-        </th>
-        <th>
-            Approved
-        </th>
-        <th></th>
-    </tr>
-    @if (Model != null)
-    {
-        foreach (var item in Model)
+<table class="table" text-white">
+    <thead>
+        <tr>
+            <th>
+                User Requested
+            </th>
+            <th>
+                Name
+            </th>
+            <th>
+                Quantity
+            </th>
+            <th>
+                Price
+            </th>
+            <th>
+                Link
+            </th>
+            <th>
+                Date Requested
+            </th>
+            <th>
+                Approved
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model != null)
+        {
+            foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @item.UserName
+                    </td>
+                    <td>
+                        @item.StockName
+                    </td>
+                    <td>
+                        @item.Quantity
+                    </td>
+                    <td>
+                        @item.StockPrice
+                    </td>
+                    <td>
+                        <a href="@item.StockLink">Link</a>
+
+                    </td>
+                    <td>
+                        @item.RequestDate
+                    </td>
+                    <td>
+                        @item.Approved
+                    </td>
+                    <td>
+                        <img src="~/Content/Request/@item.StockImage" alt="@item.StockImage" style="max-height:100px;max-width:100px" />
+                    </td>
+
+                </tr>
+            }
+        }
+        else
         {
             <tr>
-                <td>
-                    @item.UserName
-                </td>
-                <td>
-                    @item.StockName
-                </td>
-                <td>
-                    @item.Quantity
-                </td>
-                <td>
-                    @item.StockPrice
-                </td>
-                <td>
-                    <a href="@item.StockLink">Link</a>
-
-                </td>
-                <td>
-                    @item.RequestDate
-                </td>
-                <td>
-                    @item.Approved
-                </td>
-                <td>
-                    <img src="~/Content/Request/@item.StockImage" alt="@item.StockImage" style="max-height:100px;max-width:100px" />
-                </td>
-
+                <td colspan="7" style="text-align:center;font-size:16px"><strong>Sorry, no requested stock available</strong></td>
             </tr>
         }
-    }
-    else
-    {
-        <tr>
-            <td colspan="7" style="text-align:center;font-size:16px"><strong>Sorry, no requested stock available</strong></td>
-        </tr>
-    }
+    </tbody>
 </table>

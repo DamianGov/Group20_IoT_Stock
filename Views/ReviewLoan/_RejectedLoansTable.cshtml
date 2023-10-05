@@ -1,70 +1,124 @@
 ﻿
 @model List<Group20_IoT.Models.ViewModel.PendingLoanStockViewModel>
 
+<style>
+    .card {
+        width: 100% !important;
+        margin-bottom: 1.7rem !important;
+        background-color: #2E3842 !important;
+        color: #fff !important; /* Change text color to white */
+    }
 
-<table class="table">
-    <tr>
-        <th>
-            User Name
-        </th>
-        <th>
-            User Role
-        </th>
-        <th>
-            Stock Code
-        </th>
-        <th>
-            Stock Name
-        </th>
-        <th>
-            Quantity Wanted
-        </th>
-        <th>
-            Date Requested
-        </th>
-        <th>
-            Borrow Date
-        </th>
-        <th>
-            Due Date
-        </th>
-    </tr>
-    @if (Model != null)
-    {
-        foreach (var item in Model)
-        {
-            <tr>
-                <td>
-                    @item.UserName
-                </td>
-                <td>
-                    @item.UserRole
-                </td>
-                <td>
-                    @item.StockCode
-                </td>
-                <td>@item.StockName</td>
+    .card-header {
+        background-color: #003366 !important;
+        color: #fff !important; /* Change text color to white */
+        text-align: center !important;
+        padding: 0.75rem !important;
+        font-weight: bold !important;
+    }
 
-                    <td>
-                        @item.QuantityWant
-                    </td>
-                
-                <td>
-                    @item.DateRequested
-                </td>
-                <td>
-                    @item.BorrowDate
-                </td>
-                <td>
-                    @item.DueDate
-                </td>
-            </tr>
+    .card-body {
+        padding: 1.25rem !important;
+    }
+
+    .btn-primary {
+        display: inline-block;
+        padding: 10px 20px;
+        color: #03e9f4;
+        font-size: 13px;
+        text-decoration: none;
+        text-transform: uppercase;
+        border: none;
+        outline: none;
+        background: transparent;
+        transition: background 0.5s, color 0.5s;
+        margin-top: 20px;
+        letter-spacing: 4px;
+        cursor: pointer;
+    }
+
+        .btn-primary:hover {
+            background: #03e9f4;
+            color: #fff;
+            border-radius: 5px;
+            box-shadow: 0 0 5px #03e9f4, 0 0 25px #03e9f4, 0 0 50px #03e9f4, 0 0 100px #03e9f4;
         }
-    }
-    else
-    {
-        <tr>
-            <td colspan="7" style="text-align:center;font-size:16px"><strong>No Rejected Loan Requests</strong></td>
-        </tr>
-    }
-</table>
+</style>
+
+<div class="card">
+    <div class="card-header">
+        <h2>Rejected Loans</h2>
+    </div>
+    <div class="card-body">
+        <table class="table text-white">
+            <thead>
+                <tr>
+                    <th>
+                        User Name
+                    </th>
+                    <th>
+                        User Role
+                    </th>
+                    <th>
+                        Stock Code
+                    </th>
+                    <th>
+                        Stock Name
+                    </th>
+                    <th>
+                        Quantity Wanted
+                    </th>
+                    <th>
+                        Date Requested
+                    </th>
+                    <th>
+                        Borrow Date
+                    </th>
+                    <th>
+                        Due Date
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (Model != null)
+                {
+                    foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>
+                                @item.UserName
+                            </td>
+                            <td>
+                                @item.UserRole
+                            </td>
+                            <td>
+                                @item.StockCode
+                            </td>
+                            <td>@item.StockName</td>
+
+                            <td>
+                                @item.QuantityWant
+                            </td>
+
+                            <td>
+                                @item.DateRequested
+                            </td>
+                            <td>
+                                @item.BorrowDate
+                            </td>
+                            <td>
+                                @item.DueDate
+                            </td>
+                        </tr>
+                    }
+                }
+                else
+                {
+                    <tr>
+                        <td colspan="7" style="text-align:center;font-size:16px"><strong>No Rejected Loan Requests</strong></td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

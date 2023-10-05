@@ -1,0 +1,125 @@
+﻿@model List<Group20_IoT.Models.ViewModel.WalkthroughDisplayViewModel>
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Walkthrough</h2>
+<p>
+    @Html.ActionLink("Create New Walkthrough", "Create")
+</p>
+<table>
+    <tr>
+        <th>Walkthrough Date</th>
+        <th>Description</th>
+        <th>Created By</th>
+        <th>Stock Allocated</th>
+        <th></th>
+        <th></th>
+    </tr>
+    @foreach (var viewModel in Model)
+    {
+        <tr>
+            <td>@viewModel.Walkthrough.WalkthroughDate.ToString("dd MMMM yyyy")</td>
+            <td>@viewModel.Walkthrough.WalkthroughDescription</td>
+            <td>@viewModel.Walkthrough.Users.GetFullName()</td>
+            @if (viewModel.Walkthrough.StockStillAllocated)
+            {
+
+
+                <td>Yes</td>
+            }
+            else
+            {
+                <td>No</td>
+            }
+            <td>
+                <button id="walkthroughDetailsButton" data-target="#WalkthroughDetailsModal-@viewModel.Walkthrough.Id" data-toggle="modal">View Details</button>
+                <div class="modal fade" data-keyboard="false" data-backdrop="static" id="WalkthroughDetailsModal-@viewModel.Walkthrough.Id" tabindex="-1">
+                    <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <input type="button" value="&#x274C;" class="close" data-dismiss="modal" />
+                                <p class="modal-title" style="color:black">Walkthrough - @viewModel.Walkthrough.WalkthroughDate.ToString("dd MMMM yyyy")</p>
+                            </div>
+                            <div class="modal-body">
+                                <table>
+                                    <tr>
+                                        <th>Stock Code</th>
+                                        <th>
+                                            Name
+                                        </th>
+                                        <th>
+                                            Quantity
+                                        </th>
+                                    </tr>
+                                    @foreach (var item in viewModel.Walkthrough_Stocks)
+                                    {
+                                        <tr>
+                                            <td>@item.Stock.StockCode</td>
+                                            <td>
+                                                @item.Stock.Name
+                                            </td>
+                                            <td>
+                                                @item.Quantity
+                                            </td>
+                                        </tr>
+                                    }
+
+                                </table>
+                            </div>
+                            <div class="modal-footer">
+                                <button class="btn btn-secondary" id="Close-@viewModel.Walkthrough.Id" data-dismiss="modal">Close</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </td>
+            @if (viewModel.Walkthrough.StockStillAllocated)
+            {
+            <td>
+                <button id="freeStockButton" data-target="#FreeStockModal-@viewModel.Walkthrough.Id" data-toggle="modal">Free Stock</button>
+                <div class="modal fade" data-keyboard="false" data-backdrop="static" id="FreeStockModal-@viewModel.Walkthrough.Id" tabindex="-1">
+                    <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <input type="button" value="&#x274C;" class="close" data-dismiss="modal" />
+                                <p class="modal-title" style="color:white">Free Stock for @viewModel.Walkthrough.WalkthroughDate.ToString("dd MMMM yyyy") - Walkthrough</p>
+                            </div>
+                            <div class="modal-body">
+                                <p>Are you sure you want to free the stock?</p>
+                            </div>
+                            <div class="modal-footer">
+                                <button id="freeStockApp" class="btn btn-primary" onclick="freeStock(@viewModel.Walkthrough.Id)" data-dismiss="modal">Yes</button> 
+                                <button class="btn btn-secondary" id="CloseM-@viewModel.Walkthrough.Id" data-dismiss="modal">No</button>
+                                
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </td>
+            }
+        </tr>
+    }
+</table>
+
+@section scripts
+{
+    <script>
+        function freeStock(ID) {
+            $.ajax({
+                url: '@Url.Action("FreeStock", "Walkthrough")',
+                type: 'POST',
+                data: { id: ID },
+                dataType: 'json',
+                success: function (data) {
+                    localStorage.setItem('notificationMessage', data.message);
+                    location.reload();
+                },
+                error: function () {
+                    notifyError("An error occurred while freeing the stock.");
+
+                }
+            });
+        }
+    </script>
+    }

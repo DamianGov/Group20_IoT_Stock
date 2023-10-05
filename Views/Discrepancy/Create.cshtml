@@ -1,20 +1,43 @@
 ﻿@model Group20_IoT.Models.StockDiscrepancy
 
 @{
-    ViewBag.Title = "Create";
+    ViewBag.Title = "Submit Discrepancy";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+<style>
+    .btn-primary {
+        display: inline-block;
+        padding: 10px 20px;
+        color: #03e9f4;
+        font-size: 13px;
+        text-decoration: none;
+        text-transform: uppercase;
+        border: none;
+        outline: none;
+        background: transparent;
+        transition: background 0.5s, color 0.5s;
+        margin-top: 20px;
+        letter-spacing: 4px;
+        cursor: pointer;
+    }
 
-<h2>Create</h2>
+        .btn-primary:hover {
+            background: #03e9f4;
+            color: #fff;
+            border-radius: 5px;
+            box-shadow: 0 0 5px #03e9f4, 0 0 25px #03e9f4, 0 0 50px #03e9f4, 0 0 100px #03e9f4;
+        }
+</style>
+
+<h2>Submit a Discrepancy</h2>
+<br />
 
 @using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
 
 <div class="form-horizontal">
-    <h4>Stock Discrepancies</h4>
     <hr />
-    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
     <div class="form-group">
         <p></p>
         <div class="col-md-10">
@@ -46,7 +69,6 @@
         </div>
     </div>
 
-
     <div class="form-group">
         @Html.LabelFor(model => model.DiscrepancyFound, htmlAttributes: new { @class = "control-label col-md-2 required-star" })
         <div class="col-md-10">
@@ -54,17 +76,17 @@
             @Html.ValidationMessageFor(model => model.DiscrepancyFound, "", new { @class = "text-danger" })
         </div>
     </div>
-
+    <br />
     <div class="form-group">
         <div class="col-md-offset-2 col-md-10">
-            <input type="submit" value="Create" class="btn btn-default" />
+            <input type="submit" value="Submit Discrepancy" class="btn btn-primary" />
         </div>
     </div>
 </div>
 }
 
 <div>
-    @Html.ActionLink("Back to List", "Index")
+    @Html.ActionLink("Back to List of Discrepancies", "Index", null, new {@class = "btn-primary"})
 </div>
 
 @section scripts

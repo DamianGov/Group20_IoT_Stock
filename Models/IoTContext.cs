@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using System.Web;
 
 namespace Group20_IoT.Models
@@ -23,8 +24,9 @@ namespace Group20_IoT.Models
         public DbSet<StockDiscrepancy> StockDiscrepancy { get; set; }
         public DbSet<RequestLoanStock> RequestLoanStock { get; set; }
         public DbSet<LoanStatus> LoanStatus { get; set; }
-
         public DbSet<ExtensionRequest> ExtensionRequest { get; set; }
+        public DbSet<Walkthrough> Walkthrough { get; set; }
+        public DbSet<Walkthrough_Stock> Walkthrough_Stock { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {

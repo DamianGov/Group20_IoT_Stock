@@ -1,83 +1,163 @@
 ﻿@model IEnumerable<Group20_IoT.Models.Users>
 
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "User Management";
 }
 
-<h2>Index</h2>
+<style>
 
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.Role.Type)
-        </th>
-        <th>
-            Name
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Email)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Access)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Notify)
-        </th>
-        <th>
-
-        </th>
-    </tr>
-
-    @foreach (var item in Model)
-    {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Role.Type)
-            </td>
-            <td>
-                @item.GetFullName()
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Email)
-            </td>
-            @if (item.Access)
-            {
-                <td>
-                    Yes
-                </td>
-            }
-            else
-            {
-                <td>
-                    No
-                </td>
-            }
-            @if (item.Notify)
-            {
-                <td>
-                    Yes
-                </td>
-            }
-            else
-            {
-                <td>
-                    No
-                </td>
-            }
-        <td>
-            @Html.ActionLink("Manage User", "ManageUser", new { id = item.Id })
-        </td>
-
-        </tr>
+    <style >
+    .card-deck {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
     }
 
-</table>
+    .card {
+        width: 18rem;
+        margin-bottom: 1.7rem;
+        background-color: #2E3842;
+        color: #fff;
+    }
+
+    .card-header {
+        background-color: #003366;
+        color: #03e9f4;
+        text-align: center;
+        padding: 0.75rem;
+        font-weight: bold;
+    }
+
+    .card-body {
+        padding: 1.25rem;
+    }
+
+    .badge {
+        margin-right: 0.5rem;
+        padding: 0.5em;
+        border-radius: 4px;
+        font-size: 14px;
+    }
+
+    .badge-success {
+        background-color: #28a745;
+        color: #fff;
+    }
+
+    .badge-danger {
+        background-color: #dc3545;
+        color: #fff;
+    }
+
+    .btn-primary {
+        display: inline-block;
+        padding: 10px 20px;
+        color: #03e9f4;
+        font-size: 13 px;
+        text-decoration: none;
+        text-transform: uppercase;
+        border: none;
+        outline: none;
+        background: transparent;
+        transition: background 0.5s, color 0.5s;
+        margin-top: 20px;
+        letter-spacing: 4px;
+        cursor: pointer;
+    }
+
+        .btn-primary:hover {
+            background: #03e9f4;
+            color: #fff;
+            border-radius: 5px;
+            box-shadow: 0 0 5px #03e9f4, 0 0 25px #03e9f4, 0 0 50px #03e9f4, 0 0 100px #03e9f4;
+        }
+</style>
+
+<h2>User Management</h2>
+<br />
+<p>
+    @Html.ActionLink("Create a new User", "Create", null, new { @class = "btn-primary" })
+</p>
+<br />
+<div class="container">
+
+
+    <div class="card-deck">
+        @foreach (var item in Model)
+        {
+            <div class="card">
+                <div class="card-header">
+                    @Html.DisplayFor(modelItem => item.Role.Type)
+                </div>
+                <div class="card-body">
+                    <h4 class="card-title">@item.GetFullName()</h4>
+                    <p class="card-text">
+                        <strong>Staff/Student Number: </strong> @Html.DisplayFor(modelItem => item.UniNum) <br />
+                        <strong>Email: </strong> @Html.DisplayFor(modelItem => item.Email) <br />
+                        <strong>Access: </strong>
+                        @if (item.Access)
+                        {
+                            <span class="badge badge-success">Yes</span>
+                        }
+                        else
+                        {
+                            <span class="badge badge-danger">No</span>
+                        }
+                        <br />
+                        <strong>Receive Notifications: </strong>
+                        @if (item.Notify)
+                        {
+                            <span class="badge badge-success">Yes</span>
+                        }
+                        else
+                        {
+                            <span class="badge badge-danger">No</span>
+                        }
+                    </p>
+                    <a href="@Url.Action("ManageUser", new { id = item.Id })" class="btn-primary">Manage User</a>
+                </div>
+            </div>
+        }
+    </div>
+</div>
 
 @section scripts
 {
+    <script>
+        var cardDeck = document.getElementById('userCards');
+
+        function getRandomColor() {
+            var letters = '0123456789ABCDEF';
+            var color = '#';
+            for (var i = 0; i < 6; i++) {
+                color += letters[Math.floor(Math.random() * 16)];
+            }
+            return color;
+        }
+
+        function addCard() {
+            var newCard = document.createElement('div');
+            newCard.className = 'card mb-3';
+            newCard.style.backgroundColor = getRandomColor();
+
+            var cardContent = '<div class="card-header">' + 'New Card' + '</div>' +
+                '<div class="card-body">' +
+                '<h5 class="card-title">New User</h5>' +
+                '<p class="card-text">' +
+                '<strong>Email: </strong> NewEmail<br />' +
+                '<strong>Access: </strong> <span class="badge badge-success">Yes</span><br />' +
+                '<strong>Notify: </strong> <span class="badge badge-success">Yes</span>' +
+                '</p>' +
+                '<a href="#" class="btn btn-primary">Manage User</a>' +
+                '</div>';
+
+            newCard.innerHTML = cardContent;
+            cardDeck.appendChild(newCard);
+        }
+
+        // Call the addCard function to add a new card
+        addCard();
+    </script>
     <script>
         $(document).ready(function () {
 
@@ -87,49 +167,6 @@
                 notifySuccess(storedMessage);
                 localStorage.removeItem('notificationMessage');
             }
-
-        $(".restrict-button").on("click", function () {
-            var userId = $(this).data("user-id");
-            updateUserStatusRestrict(userId, false);
-        });
-
-        $(".unrestrict-button").on("click", function () {
-            var userId = $(this).data("user-id");
-            updateUserStatusUnrestrict(userId, true);
-        });
-
-        function updateUserStatusRestrict(userId) {
-            $.ajax({
-                url: '@Url.Action("Restrict", "Users")',
-                type: 'POST',
-                data: { id: userId },
-                dataType: 'json',
-                success: function (data) {
-                    localStorage.setItem('notificationMessage', data.message);
-                    location.reload();
-                },
-                error: function () {
-                    notifyError("An error occurred while updating user status.");
-
-                }
-            });
-        }
-
-        function updateUserStatusUnrestrict(userId, isActive) {
-            $.ajax({
-                url: '@Url.Action("Unrestrict", "Users")',
-                type: 'POST',
-                data: { id: userId },
-                dataType: 'json',
-                success: function (data) {
-                    localStorage.setItem('notificationMessage', data.message);
-                    location.reload();
-                },
-                error: function () {
-                    alert("An error occurred while updating user status.");
-                }
-            });
-        }
     });
     </script>
 

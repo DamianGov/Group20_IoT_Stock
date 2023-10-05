@@ -18,7 +18,28 @@ body {
     font-family: sans-serif;
     background: linear-gradient(#141e30, #243b55);
 }
+    body::before {
+        content: '';
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+        background: linear-gradient(90deg, transparent, #000000);
+        z-index: -1;
+        animation: laser 2s linear infinite;
+    }
 
+    @@keyframes laser {
+        0% {
+            background-position: 100% 0;
+        }
+
+        100% {
+            background-position: -100% 0;
+        }
+    }
 .login-box {
     position: absolute;
     top: 50%;
@@ -152,7 +173,7 @@ body {
     display: inline-block;
     padding: 10px 20px;
     color: #03e9f4;
-    font-size: 10px;
+    font-size: 12px;
     text-decoration: none;
     text-transform: uppercase;
     border: none;
@@ -264,37 +285,105 @@ body {
                 background: linear-gradient(90deg, transparent, #03e9f4);
                 animation: btn-anim1 1s linear infinite;
             }
+    .login-box .user-box .eye-icon {
+        color: #fff; /* Set the color to white */
+        cursor: pointer;
+    }
 
+    .login-box form button.login-button {
+        position: relative;
+        display: inline-block;
+        padding: 10px 20px;
+        color: #03e9f4;
+        font-size: 16px;
+        text-decoration: none;
+        text-transform: uppercase;
+        overflow: hidden;
+        transition: .5s;
+        margin-top: 40px;
+        letter-spacing: 4px;
+        background: rgba(0, 0, 0, 0.5); /* Set the background color to match the background */
+    }
+
+        .login-box form button.login-button:hover {
+            background: #03e9f4;
+            color: #fff;
+            border-radius: 5px;
+            box-shadow: 0 0 5px #03e9f4, 0 0 25px #03e9f4, 0 0 50px #03e9f4, 0 0 100px #03e9f4;
+        }
+
+    .validation-message {
+        color: #ff5555; /* Red color for error messages */
+        font-size: 14px;
+        margin-top: 5px;
+    }
+
+    /* Add this style for success messages if needed */
+    .validation-success {
+        color: #00cc00; /* Green color for success messages */
+        font-size: 14px;
+        margin-top: 5px;
+    }
+
+    .login-box .user-box .checkbox {
+        width: 20px; /* Adjust the size as needed */
+        height: 20px; /* Adjust the size as needed */
+        border-radius: 5px; /* Add rounded corners */
+        margin-right: 5px; /* Add some spacing between the checkbox and the label */
+    }
+
+    .login-box .user-box.remember-me {
+        text-align: center;
+    }
 
 </style>
+<body style="background-color: #1a2740">
 
+    <div class="login-box">
+        <h2>Login</h2>
+        @using (Html.BeginForm())
+        {
+            @Html.AntiForgeryToken()
+            <div class="user-box">
+                @Html.EditorFor(x => x.Email, new { htmlAttributes = new { @class = "input" } })
+                <label>Email</label>
+                <div class="validation-message">@Html.ValidationMessageFor(x => x.Email)</div>
 
-<div class="login-box">
-    <h2>Login</h2>
-    @using (Html.BeginForm())
-    {
-        @Html.AntiForgeryToken()
-        <div class="user-box">
-            @Html.EditorFor(x => x.Email, new { htmlAttributes = new { @class = "input" } })
-            <label>Email</label>
-            @Html.ValidationMessageFor(x => x.Email)
-        </div>
-        <div class="user-box">
-            @Html.PasswordFor(x => x.Password)
-            <label>Password</label>
-            @Html.ValidationMessageFor(x => x.Password)
-            <p>Remember Me @Html.CheckBoxFor(x => x.RememberMe)</p>
-        </div>
-        <button type="submit" class="login-button">
-            <span></span>
-            <span></span>
-            <span></span>
-            <span></span>
-            Login
-        </button>
-    }
-    <a href="@Url.Action("ForgotPassword", "Login")" class="list-group-item list-group-item-action bg-light">
-        <button class="forgot-password-button">Forgot Password?</button>
-    </a>
-</div>
+            </div>
+            <div class="user-box">
+                @Html.PasswordFor(x => x.Password, new { @class = "password-input" })
+                <label>Password</label>
+                <span class="eye-icon" onclick="togglePasswordVisibility()">&#x1F441;</span>
+                <div class="validation-message">
+                    @Html.ValidationMessageFor(x => x.Password)
+                </div>
+            </div>
+            <div class="user-box remember-me" style="text-align: center;">
+                @Html.CheckBoxFor(x => x.RememberMe, new { @class = "checkbox" })
+                <label for="RememberMe">Remember Me</label>
+            </div>
+            <button type="submit" class="forgot-password-button">
+                <span></span>
+                <span></span>
+                Login
+            </button>
+        }
+        <a href="@Url.Action("ForgotPassword", "Login")" class="list-group-item list-group-item-action bg-light">
+            <button class="forgot-password-button">Forgot Password?</button>
+        </a>
+    </div>
 
+    <script>
+        function togglePasswordVisibility() {
+            var passwordInput = document.querySelector('.password-input');
+            var eyeIcon = document.querySelector('.eye-icon');
+
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                eyeIcon.innerHTML = '&#x1F440;'; // Unicode for closed eye
+            } else {
+                passwordInput.type = 'password';
+                eyeIcon.innerHTML = '&#x1F441;'; // Unicode for open eye
+            }
+        }
+    </script>

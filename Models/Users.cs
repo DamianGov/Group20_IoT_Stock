@@ -17,9 +17,10 @@ namespace Group20_IoT.Models
         public int Id { get; set; }
 
 
-        //[Required(ErrorMessage = "Please enter a Student Number")]
-        //[RegularExpression(@"^\d{8}$", ErrorMessage = "The Student Number must be 8 digits long")]
-        //public string StudentNum { get; set; }
+        [Required(ErrorMessage = "Please enter a Student Number")]
+        [RegularExpression(@"^\d{8}$", ErrorMessage = "The Student Number must be 8 digits long")]
+        [Display(Name ="Staff/Student Number")]
+        public string UniNum { get; set; }
 
 
         [Required(ErrorMessage = "Please enter a First Name")]

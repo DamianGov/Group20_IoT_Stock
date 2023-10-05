@@ -1,63 +1,91 @@
 ﻿@model List<Group20_IoT.Models.ViewModel.UserTrackingViewModel>
 
+<style>
+    /* Add your custom styles here */
+    .card {
+        width: 100% !important;
+        margin-bottom: 1.7rem !important;
+        background-color: #2E3842 !important;
+        color: #fff !important; /* Change text color to white */
+    }
 
-<table class="table">
-    <tr>
-        <th>
-            Name
-        </th>
-        <th>
-            Email
-        </th>
-        <th>
-            Logged In
-        </th>
-        <th>
-            Logged Out
-        </th>
-        <th>
-            Duration
-        </th>
-        <th>
-            User Type
-        </th>
-        <th>
-            Used Remember Me
-        </th>
-    </tr>
-    @if (Model != null)
-    {
-        foreach (var item in Model)
-        {
+    .card-header {
+        background-color: #003366 !important;
+        color: #fff !important; /* Change text color to white */
+        text-align: center !important;
+        padding: 0.75rem !important;
+        font-weight: bold !important;
+    }
+
+    .card-body {
+        padding: 1.25rem !important;
+    }
+</style>
+
+<div id="userTrackingTable" class="card">
+    <div class="card-header">
+        User Tracking Information
+    </div>
+    <div class="card-body">
+        <table class="table text-white">
             <tr>
-                <td>
-                    @item.Name
-                </td>
-                <td>
-                    @item.Email
-                </td>
-                <td>
-                    @item.LoggedIn
-                </td>
-                <td>
-                    @item.LoggedOut
-                </td>
-                <td>
-                    @item.Duration
-                </td>
-                <td>
-                    @item.UserType
-                </td>
-                <td>
-                    @item.UsedRememberMe
-                </td>
+                <th>
+                    Name
+                </th>
+                <th>
+                    Email
+                </th>
+                <th>
+                    Logged In
+                </th>
+                <th>
+                    Logged Out
+                </th>
+                <th>
+                    Duration
+                </th>
+                <th>
+                    User Type
+                </th>
+                <th>
+                    Used Remember Me
+                </th>
             </tr>
-        }
-    }
-    else
-    {
-        <tr>
-            <td colspan="7" style="text-align:center;font-size:16px"><strong>No User Tracking Information Found!</strong></td>
-        </tr>
-    }
-</table>
+            @if (Model != null)
+            {
+                foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @item.Name
+                        </td>
+                        <td>
+                            @item.Email
+                        </td>
+                        <td>
+                            @item.LoggedIn
+                        </td>
+                        <td>
+                            @item.LoggedOut
+                        </td>
+                        <td>
+                            @item.Duration
+                        </td>
+                        <td>
+                            @item.UserType
+                        </td>
+                        <td>
+                            @item.UsedRememberMe
+                        </td>
+                    </tr>
+                }
+            }
+            else
+            {
+                <tr>
+                    <td colspan="7" style="text-align:center;font-size:16px"><strong>No User Tracking Information Found!</strong></td>
+                </tr>
+            }
+        </table>
+    </div>
+</div>

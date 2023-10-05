@@ -1,93 +1,30 @@
 ﻿@model List<Group20_IoT.Models.ViewModel.StockViewModel>
 
 
-<table class="table">
-    <tr>
-        <th>
-            Stock Code
-        </th>
-        <th>
-            Name
-        </th>
-        <th>
-            Description
-        </th>
-        <th>
-            Price
-        </th>
-        <th>
-            Total Quantity
-        </th>
-        <th>
-            Quantity On Loan
-        </th>
-        <th>
-            Room
-        </th>
-        <th>
-            Storage Area
-        </th>
-        <th>
-            Loanable
-        </th>
-        <th>
-            Created By
-        </th>
-        <th>
-            Created On
-        </th>
-        <th></th>
-        <th></th>
-    </tr>
-    @if (Model != null)
-    {
-        foreach (var item in Model)
+<div class="card-header">
+</div>
+<div class="card-body">
+    <div class="row">
+        @foreach (var item in Model)
         {
-            <tr>
-                <td>
-                    @item.StockCode
-                </td>
-                <td>
-                    @item.Name
-                </td>
-                <td>
-                    @item.Description
-                </td>
-                <td>@item.UnitPrice</td>
-                <td>
-                    @item.TotalQuantity
-                </td>
-                <td>
-                    @item.QuantityOnLoan
-                </td>
-                <td>
-                    @item.Room
-                </td>
-                <td>
-                    @item.StorageArea
-                </td>
-                <td>
-                    @item.Loanable
-                </td>
-                <td>
-                    @item.CreatedBy
-                </td>
-                <td>
-                    @item.CreatedOn
-                </td>
-                <td>
-                    <img src="~/Content/Images/@item.Image" alt="@item.Image" style="max-height:100px;max-width:100px" />
-                </td>
-                <td>
-                    @Html.ActionLink("Edit", "Edit", new { id = item.Id })
-                </td>
-            </tr>
+            
+                <div class="card">
+                    <div style="text-align:center"><img src="~/Content/Images/@item.Image" class="card-img-top" alt="@item.Image" style="max-height: 150px; max-width: 150px;"></div>
+                    
+                    <div class="card-body">
+                        <h5 class="card-title">@item.Name</h5>
+                        <p class="card-text">@item.StockCode</p>
+                        <p class="card-text">@item.Description</p>
+                        <p class="card-text">@item.UnitPrice</p>
+                        <p class="card-text"><strong>Total Quantity:</strong> @item.TotalQuantity</p>
+                        <p class="card-text"><strong>Quantity On Loan:</strong> @item.QuantityOnLoan</p>
+                        <p class="card-text"><strong>Located at:</strong> @item.Room~@item.StorageArea</p>
+                        <p class="card-text"><strong>Available for Loan:</strong> @item.Loanable</p>
+                        <p class="card-text"><strong>Created:</strong> @item.CreatedBy on @item.CreatedOn</p>
+                        @Html.ActionLink("Edit Stock Details", "Edit", new { id = item.Id }, new { @class = "btn btn-primary" })
+                    </div>
+                </div>
+            
         }
-    }
-    else
-    {
-        <tr>
-            <td colspan="7" style="text-align:center;font-size:16px"><strong>Sorry, no stock available</strong></td>
-        </tr>
-    }
-    </table>
+    </div>
+</div>

@@ -28,16 +28,42 @@
         * {
             margin: 0 !important;
             padding: 0 !important;
+            scroll-behavior: smooth;
         }
 
         body {
+            text-transform: uppercase;
+            background: transparent;
             font-family: "Poppins", sans-serif !important;
+        }
+            body::before {
+                content: '';
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                pointer-events: none;
+                background: linear-gradient(90deg, transparent, #000000);
+                z-index: -1;
+                animation: laser 2s linear infinite;
+            }
+
+        @@keyframes laser {
+            0% {
+                background-position: 100% 0;
+            }
+
+            100% {
+                background-position: -100% 0;
+            }
         }
 
         .container {
             max-width: auto !important;
             width: 100% !important;
             margin: auto !important;
+            color: #03e9f4;
         }
 
         .navbar {
@@ -61,15 +87,26 @@
         }
 
         .navbar .nav-container a {
-            text-decoration: none !important;
-            color: #0e2431 !important;
-            font-weight: 500 !important;
-            font-size: 1.2rem !important;
-            padding: 0.7rem !important;
+            display: inline-block;
+            padding: 10px 20px;
+            color: #03e9f4;
+            font-size: 14px;
+            text-decoration: none;
+            text-transform: uppercase;
+            border: none;
+            outline: none;
+            background: transparent;
+            transition: background 0.5s, color 0.5s;
+            margin-top: 20px;
+            letter-spacing: 4px;
+            cursor: pointer;
         }
 
             .navbar .nav-container a:hover {
-                font-weight: bolder !important;
+                background: #03e9f4;
+                color: #fff;
+                border-radius: 5px;
+                box-shadow: 0 0 5px #03e9f4, 0 0 25px #03e9f4, 0 0 50px #03e9f4, 0 0 100px #03e9f4;
             }
 
         .nav-container {
@@ -108,7 +145,7 @@
                     height: 4px !important;
                     width: 100% !important;
                     border-radius: 10px !important;
-                    background: #0e2431 !important;
+                    background: #03e9f4 !important;
                 }
 
                 .nav-container .hamburger-lines .line1 {
@@ -139,11 +176,12 @@
             transition: transform 0.5s ease-in-out !important;
             text-align: center !important;
             z-index: 999;
+            color: #ffffff !important;
         }
 
             .navbar .menu-items li {
                 margin-bottom: 1.2rem !important;
-                font-size: 1.5rem !important;
+                font-size: 1.4rem !important;
                 font-weight: 500 !important;
             }
 
@@ -152,7 +190,7 @@
             top: 5px !important;
             right: 15px !important;
             font-size: 1.2rem !important;
-            color: #0e2431 !important;
+            color: #03e9f4 !important;
         }
 
         .nav-container input[type="checkbox"]:checked ~ .menu-items {
@@ -182,12 +220,18 @@
 
         .modal-dialog.modal-dialog-centered {
             display: flex;
+            position: absolute;
+            width: 50%;
+            height: 50%;
+            left: 40%;
             justify-content: center;
             align-items: center;
         }
+
     </style>
 </head>
-<body>
+<body style="background-color: #1a2740">
+    <body>
     <nav>
         <div class="navbar">
             <div class="container nav-container">
@@ -198,44 +242,45 @@
                     <span class="line line3"></span>
                 </div>
                 <div class="logo">
-                    <h1>IoT Management System</h1>
+                     <h1 style="font-family: sans-serif ">IoT Management System</h1>
                 </div>
                 <div class="menu-items">
                     @{
                         string UserType = Session["UserType"] as string;
                     }
-                    <li><i class="fa-solid fa-user" aria-hidden="true"></i>@Html.ActionLink(((Session["User"] as Group20_IoT.Models.Users).GetFullName()), "ManageAccount", "Home")</li>
+                    <li><i class="fa-solid fa-user" aria-hidden="true"></i> @Html.ActionLink(((Session["User"] as Group20_IoT.Models.Users).GetFullName()), "ManageAccount", "Home")</li>
                     @if (UserType == "Admin" || UserType == "SuperAdmin")
                     {
-                        <li><i class="fa-solid fa-users" aria-hidden="true"></i>@Html.ActionLink("User Management", "Index", "Users")</li>
+                        <li><i class="fa-solid fa-users" aria-hidden="true"></i> @Html.ActionLink("User Management", "Index", "Users")</li>
                     }
                     @if (UserType == "Admin" || UserType == "Member")
                     {
-                        <li><i class="fa fa-stack-overflow" aria-hidden="true"></i>@Html.ActionLink("Loan Stock", "Index", "LoanStock")</li>
-                        <li><i class="fa fa-list"></i>@Html.ActionLink("My Loan Requests", "Index", "RequestLoan")</li>
+                        <li><i class="fa fa-stack-overflow" aria-hidden="true"></i> @Html.ActionLink("Loan Stock", "Index", "LoanStock")</li>
+                        <li><i class="fa fa-list"></i> @Html.ActionLink("My Loan Requests", "Index", "RequestLoan")</li>
                     }
                     @if (UserType == "SuperAdmin")
                     {
-                        <li><i class="fa-solid fa-door-open"></i>@Html.ActionLink("Room Management", "Index", "Rooms")</li>
-                        <li><i class="fa-solid fa-boxes-stacked"></i>@Html.ActionLink("Storage Area Management", "Index", "StorageAreas")</li>
+                        <li><i class="fa-solid fa-door-open"></i> @Html.ActionLink("Room Management", "Index", "Rooms")</li>
+                        <li><i class="fa-solid fa-boxes-stacked"></i> @Html.ActionLink("Storage Area Management", "Index", "StorageAreas")</li>
                     }
                     @if (UserType == "Admin" || UserType == "SuperAdmin")
                     {
-                        <li><i class="fa-solid fa-archive" aria-hidden="true"></i>@Html.ActionLink("Stock Management", "Index", "Stocks")</li>
-                        <li><i class="fa-solid fa-ban" aria-hidden="true"></i>@Html.ActionLink("Stock Discrepancies Management", "Index", "Discrepancy")</li>
-                        <li><i class="fa-solid fa-pen-to-square"></i>@Html.ActionLink("Manage Loan Requests", "Index", "ReviewLoan")</li>
-                        <li><i class="fa-solid fa-file-pen"></i>@Html.ActionLink("Manage Extension Requests", "Index", "Extensions")</li>
-                        <li><i class="fa-solid fa-boxes-packing"></i>@Html.ActionLink("Request Stock Management","Index","RequestStock")</li>
+                        <li><i class="fa-solid fa-archive" aria-hidden="true"></i> @Html.ActionLink("Stock Management", "Index", "Stocks")</li>
+                        <li><i class="fa-solid fa-ban" aria-hidden="true"></i> @Html.ActionLink("Stock Discrepancies Management", "Index", "Discrepancy")</li>
+                        <li><i class="fa-solid fa-person-walking"></i> @Html.ActionLink("Walkthrough Management", "Index", "Walkthrough")</li>
+                        <li><i class="fa-solid fa-pen-to-square"></i> @Html.ActionLink("Manage Loan Requests", "Index", "ReviewLoan")</li>
+                        <li><i class="fa-solid fa-file-pen"></i> @Html.ActionLink("Manage Extension Requests", "Index", "Extensions")</li>
+                        <li><i class="fa-solid fa-boxes-packing"></i> @Html.ActionLink("Stock Requests Management", "Index", "RequestStock")</li>
                     }
-                    @if(UserType == "Member")
-            {
-<li><i class="fa-solid fa-boxes-packing"></i>@Html.ActionLink("My Requested Stock", "Index", "RequestStock")</li>
-            }
+                    @if (UserType == "Member")
+                    {
+                        <li><i class="fa-solid fa-boxes-packing"></i> @Html.ActionLink("My Requested Stock", "Index", "RequestStock")</li>
+                    }
                     @if (UserType == "SuperAdmin")
                     {
-                        <li><i class="fa-solid fa-user-secret" aria-hidden="true"></i>@Html.ActionLink("User Tracking", "Index", "UserTracking")</li>
+                        <li><i class="fa-solid fa-user-secret" aria-hidden="true"></i> @Html.ActionLink("User Tracking", "Index", "UserTracking")</li>
                     }
-                    <li><i class="fa-solid fa-sign-out" aria-hidden="true"></i>@Html.ActionLink("Logout", "Logout", "Login")</li>
+                    <li><i class="fa-solid fa-sign-out" aria-hidden="true"></i> @Html.ActionLink("Logout", "Logout", "Login")</li>
                 </div>
             </div>
         </div>
@@ -243,9 +288,11 @@
 
 
 
+
     <div class="container body-content">
         <div class="wrapper">
             <div class="content">
+
                 @RenderBody()
                 <div id="notification-area">
                 </div>
@@ -273,16 +320,17 @@
                     // Remove the 'active' class when unchecked
                     mainContent.removeClass("blurred");
                 }
-                
+
             });
-                var storedMessage = localStorage.getItem('notificationMessage');
+            var storedMessage = localStorage.getItem('notificationMessage');
 
-                if (storedMessage) {
-                    notifySuccess(storedMessage);
-                    localStorage.removeItem('notificationMessage');
-                }
+            if (storedMessage) {
+                notifySuccess(storedMessage);
+                localStorage.removeItem('notificationMessage');
+            }
+
+
         });
-
         function tryParseInt(value) {
             const parsedValue = parseInt(value, 10); // The second argument specifies the radix (base 10).
             if (!isNaN(parsedValue)) {
@@ -298,6 +346,7 @@
     @RenderSection("scripts", required: false)
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
+
 
 </body>
 </html>

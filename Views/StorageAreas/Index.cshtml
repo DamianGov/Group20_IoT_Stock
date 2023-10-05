@@ -1,46 +1,107 @@
 ﻿
 @model List<Group20_IoT.Models.ViewModel.StorageAreaViewModel>
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Storage Area Management";
 }
-
-<h2>Index</h2>
-
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
-<table class="table">
-    <tr>
-        <th>
-            Room
-        </th>
-        <th>
-            Area Name
-        </th>
-        <th>
-            Active
-        </th>
-        <th></th>
-    </tr>
-
-    @foreach (var item in Model)
-    {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.RoomName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Area_Name)
-            </td>
-            <th>
-                @Html.DisplayFor(modelItem => item.Active)
-            </th>
-            <td>
-                @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
-                @Html.ActionLink("Details", "Details", new { id = item.Id }) |
-                @Html.ActionLink("Delete", "Delete", new { id = item.Id })
-            </td>
-        </tr>
+<style>
+    .card-deck {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
     }
 
-</table>
+    .card {
+        width: 18rem;
+        margin-bottom: 1.7rem;
+        background-color: #2E3842;
+        color: #fff;
+    }
+
+    .card-header {
+        background-color: #003366;
+        color: #03e9f4;
+        text-align: center;
+        padding: 0.75rem;
+        font-weight: bold;
+    }
+
+    .card-body {
+        padding: 1.25rem;
+        text-align: center;
+    }
+
+    .badge {
+        margin-right: 0.5rem;
+        padding: 0.5em;
+        border-radius: 4px;
+        font-size: 14px;
+    }
+
+    .badge-success {
+        background-color: #28a745;
+        color: #fff;
+    }
+
+    .badge-danger {
+        background-color: #dc3545;
+        color: #fff;
+    }
+
+    .btn-primary {
+        display: inline-block;
+        padding: 10px 20px;
+        color: #03e9f4;
+        font-size: 13px;
+        text-decoration: none;
+        text-transform: uppercase;
+        border: none;
+        outline: none;
+        background: transparent;
+        transition: background 0.5s, color 0.5s;
+        margin-top: 20px;
+        letter-spacing: 4px;
+        cursor: pointer;
+    }
+
+        .btn-primary:hover {
+            background: #03e9f4;
+            color: #fff;
+            border-radius: 5px;
+            box-shadow: 0 0 5px #03e9f4, 0 0 25px #03e9f4, 0 0 50px #03e9f4, 0 0 100px #03e9f4;
+        }
+</style>
+
+<h2>Storage Area Management</h2>
+<br />
+<p>
+    @Html.ActionLink("Create New Storage Area", "Create", null, new { @class = "btn-primary" })
+</p>
+<br />
+<div class="card-deck">
+    @foreach (var item in Model)
+    {
+        <div class="card">
+            <div class="card-header">
+                Room: @Html.DisplayFor(modelItem => item.RoomName)
+            </div>
+            <div class="card-body">
+                <h5 class="card-title">@Html.DisplayFor(modelItem => item.Area_Name)</h5>
+                <p class="card-text">
+                    <strong>Active: </strong>
+                    @if (item.Active == "Yes")
+                    {
+                        <span class="badge badge-success">Yes</span>
+                    }
+                    else
+                    {
+                        <span class="badge badge-danger">No</span>
+                    }
+                </p>
+
+                <div class="card-link">
+                    @Html.ActionLink("Edit Storage Area", "Edit", new { id = item.Id }, new { @class = "btn-primary" })
+                </div>
+            </div>
+        </div>
+    }
+</div>

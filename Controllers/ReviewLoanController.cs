@@ -30,9 +30,9 @@ namespace Group20_IoT.Controllers
                 StockName = r.Stock.Name,
                 AmntAva = ((r.Stock.TotalQuantity - r.Stock.QuantityOnLoan) <= 0) ? 0 : (r.Stock.TotalQuantity - r.Stock.QuantityOnLoan),
                 QuantityWant = r.Quantity,
-                DateRequested = r.DateRequested.ToString("yyyy/M/d"),
-                BorrowDate = r.FromDate.ToString("yyyy/M/d"),
-                DueDate = r.DueDate.ToString("yyyy/M/d")
+                DateRequested = r.DateRequested.ToString("dd MMMM yyyy"),
+                BorrowDate = r.FromDate.ToString("dd MMMM yyyy"),
+                DueDate = r.DueDate.ToString("dd MMMM yyyy")
             }).ToList();
             return View(LoanStockPending);
         }
@@ -118,9 +118,9 @@ namespace Group20_IoT.Controllers
                 StockName = r.Stock.Name,
                 AmntAva = 0,
                 QuantityWant = r.Quantity,
-                DateRequested = r.DateRequested.ToString("yyyy/M/d"),
-                BorrowDate = r.FromDate.ToString("yyyy/M/d"),
-                DueDate = r.DueDate.ToString("yyyy/M/d")
+                DateRequested = r.DateRequested.ToString("dd MMMM yyyy"),
+                BorrowDate = r.FromDate.ToString("dd MMMM yyyy"),
+                DueDate = r.DueDate.ToString("dd MMMM yyyy")
             }).ToList();
             return View(RejectedLoans);
         }

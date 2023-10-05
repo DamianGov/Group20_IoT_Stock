@@ -118,7 +118,7 @@ namespace Group20_IoT.Controllers
                     Session["User"] = user;
                     Session["Login"] = userLoginTracking;
                     Session["UserType"] = user.Role.Type;
-
+                Session["Message"] = $"Welcome, {user.GetFullName()}";
                
                 return RedirectToAction(user.Role.Type + "Home", "Home");
                 }

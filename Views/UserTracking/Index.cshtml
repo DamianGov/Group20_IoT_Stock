@@ -1,9 +1,53 @@
 ﻿
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "User Tracking";
 }
 
-<h2>Index</h2>
+<style>
+    /* Add your custom styles here */
+    .card {
+        width: 100% !important;
+        margin-bottom: 1.7rem !important;
+        background-color: #2E3842 !important;
+        color: #fff !important; /* Change text color to white */
+    }
+
+    .card-header {
+        background-color: #003366 !important;
+        color: #fff !important; /* Change text color to white */
+        text-align: center !important;
+        padding: 0.75rem !important;
+        font-weight: bold !important;
+    }
+
+    .card-body {
+        padding: 1.25rem !important;
+    }
+
+    .btn-primary {
+        display: inline-block;
+        padding: 10px 20px;
+        color: #03e9f4;
+        font-size: 13px;
+        text-decoration: none;
+        text-transform: uppercase;
+        border: none;
+        outline: none;
+        background: transparent;
+        transition: background 0.5s, color 0.5s;
+        margin-top: 20px;
+        letter-spacing: 4px;
+        cursor: pointer;
+    }
+
+        .btn-primary:hover {
+            background: #03e9f4;
+            color: #fff;
+            border-radius: 5px;
+            box-shadow: 0 0 5px #03e9f4, 0 0 25px #03e9f4, 0 0 50px #03e9f4, 0 0 100px #03e9f4;
+        }
+</style>
+<h2>User Tracking</h2>
 
 <div>
     <label>Filter User Type</label>
@@ -16,7 +60,7 @@
 </div>
 
 
-<div id="userTrackingTable">
+<div id="userTrackingTable" class="card">
     @Html.Partial("_UserTracked", Model as List<Group20_IoT.Models.ViewModel.UserTrackingViewModel>)
 </div>
 
