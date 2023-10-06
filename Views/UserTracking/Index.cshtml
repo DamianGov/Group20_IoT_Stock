@@ -2,7 +2,7 @@
 @{
     ViewBag.Title = "User Tracking";
 }
-
+@using PagedList.Mvc;
 <style>
     /* Add your custom styles here */
     .card {
@@ -61,7 +61,7 @@
 
 
 <div id="userTrackingTable" class="card">
-    @Html.Partial("_UserTracked", Model as List<Group20_IoT.Models.ViewModel.UserTrackingViewModel>)
+    @Html.Partial("_UserTracked", Model as PagedList.IPagedList<Group20_IoT.Models.ViewModel.UserTrackingViewModel>)
 </div>
 
 @section scripts

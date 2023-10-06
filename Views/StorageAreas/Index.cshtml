@@ -11,8 +11,9 @@
     }
 
     .card {
-        width: 18rem;
-        margin-bottom: 1.7rem;
+        width: calc(50% - 20px);
+        margin: 10px;
+        margin-bottom: 20px !important;
         background-color: #2E3842;
         color: #fff;
     }
@@ -23,6 +24,11 @@
         text-align: center;
         padding: 0.75rem;
         font-weight: bold;
+    }
+    .card-container {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between; /* Distribute cards evenly in a row */
     }
 
     .card-body {
@@ -77,7 +83,7 @@
     @Html.ActionLink("Create New Storage Area", "Create", null, new { @class = "btn-primary" })
 </p>
 <br />
-<div class="card-deck">
+<div class="card-container">
     @foreach (var item in Model)
     {
         <div class="card">

@@ -5,10 +5,13 @@
     <thead>
         <tr>
             <th>
-                User Requested
+                Reference #
             </th>
             <th>
-                Name
+                User
+            </th>
+            <th>
+                Stock
             </th>
             <th>
                 Quantity
@@ -35,10 +38,13 @@
             {
                 <tr>
                     <td>
-                        @item.UserName
+                        @item.Id
                     </td>
                     <td>
-                        @item.StockName
+                        @item.UserName [@item.UniNum]
+                    </td>
+                    <td>
+                        @item.StockName 
                     </td>
                     <td>
                         @item.Quantity

@@ -54,16 +54,16 @@
             <thead>
                 <tr>
                     <th>
-                        User Name
+                        Reference #
+                    </th>
+                    <th>
+                        User
                     </th>
                     <th>
                         User Role
                     </th>
                     <th>
-                        Stock Code
-                    </th>
-                    <th>
-                        Stock Name
+                        Stock
                     </th>
                     <th>
                         Quantity Wanted
@@ -86,15 +86,15 @@
                     {
                         <tr>
                             <td>
-                                @item.UserName
+                                @item.Id
+                            </td>
+                            <td>
+                                @item.UserName [@item.UniNum]
                             </td>
                             <td>
                                 @item.UserRole
                             </td>
-                            <td>
-                                @item.StockCode
-                            </td>
-                            <td>@item.StockName</td>
+                            <td>@item.StockName [@item.StockCode]</td>
 
                             <td>
                                 @item.QuantityWant

@@ -2,8 +2,8 @@
 
 
 .wrapper {
-    min-height: 100% !important;
-    position: relative !important;
+   flex-grow: 1;
+   padding: 20px;
 }
 
 .content {
@@ -12,9 +12,8 @@
 }
 
 .footer {
-    position: absolute !important;
-    bottom: 0 !important;
-    width: 100% !important;
+    text-align: center;
+    padding: 10px 0;
 }
 
 .rainbow-text {

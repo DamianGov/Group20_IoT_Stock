@@ -23,6 +23,23 @@ namespace Group20_IoT.Controllers
             return View(discrepancyStock.ToList());
         }
 
+        public ActionResult Search(int? refer)
+        {
+            List<StockDiscrepancy> discrepancyStock = new List<StockDiscrepancy>();
+            if (!refer.HasValue)
+                discrepancyStock = db.StockDiscrepancy.Include(d => d.Stock).Include(d => d.Users).OrderByDescending(d => d.CreationDate).ToList();
+            else
+                 discrepancyStock = db.StockDiscrepancy.Include(d => d.Stock).Include(d => d.Users).Where(d => d.Id == refer).ToList();
+
+            return PartialView("_DiscrepancyTable", discrepancyStock); 
+
+        }
+
+        public ActionResult Reset()
+        {
+            var discrepancyStock = db.StockDiscrepancy.Include(d => d.Stock).Include(d => d.Users).OrderByDescending(d => d.CreationDate).ToList();
+            return PartialView("_DiscrepancyTable", discrepancyStock);
+        }
 
         // GET: DeveStocks/Create
         public ActionResult Create()

@@ -11,10 +11,17 @@
     }
 
     .card {
-        width: 18rem;
-        margin-bottom: 1.7rem;
+        width: calc(50% - 20px);
+        margin: 10px;
+        margin-bottom: 20px !important;
         background-color: #2E3842;
         color: #fff;
+    }
+
+    .card-container {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between; /* Distribute cards evenly in a row */
     }
 
     .card-header {
@@ -72,47 +79,22 @@
 </style>
 
 
-<h2>Stock Discrepancies</h2>
+<h2>Stock Discrepancies Management</h2>
 <br />
 <p>
-    @Html.ActionLink("Submit a Discrepancy", "Create", null, new { @class = "btn btn-primary text-white" })
+    @Html.ActionLink("Submit a Discrepancy", "Create", null, new { @class = "btn-primary" })
 </p>
 <br />
-<div class="container">
-    <div class="card-deck">
-        @foreach (var item in Model)
-        {
-            <div class="card">
-                <div class="card-header">
-                    <h5>@Html.DisplayFor(modelItem => item.Stock.StockCode) - @Html.DisplayFor(modelItem => item.Stock.Name)</h5>
-                </div>
-                <div class="card-body">
-                    <p><strong>Submitted By:</strong> @item.Users.GetFullName() [@item.Users.UniNum]</p>
-                    <p><strong>Quantity:</strong> @Html.DisplayFor(modelItem => item.Quantity)</p>
-                    <p><strong>Discrepancy Category:</strong> @Html.DisplayFor(modelItem => item.DiscrepancyCategory)</p>
-                    <p><strong>Note:</strong> @Html.DisplayFor(modelItem => item.Note)</p>
-                    <p><strong>Discrepancy Found:</strong> @item.DiscrepancyFound.ToString("dd MMMM yyyy")</p>
-                    <p><strong>Creation Date</strong>: @item.CreationDate.ToString("dd MMMM yyyy")</p>
-                    <p>
-                        <strong>Resolved:</strong> @if (item.Resolved)
-                        {<span class="text-success">Yes</span> }
-                        else
-                        { <span class="text-danger">No</span>}
-                    </p>
-                    <p>
-                        <strong>Resolved Date:</strong> @if (item.ResolvedDate.HasValue)
-                        {@item.ResolvedDate.Value.ToString("dd MMMM yyyy")}
-                    else {; }
-                    </p>
-                    @if (Session["UserType"] as string == "SuperAdmin" && !item.Resolved)
-                    {
-                        <button class="btn btn-primary resolve-button" data-id="@item.Id">Resolve Discrepancy</button>
-                    }
-                </div>
-            </div>
-           
-        }
-    </div>
+<div>
+    <label>Enter Reference #</label>
+    <input type="number" id="searchInput" min="0" max="@int.MaxValue" />
+    <button id="searchButton" class="btn-primary">Search</button>
+    <br />
+    <button id="resetButton" class="btn-primary" style="display:none">Reset</button>
+</div>
+<br />
+<div id="discrepancyTable">
+    @Html.Partial("_DiscrepancyTable", Model as IEnumerable<Group20_IoT.Models.StockDiscrepancy>)
 </div>
 
 
@@ -122,27 +104,41 @@
     <script>
         $(document).ready(function () {
 
-        $(".resolve-button").on("click", function () {
-            var ID = $(this).data("id");
-            updateResolve(ID);
-        });
+            var ResetButton = $("#resetButton");
 
-        function updateResolve(ID) {
-            $.ajax({
-                url: '@Url.Action("ResolveDiscrepancy", "Discrepancy")',
-                type: 'POST',
-                data: { id: ID },
-                dataType: 'json',
-                success: function (data) {
-                    localStorage.setItem('notificationMessage', data.message);
-                    location.reload();
-                },
-                error: function () {
-                    notifyError("An error occurred while resolving discrepancy.");
+            $("#searchButton").click(function () {
+                var searchItem = $("#searchInput").val();
 
-                }
+                $.ajax({
+                    url: '@Url.Action("Search", "Discrepancy")',
+                    type: "GET",
+                    data: { refer: searchItem },
+                    success: function (data) {
+                        $("#discrepancyTable").html(data);
+                        ResetButton.show();
+                    },
+                    error: function () {
+                        notifyError("Error occurred while searching.");
+                        ResetButton.show();
+                    }});
             });
-        }
-    });
+                ResetButton.click(function () {
+
+                    $.ajax({
+                        url: '@Url.Action("Reset", "Discrepancy")',
+                        type: "GET",
+                        success: function (data) {
+                            $("#discrepancyTable").html(data);
+                            ResetButton.hide();
+                        },
+                        error: function () {
+                            notifyError("Error occurred while resetting.");
+                            ResetButton.show();
+                        }
+                    });
+
+                
+            });
+        });
     </script>
 }

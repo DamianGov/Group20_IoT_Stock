@@ -41,17 +41,28 @@ namespace Group20_IoT.Controllers
         }
 
         [SessionChecker("SuperAdmin", "Admin", "Member")]
-        [ValidateAntiForgeryToken]
         [HttpPost]
-        public ActionResult ManageAccount(Users users)
+        public ActionResult UpdateDetails(string firstname, string surname, int? studyyear, string qualification)
         {
-            if(ModelState.IsValid)
+            if(firstname.Trim() != string.Empty && surname.Trim() != string.Empty && studyyear.HasValue && qualification.Trim() != string.Empty) 
             {
-                db.Entry(users).State = EntityState.Modified; 
-                db.SaveChanges();
-            }
+                Users users = Session["User"] as Users;
 
-            return View(users);
+                users.FirstName = firstname;
+                users.Surname = surname;    
+                users.StudyYear = studyyear.Value;
+                users.Qualification = qualification;
+
+                db.Entry(users).State = EntityState.Modified;
+                db.SaveChanges();
+
+                Session["Users"] = users;
+
+                return Json(new { success = true, message = "Your details have been updated" });
+            } else
+
+                return Json(new { success = false, message = "Data invalid for update" });
+
         }
 
         public ActionResult About()

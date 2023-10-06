@@ -63,16 +63,19 @@ namespace Group20_IoT.Controllers
                     // If user doesnt exist
                     if (user == null)
                     {
-                        // route to error page
-                        return HttpNotFound();
-                    }
+                    ModelState.AddModelError("Email", "User does not exist");
+                    login.Email = "";
+                    login.Password = "";
+                    return View(login);
+                }
 
                     // Check if person is locked
                     if (!user.Access)
                     {
-                        // give error message that user is locked
-                        return HttpNotFound();
-                    }
+                    ModelState.AddModelError("Email", "Access is Restricted");
+                    login.Password = "";
+                    return View(login);
+                }
 
                     // Check if user's password is correct
                     if (!SharedMethods.VerifyPassword(login.Password, user.Password))
@@ -118,7 +121,6 @@ namespace Group20_IoT.Controllers
                     Session["User"] = user;
                     Session["Login"] = userLoginTracking;
                     Session["UserType"] = user.Role.Type;
-                Session["Message"] = $"Welcome, {user.GetFullName()}";
                
                 return RedirectToAction(user.Role.Type + "Home", "Home");
                 }

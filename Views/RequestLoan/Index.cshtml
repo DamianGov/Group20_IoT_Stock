@@ -53,74 +53,24 @@
         @Html.ActionLink("My Accepted Loan Requests", "AcceptedLoans", null, new { @class = "btn btn-primary" })
 
         <div>
-            FILTER BY ??
+            <label>Enter Reference #</label>
+            <input type="number" id="searchInput" min="0" max="@int.MaxValue" />
+            <button id="searchButton" class="btn-primary">Search</button>
+            <br />
+            <button id="resetButton" class="btn-primary" style="display:none">Reset</button>
+            <br />
+            <select id="filterSortby">
+                <option value="">Default Filter</option>
+                <option value=0>Filter Pending</option>
+                <option value=2>Filter Rejected</option>
+                <option value=3>Filter Cancelled</option>
+            </select>
+        </div>
+        <br />
+        <div id="requestLoanTable">
+            @Html.Partial("_RequestLoanTable", Model as IEnumerable<Group20_IoT.Models.RequestLoanStock>)
         </div>
 
-        <table class="table text-white">
-            <thead>
-                <tr>
-                    <th>
-                        Stock Code
-                    </th>
-                    <th>
-                        Stock Name
-                    </th>
-                    <th>
-                        Quantity
-                    </th>
-                    <th>
-                        Date Requested
-                    </th>
-                    <th>
-                        Loan Date
-                    </th>
-                    <th>
-                        Due Date
-                    </th>
-                    <th>
-                        Status
-                    </th>
-                    <th></th>
-                    <th></th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var item in Model)
-                {
-                    <tr>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Stock.StockCode)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Stock.Name)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Quantity)
-                        </td>
-                        <td>
-                            @item.DateRequested.ToString("dd MMMM yyyy")
-                        </td>
-                        <td>
-                            @item.FromDate.ToString("dd MMMM yyyy")
-                        </td>
-                        <td>
-                            @item.DueDate.ToString("dd MMMM yyyy")
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Status)
-                        </td>
-                        @if (item.Status == Group20_IoT.Models.RequestLoanStock.RequestStatus.Pending)
-                        {
-                            <td>
-                                <button class="btn btn-danger cancel-button" data-id="@item.Id">Cancel</button>
-                            </td>
-                        }
-                        <td>
-                        </td>
-                    </tr>
-                }
-            </tbody>
-        </table>
     </div>
 </div>
 
@@ -130,28 +80,60 @@
     <script>
         $(document).ready(function () {
 
-            $(".cancel-button").on("click", function () {
-            var ID = $(this).data("id");
-                cancelLoan(ID, false);
-        });
+             var ResetButton = $("#resetButton");
 
-        function cancelLoan(ID) {
-            $.ajax({
-                url: '@Url.Action("CancelRequest", "RequestLoan")',
-                type: 'POST',
-                data: { id: ID },
-                dataType: 'json',
-                success: function (data) {
-                    localStorage.setItem('notificationMessage', data.message);
-                    location.reload();
-                },
-                error: function () {
-                    notifyError("An error occurred while cancelling the request.");
+ $("#searchButton").click(function () {
+     var searchItem = $("#searchInput").val();
 
-                }
+     $.ajax({
+         url: '@Url.Action("Search", "RequestLoan")',
+         type: "GET",
+         data: { id: searchItem },
+         success: function (data) {
+             $("#requestLoanTable").html(data);
+             ResetButton.show();
+         },
+         error: function () {
+             notifyError("Error occurred while searching.");
+             ResetButton.show();
+         }
+     });
+ });
+            ResetButton.click(function () {
+
+                $.ajax({
+                    url: '@Url.Action("Reset", "RequestLoan")',
+                    type: "GET",
+                    success: function (data) {
+                        $("#requestLoanTable").html(data);
+                        ResetButton.hide();
+                    },
+                    error: function () {
+                        notifyError("Error occurred while resetting.");
+                        ResetButton.show();
+                    }
+                });
             });
-        }
-    });
+
+             $("#filterSortby").change(function () {
+     var sort = $(this).val();
+         $.ajax({
+         url: '@Url.Action("Sort", "RequestLoan")',
+         type: "GET",
+             data: { sort: sort },
+         success: function (data) {
+             $("#requestLoanTable").html(data);
+         },
+         error: function () {
+             notifyError("Error occurred while filtering.");
+         }
+     });
+
+
+ });
+ });
+
+
     </script>
 
 

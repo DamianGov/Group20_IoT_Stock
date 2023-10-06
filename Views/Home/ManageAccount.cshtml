@@ -1,61 +1,136 @@
 ﻿@model Group20_IoT.Models.Users
 @{
-    ViewBag.Title = "ManageAccount";
+    ViewBag.Title = "Account Details";
 }
 
-<h2>ManageAccount</h2>
+<h2>My Account Details</h2>
+<br/>
+    <div class="form-group">
+        <label class="control-label col-md-2">Staff/Student Number</label>
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.UniNum, new { htmlAttributes = new { @class = "form-control readonly", @readonly = true } })
 
-@using (Html.BeginForm())
-{
-    @Html.AntiForgeryToken()
-    @Html.HiddenFor(model => model.Id)
-    @Html.HiddenFor(model => model.Password)
-    @Html.HiddenFor(model => model.Access)
-    @Html.HiddenFor(model => model.Notify)
-    @Html.HiddenFor(model => model.RoleId)
-    @Html.HiddenFor(model => model.CreatedBy)
+        </div>
+    </div>
+
     <div class="form-group">
         @Html.LabelFor(model => model.FirstName, htmlAttributes: new { @class = "control-label col-md-2" })
         <div class="col-md-10">
-            @Html.EditorFor(model => model.FirstName, new { htmlAttributes = new { @class = "form-control" } })
-            @Html.ValidationMessageFor(model => model.FirstName, "", new { @class = "text-danger" })
+            @Html.EditorFor(model => model.FirstName, new { htmlAttributes = new { @class = "form-control readonly details", @readonly = true } })
+            <input type="text" id="editFirstName" style="display: none;" class="form-control text-box single-line" data-val="true" data-val-length="The First Name must not exceed 40 characters" data-val-length-max="40" data-val-required="Please enter a First Name" />
         </div>
     </div>
 
     <div class="form-group">
         @Html.LabelFor(model => model.Surname, htmlAttributes: new { @class = "control-label col-md-2" })
         <div class="col-md-10">
-            @Html.EditorFor(model => model.Surname, new { htmlAttributes = new { @class = "form-control" } })
-            @Html.ValidationMessageFor(model => model.Surname, "", new { @class = "text-danger" })
+            @Html.EditorFor(model => model.Surname, new { htmlAttributes = new { @class = "form-control readonly details", @readonly = true } })
+            <input type="text" id="editSurname" style="display: none;" class="form-control text-box single-line"  data-val="true" data-val-length="The Surname must not exceed 40 characters" data-val-length-max="40" data-val-required="Please enter a Surname" />
+
         </div>
     </div>
 
     <div class="form-group">
         @Html.LabelFor(model => model.Email, htmlAttributes: new { @class = "control-label col-md-2" })
         <div class="col-md-10">
-            @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control" } })
-            @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
+            @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control readonly", @readonly = true } })
         </div>
     </div>
 
     <div class="form-group">
         @Html.LabelFor(model => model.StudyYear, htmlAttributes: new { @class = "control-label col-md-2" })
         <div class="col-md-10">
-            @Html.EditorFor(model => model.StudyYear, new { htmlAttributes = new { @class = "form-control" } })
-            @Html.ValidationMessageFor(model => model.StudyYear, "", new { @class = "text-danger" })
+            @Html.EditorFor(model => model.StudyYear, new { htmlAttributes = new { @class = "form-control readonly details", @readonly = true } })
+            <input type="number" id="editStudyYear" style="display: none;" class="form-control text-box single-lin"  data-val="true" data-val-number="The field Study Year must be a number." data-val-range="The Study Year should be between 1 and 10" data-val-range-max="10" data-val-range-min="1" data-val-required="Please enter a Study Year" />
+
+
         </div>
     </div>
 
     <div class="form-group">
         @Html.LabelFor(model => model.Qualification, htmlAttributes: new { @class = "control-label col-md-2" })
         <div class="col-md-10">
-            @Html.EditorFor(model => model.Qualification, new { htmlAttributes = new { @class = "form-control" } })
-            @Html.ValidationMessageFor(model => model.Qualification, "", new { @class = "text-danger" })
+            @Html.EditorFor(model => model.Qualification, new { htmlAttributes = new { @class = "form-control readonly details", @readonly = true } })
+            <input type="text" id="editQualification" style="display: none;" class="form-control text-box single-line"  data-val="true" data-val-length="The Qualification must not exceed 255 characters" data-val-length-max="255" data-val-required="Please enter a Qualification" />
+
         </div>
     </div>
+    <br />
     <div class="form-group">
         <div class="col-md-offset-2 col-md-10">
-            <input type="submit" value="Save" class="btn btn-default" />
+            <button id="editButton">Edit Details</button>
+            <button id="saveButton" style="display:none;">Save Changes</button>
+            <button id="cancelButton" style="display:none;">Cancel</button>
         </div>
     </div>
+
+
+@section scripts
+{
+    <script>
+        $(document).ready(function () {
+            $("#editButton").click(function () {
+
+                $(".details").hide();
+                $("#editFirstName").val(document.getElementById("FirstName").value).show();
+                $("#editSurname").val(document.getElementById("Surname").value).show();
+                $("#editStudyYear").val(document.getElementById("StudyYear").value).show();
+                $("#editQualification").val(document.getElementById("Qualification").value).show();
+
+                $("#saveButton, #cancelButton").show();
+                $("#editButton").hide()
+
+                $("#cancelButton").click(function () {
+                    // Hide edit mode, show view mode
+                    $(".details").show();
+                    $("#editFirstName").hide();
+                    $("#editSurname").hide();
+                    $("#editStudyYear").hide();
+                    $("#editQualification").hide();
+
+                    // Hide save and cancel buttons, show edit button
+                    $("#saveButton, #cancelButton").hide();
+                    $("#editButton").show();
+                });
+
+                $("#saveButton").click(function () {
+                    var updatedFirstName = document.getElementById("editFirstName").value;
+                    var updatedSurname = document.getElementById("editSurname").value;
+                    var updatedStudyYear = document.getElementById("editStudyYear").value;
+                    var updatedQualification = document.getElementById("editQualification").value;
+
+                    $.ajax({
+    url: '@Url.Action("UpdateDetails", "Home")',
+                        type: 'POST',
+                        data: { firstname: updatedFirstName, surname: updatedSurname, studyyear: updatedStudyYear, qualification: updatedQualification },
+    dataType: 'json',
+                        success: function (data) {
+                            document.getElementById("FirstName").value = updatedFirstName;
+                            document.getElementById("Surname").value = updatedSurname;
+                            document.getElementById("StudyYear").value = updatedStudyYear;
+                            document.getElementById("Qualification").value = updatedQualification;
+
+                            $("#cancelButton").click();
+
+        if (!data.success) {
+            notifyError(data.message);
+        } else {
+            localStorage.setItem('notificationMessage', data.message);
+            location.reload();
+        }
+
+
+    },
+    error: function () {
+        notifyError("An error occurred while updating your details.");
+    }
+});
+
+                });
+            });
+
+        });
+    </script>
+
+
 }

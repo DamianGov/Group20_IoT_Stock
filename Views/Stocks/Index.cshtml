@@ -56,7 +56,17 @@
 <div>
     <label>Enter Stock Code</label>
     <input type="text" id="searchInput" />
-    <button id="searchButton">Search</button>
+    <button id="searchButton" class="btn-primary">Search</button>            
+    <br />
+    <button id="resetButton" class="btn-primary" style="display:none">Reset</button>
+    <br />
+    <select id="filterSortby">
+        <option value="">Default Sorting</option>
+        <option value="StockLow">Sort By Quantity: Low To High</option>
+        <option value="StockHigh">Sort By Quantity: High To Low</option>
+        <option value="OnLoanLow">Sort By Quantity On Loan: Low To High</option>
+        <option value="OnLoanHigh">Sort By Quantity On Loan: High To Low</option>
+    </select>
 </div>
 <br />
 <div id="stockTable">
@@ -66,6 +76,9 @@
 @section scripts {
     <script>
         $(document).ready(function () {
+
+            var ResetButton = $("#resetButton");
+
             $("#searchButton").click(function () {
                 var searchItem = $("#searchInput").val();
 
@@ -75,11 +88,48 @@
                     data: { searchItem: searchItem },
                     success: function (data) {
                         $("#stockTable").html(data);
+                        ResetButton.show();
                     },
                     error: function () {
                         notifyError("Error occurred while searching.");
+                        ResetButton.show();
                     }
                 });
+            });
+
+                ResetButton.click(function () {
+
+        $.ajax({
+            url: '@Url.Action("Reset", "Stocks")',
+            type: "GET",
+            success: function (data) {
+                $("#stockTable").html(data);
+                ResetButton.hide();
+            },
+            error: function () {
+                notifyError("Error occurred while resetting.");
+                ResetButton.show();
+            }
+        });
+
+
+});
+
+            $("#filterSortby").change(function () {
+                var sort = $(this).val();
+                    $.ajax({
+                    url: '@Url.Action("Sort", "Stocks")',
+                    type: "GET",
+                        data: { sort: sort },
+                    success: function (data) {
+                        $("#stockTable").html(data);
+                    },
+                    error: function () {
+                        notifyError("Error occurred while filtering.");
+                    }
+                });
+
+
             });
         });
     </script>

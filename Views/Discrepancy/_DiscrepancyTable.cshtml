@@ -1,0 +1,68 @@
+﻿@model IEnumerable<Group20_IoT.Models.StockDiscrepancy>
+
+
+<div class="card-container">
+    @foreach (var item in Model)
+    {
+        <div class="card">
+            <div class="card-header">
+                <h5>@Html.DisplayFor(modelItem => item.Stock.StockCode) - @Html.DisplayFor(modelItem => item.Stock.Name)</h5>
+            </div>
+            <div class="card-body">
+                <p><strong>Reference #:</strong> @item.Id</p>
+                <p><strong>Submitted By:</strong> @item.Users.GetFullName() [@item.Users.UniNum]</p>
+                <p><strong>Quantity:</strong> @Html.DisplayFor(modelItem => item.Quantity)</p>
+                <p><strong>Discrepancy Category:</strong> @Html.DisplayFor(modelItem => item.DiscrepancyCategory)</p>
+                <p><strong>Note:</strong> @Html.DisplayFor(modelItem => item.Note)</p>
+                <p><strong>Discrepancy Found:</strong> @item.DiscrepancyFound.ToString("dd MMMM yyyy")</p>
+                <p><strong>Creation Date</strong>: @item.CreationDate.ToString("dd MMMM yyyy")</p>
+                <p>
+                    <strong>Resolved:</strong> @if (item.Resolved)
+                    {<span class="text-success">Yes</span> }
+                    else
+                    { <span class="text-danger">No</span>}
+                </p>
+                <p>
+                    <strong>Resolved Date:</strong> @if (item.ResolvedDate.HasValue)
+                    {@item.ResolvedDate.Value.ToString("dd MMMM yyyy")}
+                else {; }
+                </p>
+                @if (Session["UserType"] as string == "SuperAdmin" && !item.Resolved)
+                {
+                    <button class="btn btn-primary resolve-button" data-id="@item.Id">Resolve Discrepancy</button>
+                }
+            </div>
+        </div>
+
+    }
+</div>
+
+@section scripts
+{
+    <script>
+        $(document).ready(function () {
+
+        $(".resolve-button").on("click", function () {
+            var ID = $(this).data("id");
+            updateResolve(ID);
+        });
+
+        function updateResolve(ID) {
+            $.ajax({
+                url: '@Url.Action("ResolveDiscrepancy", "Discrepancy")',
+                type: 'POST',
+                data: { id: ID },
+                dataType: 'json',
+                success: function (data) {
+                    localStorage.setItem('notificationMessage', data.message);
+                    location.reload();
+                },
+                error: function () {
+                    notifyError("An error occurred while resolving discrepancy.");
+
+                }
+            });
+        }
+    });
+    </script>
+}

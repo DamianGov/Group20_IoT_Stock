@@ -1,0 +1,9 @@
+﻿
+@{
+    ViewBag.Title = "Rejected Extensions";
+}
+
+
+<div id="acceptedTable">
+    @Html.Partial("_RejectedExtensionsTable", Model as List<Group20_IoT.Models.ExtensionRequest>)
+</div>

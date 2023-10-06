@@ -19,7 +19,7 @@ namespace Group20_IoT.Controllers
 
         public ActionResult Index()
         {
-            var storageArea = db.StorageArea.Include(s => s.Room).AsEnumerable().Select(s=> new StorageAreaViewModel
+            var storageArea = db.StorageArea.Include(s => s.Room).AsEnumerable().OrderBy(s => s.Room.Room_Number).Select(s=> new StorageAreaViewModel
             {
                 Id = s.Id,
                 Area_Name = s.Area_Name,
@@ -31,7 +31,7 @@ namespace Group20_IoT.Controllers
 
         public ActionResult Create()
         {
-            var rooms = db.Room.Where(r => r.Active).ToList().Select(r => new
+            var rooms = db.Room.Where(r => r.Active).ToList().OrderBy(r => r.Room_Number).Select(r => new
             {
                 r.Id,
                 RoomDetails = $"{r.Room_Number} [{r.Room_Description}]"
@@ -68,7 +68,7 @@ namespace Group20_IoT.Controllers
                 return RedirectToAction("Index");
             }
 
-            var rooms = db.Room.Where(r => r.Active).ToList().Select(r => new
+            var rooms = db.Room.Where(r => r.Active).ToList().OrderBy(r => r.Room_Number).Select(r => new
             {
                 r.Id,
                 RoomDetails = $"{r.Room_Number} [{r.Room_Description}]"
@@ -96,7 +96,7 @@ namespace Group20_IoT.Controllers
 
             int RoomId = storageArea.RoomId;
 
-            var rooms = db.Room.Where(r => r.Active || RoomId == r.Id).ToList().Select(r => new
+            var rooms = db.Room.Where(r => r.Active || RoomId == r.Id).ToList().OrderBy(r => r.Room_Number).Select(r => new
             {
                 r.Id,
                 RoomDetails = $"{r.Room_Number} [{r.Room_Description}]"
@@ -130,7 +130,7 @@ namespace Group20_IoT.Controllers
             }
             int RoomId = storageArea.RoomId;
 
-            var rooms = db.Room.Where(r => r.Active || RoomId == r.Id).ToList().Select(r => new
+            var rooms = db.Room.Where(r => r.Active || RoomId == r.Id).ToList().OrderBy(r => r.Room_Number).Select(r => new
             {
                 r.Id,
                 RoomDetails = $"{r.Room_Number} [{r.Room_Description}]"

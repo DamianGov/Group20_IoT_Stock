@@ -6,16 +6,16 @@
     <thead>
         <tr>
             <th>
-                User Name
+                Reference #
+            </th>
+            <th>
+                User
             </th>
             <th>
                 User Role
             </th>
             <th>
-                Stock Code
-            </th>
-            <th>
-                Stock Name
+                Stock
             </th>
             <th>
                 Amount Available
@@ -43,15 +43,15 @@
             {
                 <tr>
                     <td>
-                        @item.UserName
+                        @item.Id
+                    </td>
+                    <td>
+                        @item.UserName [@item.UniNum]
                     </td>
                     <td>
                         @item.UserRole
                     </td>
-                    <td>
-                        @item.StockCode
-                    </td>
-                    <td>@item.StockName</td>
+                    <td>@item.StockName [@item.StockCode]</td>
                     <td>
                         @item.AmntAva
                     </td>
@@ -79,7 +79,7 @@
                     <td>
                         <button id="acceptButton" data-target="#AcceptModal-@item.Id" data-toggle="modal">Accept</button>
                         <div class="modal fade" data-keyboard="false" data-backdrop="static" id="AcceptModal-@item.Id" tabindex="-1">
-                            <div class="modal-dialog">
+                            <div class="modal-dialog modal-dialog-centered">
                                 <div class="modal-content">
                                     <div class="modal-header">
                                         <input type="button" value="&#x274C;" class="close" data-dismiss="modal" />
@@ -100,7 +100,7 @@
                     <td>
                         <button id="rejectButton" data-target="#RejectModal-@item.Id" data-toggle="modal">Reject</button>
                         <div class="modal fade" data-keyboard="false" data-backdrop="static" id="RejectModal-@item.Id" tabindex="-1">
-                            <div class="modal-dialog">
+                            <div class="modal-dialog modal-dialog-centered">
                                 <div class="modal-content">
                                     <div class="modal-header">
                                         <input type="button" value="&#x274C;" class="close" data-dismiss="modal" />

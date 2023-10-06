@@ -46,115 +46,27 @@
         }
 </style>
 
+
 <div class="card">
     <div class="card-header">
         <h2>Extension Requests</h2>
     </div>
     <div class="card-body">
+        @Html.ActionLink("View Accepted Extensions", "AcceptedExtensions", null, new { @class = "btn-primary" })
+        &nbsp;&nbsp;&nbsp;&nbsp;
+        @Html.ActionLink("View Rejected Extensions", "RejectedExtensions", null, new { @class = "btn-primary" })
         <div>
-            FILTER and Search
+            <label>Enter Reference #</label>
+            <input type="number" id="searchInput" min="0" max="@int.MaxValue" />
+            <button id="searchButton" class="btn-primary">Search</button>
+            <br />
+            <button id="resetButton" class="btn-primary" style="display:none">Reset</button>
+        </div>
+        <br />
+        <div id="pendingTable">
+            @Html.Partial("_PendingExtensionsTable", Model as List<Group20_IoT.Models.ExtensionRequest>)
         </div>
 
-        <table class="table text-white">
-            <tr>
-                <th>
-                    User Requesting Extension
-                </th>
-                <th>
-                    User Role
-                </th>
-                <th>
-                    Reason
-                </th>
-                <th>
-                    Status
-                </th>
-                <th></th>
-                <th></th>
-            </tr>
-            @foreach (var record in Model)
-            {
-                <tr>
-                    <td>
-                        @record.LoanStatus.RequestLoanStock.Users.GetFullName() [@record.LoanStatus.RequestLoanStock.Users.UniNum]
-                    </td>
-                    <td>
-                        @record.LoanStatus.RequestLoanStock.Users.Role.Type
-                    </td>
-                    <td>
-                        @record.Reason
-                    </td>
-                    <td>
-                        @record.LoanStatus.Status
-                    </td>
-                    <td>
-                        <button id="moreDetailsButton" data-target="#DetailsModal-@record.Id" data-toggle="modal">View More Details</button>
-                        <div class="modal fade" data-keyboard="false" data-backdrop="static" id="DetailsModal-@record.Id" tabindex="-1">
-                            <div class="modal-dialog">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <input type="button" value="&#x274C;" class="close" data-dismiss="modal" />
-                                        <p class="modal-title" style="color:white">More Details</p>
-                                    </div>
-                                    <div class="modal-body">
-                                        <p>Stock Code: @Html.EditorFor(model => record.LoanStatus.RequestLoanStock.Stock.StockCode, new { htmlAttributes = new { @class = "form-control", @readonly = true } })</p>
-                                        <p>Stock Name: @Html.EditorFor(model => record.LoanStatus.RequestLoanStock.Stock.Name, new { htmlAttributes = new { @class = "form-control", @readonly = true } })</p>
-                                        <p>Quantity Loaned: @Html.EditorFor(model => record.LoanStatus.RequestLoanStock.Quantity, new { htmlAttributes = new { @class = "form-control", @readonly = true } })</p>
-                                        <p>Borrow Date: @Html.EditorFor(model => record.LoanStatus.RequestLoanStock.FromDate, new { htmlAttributes = new { @class = "form-control", @readonly = true } })</p>
-                                        <p>Current Due Date: @Html.EditorFor(model => record.LoanStatus.RequestLoanStock.DueDate, new { htmlAttributes = new { @class = "form-control", @readonly = true } })</p>
-                                    </div>
-                                    <div class="modal-footer">
-                                        <button class="btn btn-secondary" id="Close-@record.Id" data-dismiss="modal">Close</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </td>
-                    <td>
-                        <button id="acceptButton" data-target="#AcceptModal-@record.Id" data-toggle="modal">Accept</button>
-                        <div class="modal fade" data-keyboard="false" data-backdrop="static" id="AcceptModal-@record.Id" tabindex="-1">
-                            <div class="modal-dialog">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <input type="button" value="&#x274C;" class="close" data-dismiss="modal" />
-                                        <p class="modal-title" style="color:white">Accept Extension Request</p>
-                                    </div>
-                                    <div class="modal-body">
-                                        <p>Are you sure you want to accept this Extension Request?</p>
-                                    </div>
-                                    <div class="modal-footer">
-                                        <button id="confirmApproval" class="btn btn-primary" onclick="AcceptExtension(@record.Id)" data-dismiss="modal">Yes</button>
-                                        <button class="btn btn-secondary" id="Close-@record.Id" data-dismiss="modal">No</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                    </td>
-                    <td>
-                        <button id="rejectButton" data-target="#RejectModal-@record.Id" data-toggle="modal">Reject</button>
-                        <div class="modal fade" data-keyboard="false" data-backdrop="static" id="RejectModal-@record.Id" tabindex="-1">
-                            <div class="modal-dialog">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <input type="button" value="&#x274C;" class="close" data-dismiss="modal" />
-                                        <p class="modal-title" style="color:white">Reject Extension Request</p>
-                                    </div>
-                                    <div class="modal-body">
-                                        <p>Are you sure you want to reject this Extension Request?</p>
-                                    </div>
-                                    <div class="modal-footer">
-                                        <button id="confirmReject" class="btn btn-primary" onclick="RejectExtension(@record.Id)" data-dismiss="modal">Yes</button>
-                                        <button class="btn btn-secondary" id="Close-@record.Id" data-dismiss="modal">No</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </td>
-                </tr>
-
-            }
-        </table>
     </div>
 </div>
 
@@ -162,47 +74,43 @@
 @section scripts
 {
     <script>
-        function AcceptExtension(stockId)
-        {
+    $(document).ready(function () {
+
+        var ResetButton = $("#resetButton");
+
+        $("#searchButton").click(function () {
+            var searchItem = $("#searchInput").val();
+
             $.ajax({
-                url: '@Url.Action("AcceptExtension", "Extensions")',
-                type: 'POST',
-                data: { id: stockId },
-                dataType: 'json',
+                url: '@Url.Action("Search", "Extensions")',
+                type: "GET",
+                data: { id: searchItem },
                 success: function (data) {
-                    if (!data.success) {
-                        notifyError(data.message);
-                    } else {
-                        localStorage.setItem('notificationMessage', data.message);
-                        location.reload();
+                    $("#pendingTable").html(data);
+                    ResetButton.show();
+                },
+                error: function () {
+                    notifyError("Error occurred while searching.");
+                    ResetButton.show();
+                }});
+        });
+            ResetButton.click(function () {
+
+                $.ajax({
+                    url: '@Url.Action("Reset", "Extensions")',
+                    type: "GET",
+                    success: function (data) {
+                        $("#pendingTable").html(data);
+                        ResetButton.hide();
+                    },
+                    error: function () {
+                        notifyError("Error occurred while resetting.");
+                        ResetButton.show();
                     }
+                });
 
 
-                },
-                error: function () {
-                    notifyError("An error occurred while applying the Extension.");
-                }
-            });
-
-        }
-
-        function RejectExtension(stockId)
-{
-            $.ajax({
-                url: '@Url.Action("RejectExtension", "Extensions")',
-                type: 'POST',
-                data: { id: stockId },
-                dataType: 'json',
-                success: function (data) {
-                    localStorage.setItem('notificationMessage', data.message);
-                    location.reload();
-                },
-                error: function () {
-                    notifyError("An error occurred while rejecting the Extension.");
-                }
-            });
-}
+        });
+    });
     </script>
-
-
-}
+    }

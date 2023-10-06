@@ -18,7 +18,7 @@ namespace Group20_IoT.Controllers
 
         public ActionResult Index()
         {
-            return View(db.Room.ToList());
+            return View(db.Room.OrderBy(r => r.Room_Number).ToList());
         }
 
 

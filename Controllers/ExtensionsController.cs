@@ -17,7 +17,37 @@ namespace Group20_IoT.Controllers
             var PendingExtensions = db.ExtensionRequest.Include(e => e.LoanStatus).Include(e => e.LoanStatus.Users).Include(e => e.LoanStatus.RequestLoanStock.Users).Include(e => e.LoanStatus.RequestLoanStock.Stock).Include(e => e.LoanStatus.RequestLoanStock.Users.Role).Where(e => e.Status == ExtensionRequest.ExtensionStatus.Pending).OrderByDescending(e => e.ExtensionSubmitted).ToList();
             return View(PendingExtensions);
         }
+        public ActionResult Search(int? id)
+        {
+            List<ExtensionRequest> PendingExtensions = new List<ExtensionRequest>();
+            if(!id.HasValue)
+            {
+                PendingExtensions = db.ExtensionRequest.Include(e => e.LoanStatus).Include(e => e.LoanStatus.Users).Include(e => e.LoanStatus.RequestLoanStock.Users).Include(e => e.LoanStatus.RequestLoanStock.Stock).Include(e => e.LoanStatus.RequestLoanStock.Users.Role).Where(e => e.Status == ExtensionRequest.ExtensionStatus.Pending).OrderByDescending(e => e.ExtensionSubmitted).ToList();
+            }
+            else
+            {
+                PendingExtensions = db.ExtensionRequest.Include(e => e.LoanStatus).Include(e => e.LoanStatus.Users).Include(e => e.LoanStatus.RequestLoanStock.Users).Include(e => e.LoanStatus.RequestLoanStock.Stock).Include(e => e.LoanStatus.RequestLoanStock.Users.Role).Where(e => e.Status == ExtensionRequest.ExtensionStatus.Pending && e.LoanStatusId == id).OrderByDescending(e => e.ExtensionSubmitted).ToList();
+            }
 
+            return PartialView("_PendingExtensionsTable", PendingExtensions);
+        }
+
+        public ActionResult Reset()
+        {
+            var PendingExtensions = db.ExtensionRequest.Include(e => e.LoanStatus).Include(e => e.LoanStatus.Users).Include(e => e.LoanStatus.RequestLoanStock.Users).Include(e => e.LoanStatus.RequestLoanStock.Stock).Include(e => e.LoanStatus.RequestLoanStock.Users.Role).Where(e => e.Status == ExtensionRequest.ExtensionStatus.Pending).OrderByDescending(e => e.ExtensionSubmitted).ToList();
+            return PartialView("_PendingExtensionsTable", PendingExtensions);
+        }
+
+        public ActionResult AcceptedExtensions()
+        {
+            var AcceptedExtensions = db.ExtensionRequest.Include(e => e.LoanStatus).Include(e => e.LoanStatus.Users).Include(e => e.LoanStatus.RequestLoanStock.Users).Include(e => e.LoanStatus.RequestLoanStock.Stock).Include(e => e.LoanStatus.RequestLoanStock.Users.Role).Where(e => e.Status == ExtensionRequest.ExtensionStatus.Accepted).OrderByDescending(e => e.ExtensionSubmitted).ToList();
+            return View(AcceptedExtensions);
+        }
+        public ActionResult RejectedExtensions()
+        {
+            var RejectedExtensions = db.ExtensionRequest.Include(e => e.LoanStatus).Include(e => e.LoanStatus.Users).Include(e => e.LoanStatus.RequestLoanStock.Users).Include(e => e.LoanStatus.RequestLoanStock.Stock).Include(e => e.LoanStatus.RequestLoanStock.Users.Role).Where(e => e.Status == ExtensionRequest.ExtensionStatus.Rejected).OrderByDescending(e => e.ExtensionSubmitted).ToList();
+            return View(RejectedExtensions);
+        }
         [HttpPost]
         public ActionResult AcceptExtension(int? id)
         {

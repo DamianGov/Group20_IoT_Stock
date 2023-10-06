@@ -55,7 +55,11 @@
         &nbsp;&nbsp;&nbsp;&nbsp;
         @Html.ActionLink("View Rejected Loans", "RejectedLoans", null, new { @class = "btn-primary" })
         <div>
-            <!-- FILTER AND SEARCH -->
+            <label>Enter Reference #</label>
+            <input type="number" id="searchInput" min="0" max="@int.MaxValue" />
+            <button id="searchButton" class="btn-primary">Search</button>
+            <br />
+            <button id="resetButton" class="btn-primary" style="display:none">Reset</button>
         </div>
         <br />
         <div id="pendingTable">
@@ -70,6 +74,46 @@
 
 @section scripts
 {
+    <script>
+    $(document).ready(function () {
+
+        var ResetButton = $("#resetButton");
+
+        $("#searchButton").click(function () {
+            var searchItem = $("#searchInput").val();
+
+            $.ajax({
+                url: '@Url.Action("Search", "ReviewLoan")',
+                type: "GET",
+                data: { id: searchItem },
+                success: function (data) {
+                    $("#pendingTable").html(data);
+                    ResetButton.show();
+                },
+                error: function () {
+                    notifyError("Error occurred while searching.");
+                    ResetButton.show();
+                }});
+        });
+            ResetButton.click(function () {
+
+                $.ajax({
+                    url: '@Url.Action("Reset", "ReviewLoan")',
+                    type: "GET",
+                    success: function (data) {
+                        $("#pendingTable").html(data);
+                        ResetButton.hide();
+                    },
+                    error: function () {
+                        notifyError("Error occurred while resetting.");
+                        ResetButton.show();
+                    }
+                });
+
+
+        });
+    });
+    </script>
     <script>
         function AcceptLoan(stockId)
         {

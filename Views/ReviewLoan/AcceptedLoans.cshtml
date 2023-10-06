@@ -4,16 +4,68 @@
 }
 
 
-<div>
-    <!--FILTER AND SEARCH-->
-</div>
 
-<div id="acceptedTable">
-    @Html.Partial("_AcceptedLoansTable", Model as List<Group20_IoT.Models.LoanStatus>)
+<div class="card">
+    <div class="card-header">
+        <h2>Accepted Loans</h2>
+    </div>
+    <div class="card-body">
+        <div>
+            <label>Enter Reference #</label>
+            <input type="number" id="searchInput" min="0" max="@int.MaxValue" />
+            <button id="searchButton" class="btn-primary">Search</button>
+            <br />
+            <button id="resetButton" class="btn-primary" style="display:none">Reset</button>
+        </div>
+        <br />
+        <div id="acceptedTable">
+            @Html.Partial("_AcceptedLoansTable", Model as List<Group20_IoT.Models.LoanStatus>)
+        </div>
+    </div>
 </div>
 
 @section scripts
 {
+    <script>
+$(document).ready(function () {
+
+    var ResetButton = $("#resetButton");
+
+    $("#searchButton").click(function () {
+        var searchItem = $("#searchInput").val();
+
+        $.ajax({
+            url: '@Url.Action("SearchAcc", "ReviewLoan")',
+            type: "GET",
+            data: { id: searchItem },
+            success: function (data) {
+                $("#acceptedTable").html(data);
+                ResetButton.show();
+            },
+            error: function () {
+                notifyError("Error occurred while searching.");
+                ResetButton.show();
+            }});
+    });
+        ResetButton.click(function () {
+
+            $.ajax({
+                url: '@Url.Action("ResetAcc", "ReviewLoan")',
+                type: "GET",
+                success: function (data) {
+                    $("#acceptedTable").html(data);
+                    ResetButton.hide();
+                },
+                error: function () {
+                    notifyError("Error occurred while resetting.");
+                    ResetButton.show();
+                }
+            });
+
+
+    });
+});
+    </script>
     <script>
         function ChangeStatus(loanId)
         {
@@ -41,5 +93,5 @@
             });
 
     }
-   </script>
-    }
+    </script>
+}

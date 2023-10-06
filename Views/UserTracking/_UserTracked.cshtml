@@ -1,5 +1,5 @@
-﻿@model List<Group20_IoT.Models.ViewModel.UserTrackingViewModel>
-
+﻿@model PagedList.IPagedList<Group20_IoT.Models.ViewModel.UserTrackingViewModel>
+@using PagedList.Mvc;
 <style>
     /* Add your custom styles here */
     .card {
@@ -88,4 +88,5 @@
             }
         </table>
     </div>
+    @Html.PagedListPager(Model, page => Url.Action("Index", new { page }), new PagedListRenderOptions { Display = PagedListDisplayMode.IfNeeded })
 </div>

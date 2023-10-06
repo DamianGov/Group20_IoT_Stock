@@ -28,6 +28,69 @@ namespace Group20_IoT.Controllers
             return View(LoanableStock);
         }
 
+        public ActionResult Search(string searchItem)
+        {
+            List<LoanStockViewModel> LoanableStock = new List<LoanStockViewModel>();
+            if (string.IsNullOrEmpty(searchItem))
+            {
+                LoanableStock = db.Stock.Where(s => s.Loanable).Select(s => new LoanStockViewModel
+                {
+                    Id = s.Id,
+                    Name = s.Name,
+                    Description = s.Description,
+                    ImageFile = s.ImageFile,
+                    StockCode = s.StockCode,
+                    QuantityCanLoan = ((s.TotalQuantity - s.QuantityOnLoan) <= 0) ? 0 : s.TotalQuantity - s.QuantityOnLoan
+                }).ToList();
+            }
+            else
+            {
+                LoanableStock = db.Stock.Where(s => s.Loanable && s.Name.ToLower().Contains(searchItem.Trim().ToLower())).Select(s => new LoanStockViewModel
+                {
+                    Id = s.Id,
+                    Name = s.Name,
+                    Description = s.Description,
+                    ImageFile = s.ImageFile,
+                    StockCode = s.StockCode,
+                    QuantityCanLoan = ((s.TotalQuantity - s.QuantityOnLoan) <= 0) ? 0 : s.TotalQuantity - s.QuantityOnLoan
+                }).ToList();
+            }
+            return PartialView("_LoanStockTable", LoanableStock);
+        }
+
+        public ActionResult Reset()
+        {
+            var LoanableStock = db.Stock.Where(s => s.Loanable).Select(s => new LoanStockViewModel
+            {
+                Id = s.Id,
+                Name = s.Name,
+                Description = s.Description,
+                ImageFile = s.ImageFile,
+                StockCode = s.StockCode,
+                QuantityCanLoan = ((s.TotalQuantity - s.QuantityOnLoan) <= 0) ? 0 : s.TotalQuantity - s.QuantityOnLoan
+            }).ToList();
+            return PartialView("_LoanStockTable", LoanableStock);
+        }
+
+        public ActionResult Filter(string sort)
+        {
+            List<LoanStockViewModel> LoanableStock =  db.Stock.Where(s => s.Loanable).Select(s => new LoanStockViewModel
+            {
+                Id = s.Id,
+                Name = s.Name,
+                Description = s.Description,
+                ImageFile = s.ImageFile,
+                StockCode = s.StockCode,
+                QuantityCanLoan = ((s.TotalQuantity - s.QuantityOnLoan) <= 0) ? 0 : s.TotalQuantity - s.QuantityOnLoan
+            }).ToList();
+            if (sort == "StockLow")
+                LoanableStock.OrderBy(l => l.QuantityCanLoan);
+            else if (sort == "StockHigh")
+                LoanableStock.OrderByDescending(l => l.QuantityCanLoan);
+
+            return PartialView("_LoanStockTable", LoanableStock);
+        }
+
         public ActionResult Details(int? id)
         {
             if(id == null) return RedirectToAction("Index");

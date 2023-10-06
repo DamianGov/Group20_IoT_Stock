@@ -43,6 +43,110 @@ namespace Group20_IoT.Controllers
             return View(stock);
         }
 
+        public ActionResult Sort(string sort)
+        {
+            List<StockViewModel> stock = new List<StockViewModel>();
+             if (sort == "StockLow")
+            {
+                stock = db.Stock.Include(s => s.StorageArea).Include(s => s.StorageArea.Room).Include(s => s.Users).AsEnumerable().OrderBy(s => s.TotalQuantity).Select(
+                s => new StockViewModel
+                {
+                    Id = s.Id,
+                    Name = s.Name,
+                    Description = s.Description,
+                    TotalQuantity = s.TotalQuantity,
+                    UnitPrice = s.UnitPrice.ToString("C"),
+                    QuantityOnLoan = s.QuantityOnLoan,
+                    StorageArea = s.StorageArea.Area_Name,
+                    Image = s.ImageFile,
+                    StockCode = s.StockCode,
+                    Loanable = s.Loanable ? "Yes" : "No",
+                    Room = $"{s.StorageArea.Room.Room_Number} [{s.StorageArea.Room.Room_Description}]",
+                    CreatedBy = s.Users.GetFullName(),
+                    CreatedOn = s.CreatedOn.ToString("dd MMMM yyyy")
+                }).ToList();
+            } else if (sort == "StockHigh")
+            {
+                stock = db.Stock.Include(s => s.StorageArea).Include(s => s.StorageArea.Room).Include(s => s.Users).AsEnumerable().OrderByDescending(s => s.TotalQuantity).Select(
+                s => new StockViewModel
+                {
+                    Id = s.Id,
+                    Name = s.Name,
+                    Description = s.Description,
+                    TotalQuantity = s.TotalQuantity,
+                    UnitPrice = s.UnitPrice.ToString("C"),
+                    QuantityOnLoan = s.QuantityOnLoan,
+                    StorageArea = s.StorageArea.Area_Name,
+                    Image = s.ImageFile,
+                    StockCode = s.StockCode,
+                    Loanable = s.Loanable ? "Yes" : "No",
+                    Room = $"{s.StorageArea.Room.Room_Number} [{s.StorageArea.Room.Room_Description}]",
+                    CreatedBy = s.Users.GetFullName(),
+                    CreatedOn = s.CreatedOn.ToString("dd MMMM yyyy")
+                }).ToList();
+            } else if(sort == "OnLoanLow")
+            {
+                stock = db.Stock.Include(s => s.StorageArea).Include(s => s.StorageArea.Room).Include(s => s.Users).AsEnumerable().OrderBy(s => s.QuantityOnLoan).Select(
+                s => new StockViewModel
+                {
+                    Id = s.Id,
+                    Name = s.Name,
+                    Description = s.Description,
+                    TotalQuantity = s.TotalQuantity,
+                    UnitPrice = s.UnitPrice.ToString("C"),
+                    QuantityOnLoan = s.QuantityOnLoan,
+                    StorageArea = s.StorageArea.Area_Name,
+                    Image = s.ImageFile,
+                    StockCode = s.StockCode,
+                    Loanable = s.Loanable ? "Yes" : "No",
+                    Room = $"{s.StorageArea.Room.Room_Number} [{s.StorageArea.Room.Room_Description}]",
+                    CreatedBy = s.Users.GetFullName(),
+                    CreatedOn = s.CreatedOn.ToString("dd MMMM yyyy")
+                }).ToList();
+            } else if (sort == "OnLoanHigh")
+            {
+                stock = db.Stock.Include(s => s.StorageArea).Include(s => s.StorageArea.Room).Include(s => s.Users).AsEnumerable().OrderByDescending(s => s.QuantityOnLoan).Select(
+                s => new StockViewModel
+                {
+                    Id = s.Id,
+                    Name = s.Name,
+                    Description = s.Description,
+                    TotalQuantity = s.TotalQuantity,
+                    UnitPrice = s.UnitPrice.ToString("C"),
+                    QuantityOnLoan = s.QuantityOnLoan,
+                    StorageArea = s.StorageArea.Area_Name,
+                    Image = s.ImageFile,
+                    StockCode = s.StockCode,
+                    Loanable = s.Loanable ? "Yes" : "No",
+                    Room = $"{s.StorageArea.Room.Room_Number} [{s.StorageArea.Room.Room_Description}]",
+                    CreatedBy = s.Users.GetFullName(),
+                    CreatedOn = s.CreatedOn.ToString("dd MMMM yyyy")
+                }).ToList();
+            }
+            else
+            {
+                stock = db.Stock.Include(s => s.StorageArea).Include(s => s.StorageArea.Room).Include(s => s.Users).AsEnumerable().OrderBy(s => s.Name).Select(
+                s => new StockViewModel
+                {
+                    Id = s.Id,
+                    Name = s.Name,
+                    Description = s.Description,
+                    TotalQuantity = s.TotalQuantity,
+                    UnitPrice = s.UnitPrice.ToString("C"),
+                    QuantityOnLoan = s.QuantityOnLoan,
+                    StorageArea = s.StorageArea.Area_Name,
+                    Image = s.ImageFile,
+                    StockCode = s.StockCode,
+                    Loanable = s.Loanable ? "Yes" : "No",
+                    Room = $"{s.StorageArea.Room.Room_Number} [{s.StorageArea.Room.Room_Description}]",
+                    CreatedBy = s.Users.GetFullName(),
+                    CreatedOn = s.CreatedOn.ToString("dd MMMM yyyy")
+                }).ToList();
+            }
+
+            return PartialView("_StockTable", stock);
+        }
+
         public ActionResult Search(string searchItem)
         {
             var stock = db.Stock.Include(s => s.StorageArea).Include(s => s.StorageArea.Room).Include(s=>s.Users).AsEnumerable().Where(s => s.StockCode.ToLower().Contains(searchItem.Trim().ToLower())).OrderBy(s => s.Name).Select(
@@ -66,13 +170,35 @@ namespace Group20_IoT.Controllers
             return PartialView("_StockTable", stock);
         }
 
+        public ActionResult Reset()
+        {
+            var stock = db.Stock.Include(s => s.StorageArea).Include(s => s.StorageArea.Room).Include(s => s.Users).AsEnumerable().OrderBy(s => s.Name).Select(
+                s => new StockViewModel
+                {
+                    Id = s.Id,
+                    Name = s.Name,
+                    Description = s.Description,
+                    TotalQuantity = s.TotalQuantity,
+                    UnitPrice = s.UnitPrice.ToString("C"),
+                    QuantityOnLoan = s.QuantityOnLoan,
+                    StorageArea = s.StorageArea.Area_Name,
+                    Image = s.ImageFile,
+                    StockCode = s.StockCode,
+                    Loanable = s.Loanable ? "Yes" : "No",
+                    Room = $"{s.StorageArea.Room.Room_Number} [{s.StorageArea.Room.Room_Description}]",
+                    CreatedBy = s.Users.GetFullName(),
+                    CreatedOn = s.CreatedOn.ToString("dd MMMM yyyy")
+                }).ToList();
+            return PartialView("_StockTable", stock);
+        }
+
         public ActionResult Create()
         {
             // Retrieve distinct roomids for all storage areas (so we know which rooms actually have storage areas)
             var roomWithStorageAreas = db.StorageArea.Where(s => s.Active).Select(s => s.RoomId).Distinct().ToList();
             
             // Only gather details of rooms that have storage areas
-            var rooms = db.Room.Where(r => roomWithStorageAreas.Contains(r.Id) && r.Active).ToList().Select(r => new
+            var rooms = db.Room.Where(r => roomWithStorageAreas.Contains(r.Id) && r.Active).OrderBy(r => r.Room_Number).ToList().Select(r => new
             {
                 r.Id,
                 RoomDetails = $"{r.Room_Number} [{r.Room_Description}]"
@@ -133,7 +259,7 @@ namespace Group20_IoT.Controllers
 
             var roomWithStorageAreas = db.StorageArea.Where(s => s.Active).Select(s => s.RoomId).Distinct().ToList();
 
-            var rooms = db.Room.Where(r => roomWithStorageAreas.Contains(r.Id) && r.Active).ToList().Select(r => new
+            var rooms = db.Room.Where(r => roomWithStorageAreas.Contains(r.Id) && r.Active).OrderBy(r => r.Room_Number).ToList().Select(r => new
             {
                 r.Id,
                 RoomDetails = $"{r.Room_Number} [{r.Room_Description}]"
@@ -154,6 +280,7 @@ namespace Group20_IoT.Controllers
             // Get all storage areas for specific room
             var storageAreas = db.StorageArea
                 .Where(sa => sa.RoomId == roomId && sa.Active)
+                .OrderBy(sa => sa.Area_Name)
                 .Select(sa => new
                 {
                     Value = sa.Id,
@@ -170,6 +297,7 @@ namespace Group20_IoT.Controllers
             // Get all storage areas for specific room
             var storageAreas = db.StorageArea
                 .Where(sa => sa.RoomId == roomId && (sa.Active || stock.StorageAreaId == sa.Id))
+                .OrderBy(sa => sa.Area_Name)
                 .Select(sa => new
                 {
                     Value = sa.Id,
@@ -194,7 +322,7 @@ namespace Group20_IoT.Controllers
             }
             var roomWithStorageAreas = db.StorageArea.Where(s=>s.Active || stock.StorageAreaId == s.Id).Select(s => s.RoomId).Distinct().ToList();
 
-            var rooms = db.Room.Where(r => roomWithStorageAreas.Contains(r.Id) && (r.Active || stock.StorageArea.RoomId == r.Id)).ToList().Select(r => new
+            var rooms = db.Room.Where(r => roomWithStorageAreas.Contains(r.Id) && (r.Active || stock.StorageArea.RoomId == r.Id)).OrderBy(r => r.Room_Number).ToList().Select(r => new
             {
                 r.Id,
                 RoomDetails = $"{r.Room_Number} [{r.Room_Description}]"
@@ -250,7 +378,7 @@ namespace Group20_IoT.Controllers
 
             var roomWithStorageAreas = db.StorageArea.Where(s => s.Active || stock.StorageAreaId == s.Id).Select(s => s.RoomId).Distinct().ToList();
 
-            var rooms = db.Room.Where(r => roomWithStorageAreas.Contains(r.Id) && (r.Active || RoomId == r.Id)).ToList().Select(r => new
+            var rooms = db.Room.Where(r => roomWithStorageAreas.Contains(r.Id) && (r.Active || RoomId == r.Id)).OrderBy(r => r.Room_Number).ToList().Select(r => new
             {
                 r.Id,
                 RoomDetails = $"{r.Room_Number} [{r.Room_Description}]"

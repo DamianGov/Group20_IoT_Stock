@@ -75,6 +75,9 @@
         <table class="table">
             <tr>
                 <th>
+                    Reference #
+                </th>
+                <th>
                     Stock Code
                 </th>
                 <th>
@@ -105,6 +108,9 @@
             @foreach (var item in Model)
             {
                 <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Id)
+                    </td>
                     <td>
                         @Html.DisplayFor(modelItem => item.RequestLoanStock.Stock.StockCode)
                     </td>
@@ -139,7 +145,7 @@
                         <td>
                             <button id="requestButton" data-target="#RequestModal-@item.Id" data-toggle="modal" class="btn-primary">Request An Extension</button>
                             <div class="modal fade" data-keyboard="false" data-backdrop="static" id="RequestModal-@item.Id" tabindex="-1">
-                                <div class="modal-dialog">
+                                <div class="modal-dialog modal-dialog-centered">
                                     <div class="modal-content">
                                         <div class="modal-header">
                                             <input type="button" value="&#x274C;" class="close" data-dismiss="modal" />

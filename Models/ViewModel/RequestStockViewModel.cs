@@ -9,6 +9,7 @@ namespace Group20_IoT.Models.ViewModel
     {
         public int? Id { get; set; }
         public int UserId { get; set; }
+        public string UniNum { get; set; }  
         public string UserName { get; set; }
         public string StockName { get; set; }
         public int Quantity { get; set; }

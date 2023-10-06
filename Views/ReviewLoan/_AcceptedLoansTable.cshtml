@@ -44,25 +44,21 @@
         }
 </style>
 
-<div class="card">
-    <div class="card-header">
-        <h2>Accepted Loans</h2>
-    </div>
-    <div class="card-body">
+
         <table class="table text-white">
             <thead>
                 <tr>
                     <th>
-                        User Name
+                        Reference #
+                    </th>
+                    <th>
+                        User
                     </th>
                     <th>
                         User Role
                     </th>
                     <th>
-                        Stock Code
-                    </th>
-                    <th>
-                        Stock Name
+                        Stock
                     </th>
                     <th>
                         Quantity Loaned
@@ -95,16 +91,14 @@
                     foreach (var item in Model)
                     {
                         <tr>
+                            <td>@item.Id</td>
                             <td>
-                                @item.RequestLoanStock.Users.GetFullName()
+                                @item.RequestLoanStock.Users.GetFullName() [@item.RequestLoanStock.Users.UniNum]
                             </td>
                             <td>
                                 @item.RequestLoanStock.Users.Role.Type
                             </td>
-                            <td>
-                                @item.RequestLoanStock.Stock.StockCode
-                            </td>
-                            <td>@item.RequestLoanStock.Stock.Name</td>
+                            <td>@item.RequestLoanStock.Stock.Name [@item.RequestLoanStock.Stock.StockCode]</td>
                             <td>
                                 @item.RequestLoanStock.Quantity
                             </td>
@@ -131,7 +125,7 @@
                                 <td>
                                     <button id="changeStatusButton" data-target="#ChangeStatusModal-@item.Id" data-toggle="modal" class="btn btn-primary">Change Status</button>
                                     <div class="modal fade" data-keyboard="false" data-backdrop="static" id="ChangeStatusModal-@item.Id" tabindex="-1">
-                                        <div class="modal-dialog  modal-dialog-centered">
+                                        <div class="modal-dialog modal-dialog-centered">
                                             <div class="modal-content">
                                                 <div class="modal-header">
                                                     <input type="button" value="&#x274C;" class="close" data-dismiss="modal" />
@@ -188,6 +182,4 @@
                 }
             </tbody>
         </table>
-    </div>
-</div>
 

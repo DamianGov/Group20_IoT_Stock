@@ -8,23 +8,59 @@ using System.Web;
 using System.Web.Mvc;
 using Group20_IoT.Models;
 using Group20_IoT.Models.ViewModel;
+using PagedList;
 
 namespace Group20_IoT.Controllers
 {
     [SessionChecker("SuperAdmin")]
     public class UserTrackingController : Controller
     {
-        private IoTContext db = new IoTContext();   
-        public ActionResult Index()
+        private IoTContext db = new IoTContext();
+        int pageSize = 10;
+        public ActionResult Index(int? page)
         {
-            var logReport = db.UserLoginTracking.Include(u => u.Users).Include(u => u.Users.Role)
+            
+            int pageNumber = (page ?? 1);
+
+            var logReport = GetUserTrackingViewModel("");
+
+            var pagedData = logReport.ToPagedList(pageNumber, pageSize);
+
+            return View(pagedData);
+        }
+        public List<UserTrackingViewModel> GetUserTrackingViewModel(string UserType)
+        {
+            List<UserTrackingViewModel> logReport = new List<UserTrackingViewModel>();
+            if (UserType == "")
+            {
+                    logReport = db.UserLoginTracking.Include(u => u.Users).Include(u => u.Users.Role)
+                    .OrderByDescending(u => u.UserLoginDateTime)
+                    .AsEnumerable()
+                    .Select(
+                    u => new UserTrackingViewModel
+                    {
+                        Id = u.Id,
+                        Name = u.Users.GetFullName() + " [" + u.Users.UniNum+"]",
+                        Email = u.Users.Email,
+                        LoggedIn = u.UserLoginDateTime.HasValue ? u.UserLoginDateTime.Value.ToString("yyyy/M/d HH:mm") : "-",
+                        LoggedOut = u.UserLogoutDateTime.HasValue ? u.UserLogoutDateTime.Value.ToString("yyyy/M/d HH:mm") : "-",
+                        Duration = FormatDuration(u.Duration),
+                        UserType = u.Users.Role.Type,
+                        UsedRememberMe = u.UsedRememberMe ? "Yes" : "No"
+
+                    }).ToList();
+            }
+            else
+            {
+                logReport = db.UserLoginTracking.Include(u => u.Users).Include(u => u.Users.Role)
+                .Where(u => u.Users.Role.Type.Equals(UserType))
                 .OrderByDescending(u => u.UserLoginDateTime)
                 .AsEnumerable()
                 .Select(
                 u => new UserTrackingViewModel
                 {
                     Id = u.Id,
-                    Name = u.Users.GetFullName(),
+                    Name = u.Users.GetFullName() + " [" + u.Users.UniNum + "]",
                     Email = u.Users.Email,
                     LoggedIn = u.UserLoginDateTime.HasValue ? u.UserLoginDateTime.Value.ToString("yyyy/M/d HH:mm") : "-",
                     LoggedOut = u.UserLogoutDateTime.HasValue ? u.UserLogoutDateTime.Value.ToString("yyyy/M/d HH:mm") : "-",
@@ -33,32 +69,18 @@ namespace Group20_IoT.Controllers
                     UsedRememberMe = u.UsedRememberMe ? "Yes" : "No"
 
                 }).ToList();
-
-
-            return View(logReport);
+            }
+            return logReport;
         }
 
-        public ActionResult Filter(string userType)
+        public ActionResult Filter(string userType, int? page)
         {
-            var logReport = db.UserLoginTracking.Include(u => u.Users).Include(u => u.Users.Role)
-                .Where(u => u.Users.Role.Type.Equals(userType))
-                .OrderByDescending(u => u.UserLoginDateTime)
-                .AsEnumerable()
-                .Select(
-                u => new UserTrackingViewModel
-                {
-                    Id = u.Id,
-                    Name = u.Users.GetFullName(),
-                    Email = u.Users.Email,
-                    LoggedIn = u.UserLoginDateTime.HasValue ? u.UserLoginDateTime.Value.ToString("yyyy/M/d HH:mm") : "-",
-                    LoggedOut = u.UserLogoutDateTime.HasValue ? u.UserLogoutDateTime.Value.ToString("yyyy/M/d HH:mm") : "-",
-                    Duration = FormatDuration(u.Duration),
-                    UserType = u.Users.Role.Type,
-                    UsedRememberMe = u.UsedRememberMe ? "Yes" : "No"
+            int pageNumber = (page ?? 1);
 
-                }).ToList();
+            var logReport = GetUserTrackingViewModel(userType);
 
-            return PartialView("_UserTracked", logReport);
+            var pagedData = logReport.ToPagedList(pageNumber, pageSize);
+            return PartialView("_UserTracked", pagedData);
         }
 
         static string FormatDuration(double? duration)

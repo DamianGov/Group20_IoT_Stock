@@ -25,9 +25,9 @@
             var adminU = new Users
             {
                 UniNum = "11111111",
-                FirstName = "Super",
-                Surname = "Admin",
-                Email = "govdamian@gmail.com",
+                FirstName = "IoT",
+                Surname = "Super Admin",
+                Email = "iotgrp2023@gmail.com",
                 Password = "$2a$11$Gep3kcMofnXDO.5i1VInpOwgfa0fjGXTXdmmCEPVFb32Y5t3qC0ni",
                 Access = true,
                 Notify = true,

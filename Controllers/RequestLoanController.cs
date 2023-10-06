@@ -5,6 +5,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using System.Data.Entity;
+using Microsoft.AspNet.Identity;
 
 namespace Group20_IoT.Controllers
 {
@@ -15,7 +16,42 @@ namespace Group20_IoT.Controllers
         public ActionResult Index()
         {
             Users users = Session["User"] as Users;
-            return View(db.RequestLoanStock.Include(r => r.Stock).Where(r => r.UserId == users.Id && r.Status != RequestLoanStock.RequestStatus.Accepted).OrderByDescending(r => r.DateRequested).ToList());
+            return View(db.RequestLoanStock.Include(r => r.Stock).Where(r => r.UserId == users.Id && r.Status != RequestLoanStock.RequestStatus.Accepted).OrderByDescending(r => r.DateRequested).OrderBy( r=> r.Status).ToList());
+        }
+
+        public ActionResult Search(int? id)
+        {
+            Users users = Session["User"] as Users;
+            List<RequestLoanStock> requestLoanStocks = new List<RequestLoanStock>();
+            if(!id.HasValue)
+            {
+                requestLoanStocks = db.RequestLoanStock.Include(r => r.Stock).Where(r => r.UserId == users.Id && r.Status != RequestLoanStock.RequestStatus.Accepted).OrderByDescending(r => r.DateRequested).OrderBy(r => r.Status).ToList();
+            }
+            else
+            {
+                requestLoanStocks = db.RequestLoanStock.Include(r => r.Stock).Where(r => r.UserId == users.Id && r.Status != RequestLoanStock.RequestStatus.Accepted && r.Id == id).OrderByDescending(r => r.DateRequested).OrderBy(r => r.Status).ToList();
+            }
+
+            return PartialView("_RequestLoanTable", requestLoanStocks);
+        }
+
+        public ActionResult Reset()
+        {
+            Users users = Session["User"] as Users;
+            List<RequestLoanStock> requestLoanStocks = db.RequestLoanStock.Include(r => r.Stock).Where(r => r.UserId == users.Id && r.Status != RequestLoanStock.RequestStatus.Accepted).OrderByDescending(r => r.DateRequested).OrderBy(r => r.Status).ToList();
+            return PartialView("_RequestLoanTable", requestLoanStocks);
+        }
+
+        public ActionResult Sort(int? sort)
+        {
+            Users users = Session["User"] as Users;
+            List<RequestLoanStock> requestLoanStocks = new List<RequestLoanStock>();
+            if (sort == 0 || sort == 2 || sort == 3)
+            {
+                requestLoanStocks = db.RequestLoanStock.Include(r => r.Stock).Where(r => r.UserId == users.Id && (int)r.Status == sort).OrderByDescending(r => r.DateRequested).OrderBy(r => r.Status).ToList();
+            }else
+                requestLoanStocks = db.RequestLoanStock.Include(r => r.Stock).Where(r => r.UserId == users.Id && r.Status != RequestLoanStock.RequestStatus.Accepted).OrderByDescending(r => r.DateRequested).OrderBy(r => r.Status).ToList();
+            return PartialView("_RequestLoanTable", requestLoanStocks);
         }
 
         public ActionResult AcceptedLoans()

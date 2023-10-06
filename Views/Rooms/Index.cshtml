@@ -11,12 +11,17 @@
     }
 
     .card {
-        width: 18rem;
-        margin-bottom: 1.7rem;
+        width: calc(50% - 20px);
+        margin: 10px;
+        margin-bottom: 20px !important;
         background-color: #2E3842;
         color: #fff;
     }
-
+    .card-container {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between; /* Distribute cards evenly in a row */
+    }
     .card-header {
         background-color: #003366;
         color: #03e9f4;
@@ -76,7 +81,7 @@
     @Html.ActionLink("Create a Room", "Create", null, new { @class = "btn-primary" })
 </p>
 <br />
-<div class="card-deck">
+<div class="card-container">
     @foreach (var item in Model)
     {
         <div class="card">

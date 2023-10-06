@@ -31,6 +31,7 @@ namespace Group20_IoT.Controllers
                                 {
                                     Id = x.Id,
                                     UserId = x.UserId,
+                                    UniNum = x.Users.UniNum,
                                     UserName = x.Users.GetFullName(),
                                     StockName = x.StockName,
                                     Quantity = x.Quantity,
@@ -51,6 +52,7 @@ namespace Group20_IoT.Controllers
                                 {
                                     Id = x.Id,
                                     UserId = x.UserId,
+                                    UniNum = x.Users.UniNum,
                                     UserName = x.Users.GetFullName(),
                                     StockName = x.StockName,
                                     Quantity = x.Quantity,
@@ -132,6 +134,7 @@ namespace Group20_IoT.Controllers
                     {
                         Id = x.Id,
                         UserId = x.UserId,
+                        UniNum = x.Users.UniNum,
                         UserName = x.Users.GetFullName(),
                         StockName = x.StockName,
                         StockPrice = x.StockPrice.ToString("C"),

@@ -69,27 +69,88 @@
             box-shadow: 0 0 5px #03e9f4, 0 0 25px #03e9f4, 0 0 50px #03e9f4, 0 0 100px #03e9f4;
         }
 </style>
+<br />
+<div>
+    <label>Enter Stock Name</label>
+    <input type="text" id="searchInput" />
+    <button id="searchButton" class="btn-primary">Search</button>
+    <br />
+    <button id="resetButton" class="btn-primary" style="display:none">Reset</button>
+    <br />
+    <select id="filterSortby">
+        <option value="">Default Sorting</option>
+        <option value="StockLow">Sort By Quantity: Low To High</option>
+        <option value="StockHigh">Sort By Quantity: High To Low</option>
+    </select>
+</div>
+<br />
 <div>
     <label>Can&rsquo;t find what you&rsquo;re looking for? @Html.ActionLink("Request Stock", "Create", "RequestStock")</label>
 </div>
+<br />
 
-<div class="row">
-    @foreach (var item in Model)
-    {
-        <div class="col-md-4 mb-4">
-            <div class="card">
-                <img src="~/Content/Images/@item.ImageFile" class="card-img-top" alt="@item.ImageFile" style="max-height:200px;">
-                <div class="card-body">
-                    <h4 class="card-title">@Html.DisplayFor(modelItem => item.Name)</h4>
-                    <p class="card-text">@Html.DisplayFor(modelItem => item.Description)</p>
-                    <p class="card-text"><strong>Stock Code:</strong> @Html.DisplayFor(modelItem => item.StockCode)</p>
-                    <p class="card-text"><strong>Available Quantity To Loan:</strong> @Html.DisplayFor(modelItem => item.QuantityCanLoan)</p>
-                    @if (item.QuantityCanLoan > 0)
-                    {
-                        @Html.ActionLink("Loan", "Details", new { id = item.Id }, new { @class = "btn btn-primary" })
-                    }
-                </div>
-            </div>
-        </div>
-    }
+<div id="loanStockTable">
+    @Html.Partial("_LoanStockTable", Model as IEnumerable<Group20_IoT.Models.ViewModel.LoanStockViewModel>)
 </div>
+
+
+@section scripts {
+    <script>
+        $(document).ready(function () {
+            var ResetButton = $("#resetButton");
+
+            $("#searchButton").click(function () {
+                var searchItem = $("#searchInput").val();
+
+                $.ajax({
+                    url: '@Url.Action("Search", "LoanStock")',
+                    type: "GET",
+                    data: { searchItem: searchItem },
+                    success: function (data) {
+                        $("#loanStockTable").html(data);
+                        ResetButton.show();
+                    },
+                    error: function () {
+                        notifyError("Error occurred while searching.");
+                        ResetButton.show();
+                    }
+                });
+            });
+
+                ResetButton.click(function () {
+
+        $.ajax({
+            url: '@Url.Action("Reset", "LoanStock")',
+            type: "GET",
+            success: function (data) {
+                $("#loanStockTable").html(data);
+                ResetButton.hide();
+            },
+            error: function () {
+                notifyError("Error occurred while resetting.");
+                ResetButton.show();
+            }
+        });
+
+
+});
+
+            $("#filterSortby").change(function () {
+                var sort = $(this).val();
+                    $.ajax({
+                    url: '@Url.Action("Sort", "LoanStock")',
+                    type: "GET",
+                        data: { sort: sort },
+                    success: function (data) {
+                        $("#loanStockTable").html(data);
+                    },
+                    error: function () {
+                        notifyError("Error occurred while filtering.");
+                    }
+                });
+
+
+            });
+        });
+    </script>
+}

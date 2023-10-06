@@ -23,7 +23,7 @@ namespace Group20_IoT.Controllers
 
             // Check if the user is Super User if they are they can view all users, including Admins
             if (currentU.Role.Type == "SuperAdmin")
-                users = db.Users.Include(u => u.Role).Where(u => u.Id != currentU.Id);
+                users = db.Users.Include(u => u.Role).Where(u => u.Id != currentU.Id).OrderBy(u => u.Role.Type);
             else
                 // Otherwise we know this person is an Admin therefore they can only see standard users
                 users = db.Users.Include(u => u.Role).Where(u => u.Id != currentU.Id && u.Role.Type == "Member");

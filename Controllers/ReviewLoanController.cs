@@ -24,6 +24,7 @@ namespace Group20_IoT.Controllers
             var LoanStockPending = db.RequestLoanStock.Include(r => r.Stock).Include(r => r.Users).Include(r => r.Users.Role).Where(r => r.Status == RequestLoanStock.RequestStatus.Pending && r.Stock.Loanable && r.UserId != users.Id && DbFunctions.TruncateTime(r.FromDate) >= CurrentDate).OrderByDescending(r => r.DateRequested).AsEnumerable().Select(r=> new PendingLoanStockViewModel
             {
                 Id = r.Id,
+                UniNum = r.Users.UniNum,
                 UserName = r.Users.GetFullName(),
                 UserRole = r.Users.Role.Type,
                 StockCode = r.Stock.StockCode,
@@ -35,6 +36,88 @@ namespace Group20_IoT.Controllers
                 DueDate = r.DueDate.ToString("dd MMMM yyyy")
             }).ToList();
             return View(LoanStockPending);
+        }
+
+        public ActionResult Search(int? id)
+        {
+            List<PendingLoanStockViewModel> LoanStockPending = new List<PendingLoanStockViewModel>();
+            Users users = Session["User"] as Users;
+            var CurrentDate = DateTime.Now.Date;
+
+            if (!id.HasValue) LoanStockPending = db.RequestLoanStock.Include(r => r.Stock).Include(r => r.Users).Include(r => r.Users.Role).Where(r => r.Status == RequestLoanStock.RequestStatus.Pending && r.Stock.Loanable && r.UserId != users.Id && DbFunctions.TruncateTime(r.FromDate) >= CurrentDate).OrderByDescending(r => r.DateRequested).AsEnumerable().Select(r => new PendingLoanStockViewModel
+            {
+                Id = r.Id,
+                UniNum = r.Users.UniNum,
+                UserName = r.Users.GetFullName(),
+                UserRole = r.Users.Role.Type,
+                StockCode = r.Stock.StockCode,
+                StockName = r.Stock.Name,
+                AmntAva = ((r.Stock.TotalQuantity - r.Stock.QuantityOnLoan) <= 0) ? 0 : (r.Stock.TotalQuantity - r.Stock.QuantityOnLoan),
+                QuantityWant = r.Quantity,
+                DateRequested = r.DateRequested.ToString("dd MMMM yyyy"),
+                BorrowDate = r.FromDate.ToString("dd MMMM yyyy"),
+                DueDate = r.DueDate.ToString("dd MMMM yyyy")
+            }).ToList();
+            else
+             LoanStockPending = db.RequestLoanStock.Include(r => r.Stock).Include(r => r.Users).Include(r => r.Users.Role).Where(r => r.Status == RequestLoanStock.RequestStatus.Pending && r.Stock.Loanable && r.UserId != users.Id && DbFunctions.TruncateTime(r.FromDate) >= CurrentDate && r.Id == id).OrderByDescending(r => r.DateRequested).AsEnumerable().Select(r => new PendingLoanStockViewModel
+            {
+                Id = r.Id,
+                UniNum = r.Users.UniNum,
+                UserName = r.Users.GetFullName(),
+                UserRole = r.Users.Role.Type,
+                StockCode = r.Stock.StockCode,
+                StockName = r.Stock.Name,
+                AmntAva = ((r.Stock.TotalQuantity - r.Stock.QuantityOnLoan) <= 0) ? 0 : (r.Stock.TotalQuantity - r.Stock.QuantityOnLoan),
+                QuantityWant = r.Quantity,
+                DateRequested = r.DateRequested.ToString("dd MMMM yyyy"),
+                BorrowDate = r.FromDate.ToString("dd MMMM yyyy"),
+                DueDate = r.DueDate.ToString("dd MMMM yyyy")
+            }).ToList();
+
+            return PartialView("_PendingLoansTable", LoanStockPending);
+        }
+        public ActionResult Reset()
+        {
+            Users users = Session["User"] as Users;
+            var CurrentDate = DateTime.Now.Date;
+
+            var LoanStockPending = db.RequestLoanStock.Include(r => r.Stock).Include(r => r.Users).Include(r => r.Users.Role).Where(r => r.Status == RequestLoanStock.RequestStatus.Pending && r.Stock.Loanable && r.UserId != users.Id && DbFunctions.TruncateTime(r.FromDate) >= CurrentDate).OrderByDescending(r => r.DateRequested).AsEnumerable().Select(r => new PendingLoanStockViewModel
+            {
+                Id = r.Id,
+                UniNum = r.Users.UniNum,
+                UserName = r.Users.GetFullName(),
+                UserRole = r.Users.Role.Type,
+                StockCode = r.Stock.StockCode,
+                StockName = r.Stock.Name,
+                AmntAva = ((r.Stock.TotalQuantity - r.Stock.QuantityOnLoan) <= 0) ? 0 : (r.Stock.TotalQuantity - r.Stock.QuantityOnLoan),
+                QuantityWant = r.Quantity,
+                DateRequested = r.DateRequested.ToString("dd MMMM yyyy"),
+                BorrowDate = r.FromDate.ToString("dd MMMM yyyy"),
+                DueDate = r.DueDate.ToString("dd MMMM yyyy")
+            }).ToList();
+
+            return PartialView("_PendingLoansTable", LoanStockPending);
+        }
+
+        public ActionResult SearchAcc(int? id)
+        {
+            List<LoanStatus> AcceptedLoans = new List<LoanStatus>();
+
+            if(!id.HasValue)
+            {
+                AcceptedLoans = db.LoanStatus.Include(r => r.RequestLoanStock).Include(r => r.RequestLoanStock.Stock).Include(r => r.RequestLoanStock.Users).Include(r => r.RequestLoanStock.Users.Role).Include(r => r.Users).OrderByDescending(r => r.AccOn).ToList();
+            }
+            else
+            {
+                AcceptedLoans = db.LoanStatus.Include(r => r.RequestLoanStock).Include(r => r.RequestLoanStock.Stock).Include(r => r.RequestLoanStock.Users).Include(r => r.RequestLoanStock.Users.Role).Include(r => r.Users).Where(r => r.Id == id).OrderByDescending(r => r.AccOn).ToList();
+            }
+            return PartialView("_AcceptedLoansTable", AcceptedLoans);
+        }
+
+        public ActionResult ResetAcc()
+        {
+            var AcceptedLoans = db.LoanStatus.Include(r => r.RequestLoanStock).Include(r => r.RequestLoanStock.Stock).Include(r => r.RequestLoanStock.Users).Include(r => r.RequestLoanStock.Users.Role).Include(r => r.Users).OrderByDescending(r => r.AccOn).ToList();
+            return PartialView("_AcceptedLoansTable", AcceptedLoans);
         }
 
         public ActionResult AcceptLoanRequest(int? id)
@@ -112,6 +195,7 @@ namespace Group20_IoT.Controllers
             var RejectedLoans = db.RequestLoanStock.Include(r => r.Stock).Include(r => r.Users).Include(r => r.Users.Role).Where(r => r.Status == RequestLoanStock.RequestStatus.Rejected).OrderByDescending(r => r.DateRequested).AsEnumerable().Select(r => new PendingLoanStockViewModel
             {
                 Id = r.Id,
+                UniNum = r.Users.UniNum,
                 UserName = r.Users.GetFullName(),
                 UserRole = r.Users.Role.Type,
                 StockCode = r.Stock.StockCode,

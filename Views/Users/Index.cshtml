@@ -5,8 +5,6 @@
 }
 
 <style>
-
-    <style >
     .card-deck {
         display: flex;
         flex-wrap: wrap;
@@ -14,8 +12,9 @@
     }
 
     .card {
-        width: 18rem;
-        margin-bottom: 1.7rem;
+        width: calc(50% - 20px);
+        margin: 5px;
+        margin-bottom: 20px !important;
         background-color: #2E3842;
         color: #fff;
     }
@@ -27,7 +26,11 @@
         padding: 0.75rem;
         font-weight: bold;
     }
-
+    .card-container {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between; /* Distribute cards evenly in a row */
+    }
     .card-body {
         padding: 1.25rem;
     }
@@ -79,22 +82,22 @@
     @Html.ActionLink("Create a new User", "Create", null, new { @class = "btn-primary" })
 </p>
 <br />
-<div class="container">
 
 
-    <div class="card-deck">
+
+    <div class="card-container">
         @foreach (var item in Model)
         {
             <div class="card">
                 <div class="card-header">
-                    @Html.DisplayFor(modelItem => item.Role.Type)
+                    &nbsp;@Html.DisplayFor(modelItem => item.Role.Type)
                 </div>
                 <div class="card-body">
                     <h4 class="card-title">@item.GetFullName()</h4>
                     <p class="card-text">
-                        <strong>Staff/Student Number: </strong> @Html.DisplayFor(modelItem => item.UniNum) <br />
-                        <strong>Email: </strong> @Html.DisplayFor(modelItem => item.Email) <br />
-                        <strong>Access: </strong>
+                        &nbsp;<strong>Staff/Student Number: </strong> @Html.DisplayFor(modelItem => item.UniNum) <br />
+                        &nbsp;<strong>Email: </strong> @Html.DisplayFor(modelItem => item.Email) <br />
+                        &nbsp;<strong>Access: </strong>
                         @if (item.Access)
                         {
                             <span class="badge badge-success">Yes</span>
@@ -104,7 +107,7 @@
                             <span class="badge badge-danger">No</span>
                         }
                         <br />
-                        <strong>Receive Notifications: </strong>
+                        &nbsp;<strong>Receive Notifications: </strong>
                         @if (item.Notify)
                         {
                             <span class="badge badge-success">Yes</span>
@@ -114,12 +117,12 @@
                             <span class="badge badge-danger">No</span>
                         }
                     </p>
-                    <a href="@Url.Action("ManageUser", new { id = item.Id })" class="btn-primary">Manage User</a>
+                    &nbsp;<a href="@Url.Action("ManageUser", new { id = item.Id })" class="btn-primary">Manage User</a>
                 </div>
             </div>
         }
     </div>
-</div>
+
 
 @section scripts
 {
