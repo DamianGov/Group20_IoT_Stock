@@ -137,8 +137,32 @@
                         }
                     });
 
-                
-            });
+
+                });
+
+
+
+                   $(".resolve-button").on("click", function () {
+       var ID = $(this).data("id");
+       updateResolve(ID);
+   });
+
+   function updateResolve(ID) {
+       $.ajax({
+           url: '@Url.Action("ResolveDiscrepancy", "Discrepancy")',
+           type: 'POST',
+           data: { id: ID },
+           dataType: 'json',
+           success: function (data) {
+               localStorage.setItem('notificationMessage', data.message);
+               location.reload();
+           },
+           error: function () {
+               notifyError("An error occurred while resolving discrepancy.");
+
+           }
+       });
+   }
         });
     </script>
 }

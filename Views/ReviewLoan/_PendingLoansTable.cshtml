@@ -42,76 +42,58 @@
             foreach (var item in Model)
             {
                 <tr>
-                    <td>
-                        @item.Id
-                    </td>
-                    <td>
-                        @item.UserName [@item.UniNum]
-                    </td>
-                    <td>
-                        @item.UserRole
-                    </td>
-                    <td>@item.StockName [@item.StockCode]</td>
-                    <td>
-                        @item.AmntAva
-                    </td>
+                    <td style="background-color: #2E3842; color: #fff; padding: 0.75rem;">@item.Id</td>
+                    <td style="background-color: #2E3842; color: #fff; padding: 0.75rem;">@item.UserName [@item.UniNum]</td>
+                    <td style="background-color: #2E3842; color: #fff; padding: 0.75rem;">@item.UserRole</td>
+                    <td style="background-color: #2E3842; color: #fff; padding: 0.75rem;">@item.StockName [@item.StockCode]</td>
+                    <td style="background-color: #2E3842; color: #fff; padding: 0.75rem;">@item.AmntAva</td>
                     @if (item.QuantityWant > item.AmntAva)
                     {
-                        <td style="color:red">
-                            @item.QuantityWant
-                        </td>
+                        <td style="background-color: #2E3842; color: red; padding: 0.75rem;">@item.QuantityWant</td>
                     }
                     else
                     {
-                        <td>
-                            @item.QuantityWant
-                        </td>
+                        <td style="background-color: #2E3842; color: #fff; padding: 0.75rem;">@item.QuantityWant</td>
                     }
-                    <td>
-                        @item.DateRequested
-                    </td>
-                    <td>
-                        @item.BorrowDate
-                    </td>
-                    <td>
-                        @item.DueDate
-                    </td>
-                    <td>
-                        <button id="acceptButton" data-target="#AcceptModal-@item.Id" data-toggle="modal">Accept</button>
+                    <td style="background-color: #2E3842; color: #fff; padding: 0.75rem;">@item.DateRequested</td>
+                    <td style="background-color: #2E3842; color: #fff; padding: 0.75rem;">@item.BorrowDate</td>
+                    <td style="background-color: #2E3842; color: #fff; padding: 0.75rem;">@item.DueDate</td>
+                    <td style="background-color: #2E3842; color: #fff; padding: 0.75rem;">
+                        <button id="acceptButton" data-target="#AcceptModal-@item.Id" data-toggle="modal" class="btn btn-primary">Accept</button>
                         <div class="modal fade" data-keyboard="false" data-backdrop="static" id="AcceptModal-@item.Id" tabindex="-1">
                             <div class="modal-dialog modal-dialog-centered">
-                                <div class="modal-content">
+                                <div class="modal-content" style="background-color: #2E3842; color: #fff;">
                                     <div class="modal-header">
                                         <input type="button" value="&#x274C;" class="close" data-dismiss="modal" />
-                                        <p class="modal-title" style="color:white">Accept Loan Request</p>
+                                        <p class="modal-title" style="color: #03e9f4;">Accept Loan Request</p>
                                     </div>
                                     <div class="modal-body">
                                         <p>Are you sure you want to accept the loan request for @item.UserName to borrow @item.StockName?</p>
                                     </div>
                                     <div class="modal-footer">
-                                        <button id="confirmApproval" class="btn btn-primary" onclick="AcceptLoan(@item.Id)" data-dismiss="modal">Yes</button>
-                                        <button class="btn btn-secondary" id="Close-@item.Id" data-dismiss="modal">Cancel</button>
+                                        <button id="confirmApproval" class="btn btn-primary" onclick="AcceptLoan(@item.Id)" data-dismiss="modal">Yes</button>&nbsp;&nbsp;
+                                        <button class="btn btn-primary" id="Close-@item.Id" data-dismiss="modal">Cancel</button>
                                     </div>
                                 </div>
                             </div>
                         </div>
 
                     </td>
-                    <td>
-                        <button id="rejectButton" data-target="#RejectModal-@item.Id" data-toggle="modal">Reject</button>
+                    <td style="background-color: #2E3842; color: #fff; padding: 0.75rem;">
+                        <button id="rejectButton" data-target="#RejectModal-@item.Id" data-toggle="modal" class="btn btn-primary">Reject</button>
                         <div class="modal fade" data-keyboard="false" data-backdrop="static" id="RejectModal-@item.Id" tabindex="-1">
                             <div class="modal-dialog modal-dialog-centered">
-                                <div class="modal-content">
+                                <div class="modal-content" style="background-color: #2E3842; color: #fff;">
                                     <div class="modal-header">
                                         <input type="button" value="&#x274C;" class="close" data-dismiss="modal" />
-                                        <p class="modal-title" style="color:white">Reject Loan Request</p>
+                                        <p class="modal-title" style="color: #03e9f4;">Reject Loan Request</p>
                                     </div>
                                     <div class="modal-body">
                                         <p>Are you sure you want to reject the loan request for @item.UserName to borrow @item.StockName?</p>
                                     </div>
                                     <div class="modal-footer">
-                                        <button id="confirmApproval" class="btn btn-primary" onclick="RejectLoan(@item.Id)" data-dismiss="modal">Yes</button>
-                                        <button class="btn btn-secondary" id="Close-@item.Id" data-dismiss="modal">Cancel</button>
+                                        <button id="confirmApproval" class="btn btn-primary" onclick="RejectLoan(@item.Id)" data-dismiss="modal">Yes</button>&nbsp;&nbsp;
+                                        <button class="btn btn-primary" id="Close-@item.Id" data-dismiss="modal">Cancel</button>
                                     </div>
                                 </div>
                             </div>
@@ -123,7 +105,7 @@
         else
         {
             <tr>
-                <td colspan="7" style="text-align:center;font-size:16px"><strong>No Pending Loan Requests</strong></td>
+                <td colspan="11" style="text-align:center; font-size:16px; background-color: #2E3842; color: #fff; padding: 0.75rem;"><strong>No Pending Loan Requests</strong></td>
             </tr>
         }
         </tbody>

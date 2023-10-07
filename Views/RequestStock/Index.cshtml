@@ -110,4 +110,29 @@ else
             });
         });
     </script>
+    <script>
+      function AcceptStockReq(stockId)
+      {
+          $.ajax({
+              url: '@Url.Action("AcceptStockRequest", "RequestStock")',
+              type: 'POST',
+              data: { id: stockId },
+              dataType: 'json',
+              success: function (data) {
+                  if (!data.success) {
+                      notifyError(data.message);
+                  } else {
+                      localStorage.setItem('notificationMessage', data.message);
+                      location.reload();
+                  }
+
+
+              },
+              error: function () {
+                  notifyError("An error occurred while approving the Stock Request.");
+              }
+          });
+
+  }
+    </script>
 }

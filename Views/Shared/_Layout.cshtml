@@ -34,12 +34,11 @@
         body {
             margin: 0;
             padding: 0;
-            display: flex;
             flex-direction: column;
             text-transform: uppercase;
-            background: transparent;
+            font-family: "Poppins",sans-serif;
+            background: linear-gradient(#141e30, #243b55);
             min-height: 100vh;
-            font-family: "Poppins", sans-serif !important;
         }
             body::before {
                 content: '';
@@ -48,10 +47,12 @@
                 left: 0;
                 width: 100%;
                 height: 100%;
+                box-sizing: border-box;
                 pointer-events: none;
-                background: linear-gradient(90deg, transparent, #000000);
-                z-index: -1;
-                animation: laser 2s linear infinite;
+                animation: laserEffect 2s infinite linear;
+                border: 3px solid #03e9f4;
+                border-radius: 20px;
+                z-index: 999;
             }
 
         @@keyframes laser {
@@ -230,6 +231,12 @@
             align-items: center;
         }
 
+        .textarea {
+            padding: 10px !important;
+            border: 1px solid #ccc !important;
+            border-radius: 4px !important;
+            margin-bottom: 1rem !important;
+        }
     </style>
 </head>
 <body style="background-color: #1a2740">

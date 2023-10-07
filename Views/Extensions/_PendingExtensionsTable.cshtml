@@ -41,6 +41,21 @@
             border-radius: 5px;
             box-shadow: 0 0 5px #03e9f4, 0 0 25px #03e9f4, 0 0 50px #03e9f4, 0 0 100px #03e9f4;
         }
+
+    .modal-content {
+        background-color: #2E3842;
+        color: #fff;
+    }
+
+    .modal-header {
+        background-color: #003366 !important;
+        color: #fff !important;
+    }
+
+    .modal-footer {
+        background-color: #003366 !important;
+        color: #fff !important;
+    }
 </style>
 
 <table class="table text-white">
@@ -70,36 +85,26 @@
         @foreach (var record in Model)
         {
             <tr>
+                <td style="background-color: #2E3842; color: #fff; padding: 0.75rem;">@record.LoanStatusId</td>
+                <td style="background-color: #2E3842; color: #fff; padding: 0.75rem;">@record.LoanStatus.RequestLoanStock.Users.GetFullName() [@record.LoanStatus.RequestLoanStock.Users.UniNum]</td>
+                <td style="background-color: #2E3842; color: #fff; padding: 0.75rem;">@record.LoanStatus.RequestLoanStock.Users.Role.Type</td>
+                <td style="background-color: #2E3842; color: #fff; padding: 0.75rem;">@record.Reason</td>
+                <td style="background-color: #2E3842; color: #fff; padding: 0.75rem;">@record.LoanStatus.Status</td>
                 <td>
-                    @record.LoanStatusId
-                </td>
-                <td>
-                    @record.LoanStatus.RequestLoanStock.Users.GetFullName() [@record.LoanStatus.RequestLoanStock.Users.UniNum]
-                </td>
-                <td>
-                    @record.LoanStatus.RequestLoanStock.Users.Role.Type
-                </td>
-                <td>
-                    @record.Reason
-                </td>
-                <td>
-                    @record.LoanStatus.Status
-                </td>
-                <td>
-                    <button id="moreDetailsButton" data-target="#DetailsModal-@record.Id" data-toggle="modal">View More Details</button>
+                    <button id="moreDetailsButton" data-target="#DetailsModal-@record.Id" data-toggle="modal" class="btn btn-primary">View More Details</button>
                     <div class="modal fade" data-keyboard="false" data-backdrop="static" id="DetailsModal-@record.Id" tabindex="-1">
                         <div class="modal-dialog modal-dialog-centered">
-                            <div class="modal-content">
+                            <div class="modal-content" style="background-color: #2E3842; color: #fff;">
                                 <div class="modal-header">
                                     <input type="button" value="&#x274C;" class="close" data-dismiss="modal" />
                                     <p class="modal-title" style="color:white">More Details</p>
                                 </div>
                                 <div class="modal-body">
-                                    <p>Stock Code: @Html.EditorFor(model => record.LoanStatus.RequestLoanStock.Stock.StockCode, new { htmlAttributes = new { @class = "form-control", @readonly = true } })</p>
-                                    <p>Stock Name: @Html.EditorFor(model => record.LoanStatus.RequestLoanStock.Stock.Name, new { htmlAttributes = new { @class = "form-control", @readonly = true } })</p>
-                                    <p>Quantity Loaned: @Html.EditorFor(model => record.LoanStatus.RequestLoanStock.Quantity, new { htmlAttributes = new { @class = "form-control", @readonly = true } })</p>
-                                    <p>Borrow Date: @Html.EditorFor(model => record.LoanStatus.RequestLoanStock.FromDate, new { htmlAttributes = new { @class = "form-control", @readonly = true } })</p>
-                                    <p>Current Due Date: @Html.EditorFor(model => record.LoanStatus.RequestLoanStock.DueDate, new { htmlAttributes = new { @class = "form-control", @readonly = true } })</p>
+                                    <p><strong>Stock Code: </strong>@record.LoanStatus.RequestLoanStock.Stock.StockCode</p>
+                                    <p><strong>Stock Name: </strong>@record.LoanStatus.RequestLoanStock.Stock.Name</p>
+                                    <p><strong>Quantity Loaned: </strong>@record.LoanStatus.RequestLoanStock.Quantity</p>
+                                    <p><strong>Borrow Date: </strong>@record.LoanStatus.RequestLoanStock.FromDate.ToString("dd MMMM yyyy")</p>
+                                    <p><strong>Current Due Date: </strong>@record.LoanStatus.RequestLoanStock.DueDate.ToString("dd MMMM yyyy")</p>
                                 </div>
                                 <div class="modal-footer">
                                     <button class="btn btn-secondary" id="Close-@record.Id" data-dismiss="modal">Close</button>
@@ -109,7 +114,7 @@
                     </div>
                 </td>
                 <td>
-                    <button id="acceptButton" data-target="#AcceptModal-@record.Id" data-toggle="modal">Accept</button>
+                    <button id="acceptButton" data-target="#AcceptModal-@record.Id" data-toggle="modal" class="btn btn-primary">Accept</button>
                     <div class="modal fade" data-keyboard="false" data-backdrop="static" id="AcceptModal-@record.Id" tabindex="-1">
                         <div class="modal-dialog modal-dialog-centered">
                             <div class="modal-content">
@@ -121,8 +126,8 @@
                                     <p>Are you sure you want to accept this Extension Request?</p>
                                 </div>
                                 <div class="modal-footer">
-                                    <button id="confirmApproval" class="btn btn-primary" onclick="AcceptExtension(@record.Id)" data-dismiss="modal">Yes</button>
-                                    <button class="btn btn-secondary" id="Close-@record.Id" data-dismiss="modal">No</button>
+                                    <button id="confirmApproval" class="btn btn-primary" onclick="AcceptExtension(@record.Id)" data-dismiss="modal">Yes</button>&nbsp;&nbsp;
+                                    <button class="btn btn-primary" id="Close-@record.Id" data-dismiss="modal">No</button>
                                 </div>
                             </div>
                         </div>
@@ -130,7 +135,7 @@
 
                 </td>
                 <td>
-                    <button id="rejectButton" data-target="#RejectModal-@record.Id" data-toggle="modal">Reject</button>
+                    <button id="rejectButton" data-target="#RejectModal-@record.Id" data-toggle="modal" class="btn btn-primary">Reject</button>
                     <div class="modal fade" data-keyboard="false" data-backdrop="static" id="RejectModal-@record.Id" tabindex="-1">
                         <div class="modal-dialog modal-dialog-centered">
                             <div class="modal-content">
@@ -142,8 +147,8 @@
                                     <p>Are you sure you want to reject this Extension Request?</p>
                                 </div>
                                 <div class="modal-footer">
-                                    <button id="confirmReject" class="btn btn-primary" onclick="RejectExtension(@record.Id)" data-dismiss="modal">Yes</button>
-                                    <button class="btn btn-secondary" id="Close-@record.Id" data-dismiss="modal">No</button>
+                                    <button id="confirmReject" class="btn btn-primary" onclick="RejectExtension(@record.Id)" data-dismiss="modal">Yes</button>&nbsp;&nbsp;
+                                    <button class="btn btn-primary" id="Close-@record.Id" data-dismiss="modal">No</button>
                                 </div>
                             </div>
                         </div>
@@ -154,51 +159,3 @@
         }
     </tbody>
 </table>
-
-@section scripts
-{
-    <script>
-        function AcceptExtension(stockId)
-        {
-            $.ajax({
-                url: '@Url.Action("AcceptExtension", "Extensions")',
-                type: 'POST',
-                data: { id: stockId },
-                dataType: 'json',
-                success: function (data) {
-                    if (!data.success) {
-                        notifyError(data.message);
-                    } else {
-                        localStorage.setItem('notificationMessage', data.message);
-                        location.reload();
-                    }
-
-
-                },
-                error: function () {
-                    notifyError("An error occurred while applying the Extension.");
-                }
-            });
-
-        }
-
-        function RejectExtension(stockId)
-{
-            $.ajax({
-                url: '@Url.Action("RejectExtension", "Extensions")',
-                type: 'POST',
-                data: { id: stockId },
-                dataType: 'json',
-                success: function (data) {
-                    localStorage.setItem('notificationMessage', data.message);
-                    location.reload();
-                },
-                error: function () {
-                    notifyError("An error occurred while rejecting the Extension.");
-                }
-            });
-}
-    </script>
-
-
-}

@@ -51,9 +51,7 @@
         <h2>Accepted Extension Requests</h2>
     </div>
     <div class="card-body">
-        <div>
-            FILTER and Search
-        </div>
+
 
         <table class="table text-white">
             <tr>
@@ -87,23 +85,23 @@
                         @record.Reason
                     </td>
                     <td>
-                        <button id="moreDetailsButton" data-target="#DetailsModal-@record.Id" data-toggle="modal">View More Details</button>
+                        <button id="moreDetailsButton" data-target="#DetailsModal-@record.Id" data-toggle="modal" class="btn btn-primary">View More Details</button>
                         <div class="modal fade" data-keyboard="false" data-backdrop="static" id="DetailsModal-@record.Id" tabindex="-1">
                             <div class="modal-dialog modal-dialog-centered">
-                                <div class="modal-content">
+                                <div class="modal-content" style="background-color: #2E3842; color: #fff;">
                                     <div class="modal-header">
                                         <input type="button" value="&#x274C;" class="close" data-dismiss="modal" />
                                         <p class="modal-title" style="color:white">More Details</p>
                                     </div>
                                     <div class="modal-body">
-                                        <p>Stock Code: @Html.EditorFor(model => record.LoanStatus.RequestLoanStock.Stock.StockCode, new { htmlAttributes = new { @class = "form-control", @readonly = true } })</p>
-                                        <p>Stock Name: @Html.EditorFor(model => record.LoanStatus.RequestLoanStock.Stock.Name, new { htmlAttributes = new { @class = "form-control", @readonly = true } })</p>
-                                        <p>Quantity Loaned: @Html.EditorFor(model => record.LoanStatus.RequestLoanStock.Quantity, new { htmlAttributes = new { @class = "form-control", @readonly = true } })</p>
-                                        <p>Borrow Date: @Html.EditorFor(model => record.LoanStatus.RequestLoanStock.FromDate, new { htmlAttributes = new { @class = "form-control", @readonly = true } })</p>
-                                        <p>Current Due Date: @Html.EditorFor(model => record.LoanStatus.RequestLoanStock.DueDate, new { htmlAttributes = new { @class = "form-control", @readonly = true } })</p>
+                                        <p><strong>Stock Code: </strong>@record.LoanStatus.RequestLoanStock.Stock.StockCode</p>
+                                        <p><strong>Stock Name: </strong>@record.LoanStatus.RequestLoanStock.Stock.Name</p>
+                                        <p><strong>Quantity Loaned: </strong>@record.LoanStatus.RequestLoanStock.Quantity</p>
+                                        <p><strong>Borrow Date: </strong>@record.LoanStatus.RequestLoanStock.FromDate.ToString("dd MMMM yyyy")</p>
+                                        <p><strong>Current Due Date: </strong>@record.LoanStatus.RequestLoanStock.DueDate.ToString("dd MMMM yyyy")</p>
                                     </div>
                                     <div class="modal-footer">
-                                        <button class="btn btn-secondary" id="Close-@record.Id" data-dismiss="modal">Close</button>
+                                        <button class="btn-primary" id="Close-@record.Id" data-dismiss="modal">Close</button>
                                     </div>
                                 </div>
                             </div>

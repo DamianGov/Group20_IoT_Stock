@@ -136,5 +136,30 @@
 
     </script>
 
+    <script>
+
+            $(".cancel-button").on("click", function () {
+            var ID = $(this).data("id");
+                cancelLoan(ID, false);
+        });
+
+        function cancelLoan(ID) {
+            $.ajax({
+                url: '@Url.Action("CancelRequest", "RequestLoan")',
+                type: 'POST',
+                data: { id: ID },
+                dataType: 'json',
+                success: function (data) {
+                localStorage.setItem('notificationMessage', data.message);
+                location.reload();
+                },
+                error: function () {
+                notifyError("An error occurred while cancelling the request.");
+
+                }
+                });
+                }
+    </script>
+
 
 }

@@ -1,5 +1,5 @@
 ﻿@model IEnumerable<Group20_IoT.Models.StockDiscrepancy>
-
+@using Group20_IoT.Helpers
 
 <div class="card-container">
     @foreach (var item in Model)
@@ -12,7 +12,7 @@
                 <p><strong>Reference #:</strong> @item.Id</p>
                 <p><strong>Submitted By:</strong> @item.Users.GetFullName() [@item.Users.UniNum]</p>
                 <p><strong>Quantity:</strong> @Html.DisplayFor(modelItem => item.Quantity)</p>
-                <p><strong>Discrepancy Category:</strong> @Html.DisplayFor(modelItem => item.DiscrepancyCategory)</p>
+                <p><strong>Discrepancy Category:</strong> @Html.DisplayEnumFor(modelItem => item.DiscrepancyCategory)</p>
                 <p><strong>Note:</strong> @Html.DisplayFor(modelItem => item.Note)</p>
                 <p><strong>Discrepancy Found:</strong> @item.DiscrepancyFound.ToString("dd MMMM yyyy")</p>
                 <p><strong>Creation Date</strong>: @item.CreationDate.ToString("dd MMMM yyyy")</p>
@@ -36,33 +36,3 @@
 
     }
 </div>
-
-@section scripts
-{
-    <script>
-        $(document).ready(function () {
-
-        $(".resolve-button").on("click", function () {
-            var ID = $(this).data("id");
-            updateResolve(ID);
-        });
-
-        function updateResolve(ID) {
-            $.ajax({
-                url: '@Url.Action("ResolveDiscrepancy", "Discrepancy")',
-                type: 'POST',
-                data: { id: ID },
-                dataType: 'json',
-                success: function (data) {
-                    localStorage.setItem('notificationMessage', data.message);
-                    location.reload();
-                },
-                error: function () {
-                    notifyError("An error occurred while resolving discrepancy.");
-
-                }
-            });
-        }
-    });
-    </script>
-}

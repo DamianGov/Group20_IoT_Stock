@@ -1,5 +1,7 @@
 ﻿
 @model List<Group20_IoT.Models.LoanStatus>
+    @using Group20_IoT.Helpers
+
 <style>
     .card {
         width: 100% !important;
@@ -75,10 +77,12 @@
                     <th>
                         Due Date
                     </th>
+                    @if(Model.Any(m => m.Note != string.Empty))
+                    { 
                     <th>
                         Note
                     </th>
-
+                    }
                     <th>
                         Loan Status
                     </th>
@@ -114,11 +118,15 @@
                             <td>
                                 @item.RequestLoanStock.DueDate.ToString("dd MMMM yyyy")
                             </td>
+                            @if(Model.Any(m => m.Note != string.Empty))
+                            { 
                             <td>
                                 @item.Note
                             </td>
+                            }
+                            
                             <td>
-                                @item.Status
+                                @Html.DisplayEnumFor(model => item.Status)
                             </td>
                             @if (item.Status != Group20_IoT.Models.LoanStatus.LoanStatusStock.Returned && item.Status != Group20_IoT.Models.LoanStatus.LoanStatusStock.Cancelled)
                             {
@@ -126,45 +134,52 @@
                                     <button id="changeStatusButton" data-target="#ChangeStatusModal-@item.Id" data-toggle="modal" class="btn btn-primary">Change Status</button>
                                     <div class="modal fade" data-keyboard="false" data-backdrop="static" id="ChangeStatusModal-@item.Id" tabindex="-1">
                                         <div class="modal-dialog modal-dialog-centered">
-                                            <div class="modal-content">
+                                            <div class="modal-content" style="background-color: #2E3842; color: #fff;">
                                                 <div class="modal-header">
                                                     <input type="button" value="&#x274C;" class="close" data-dismiss="modal" />
-                                                    <p class="modal-title" style="color:white">Change Status</p>
+                                                    <p class="modal-title"  style="color: #03e9f4;">Change Status</p>
                                                 </div>
                                                 <div class="modal-body">
                                                     <p>
-                                                        @item.RequestLoanStock.Stock.StockCode
+                                                      <strong>Stock Code: </strong>  @item.RequestLoanStock.Stock.StockCode
                                                     </p>
-                                                    <p>@item.RequestLoanStock.Stock.Name</p>
+                                                    <p><strong>Stock Name: </strong>  @item.RequestLoanStock.Stock.Name</p>
                                                     <p>
-                                                        @item.RequestLoanStock.Quantity
-                                                    </p>
-                                                    <p>
-                                                        @item.Users.GetFullName()
+                                                        <strong>Quantity: </strong>   @item.RequestLoanStock.Quantity
                                                     </p>
                                                     <p>
-                                                        @item.AccOn.ToString("dd MMMM yyyy")
+                                                        <strong>User: </strong>   @item.Users.GetFullName() [@item.RequestLoanStock.Users.UniNum]
                                                     </p>
                                                     <p>
-                                                        @item.RequestLoanStock.FromDate.ToString("dd MMMM yyyy")
+                                                      <strong>Accepted Date: </strong>   @item.AccOn.ToString("dd MMMM yyyy")
                                                     </p>
                                                     <p>
-                                                        @item.RequestLoanStock.DueDate.ToString("dd MMMM yyyy")
+                                                        <strong>Borrow Date: </strong>  @item.RequestLoanStock.FromDate.ToString("dd MMMM yyyy")
                                                     </p>
                                                     <p>
-                                                        @item.Note
+                                                        <strong>Due Date: </strong>  @item.RequestLoanStock.DueDate.ToString("dd MMMM yyyy")
                                                     </p>
                                                     <p>
-                                                        @item.Status
+                                                      <strong>Note: </strong>  @item.Note
                                                     </p>
-                                                    <p>Note: @Html.TextAreaFor(model => item.Note, htmlAttributes: new { @class = "form-control", id = "statusNote-" + item.Id })</p>
                                                     <p>
-                                                        Change To: @Html.EnumDropDownListFor(model => item.Status, htmlAttributes: new { @class = "form-control", @selected = item.Status, id = "statusDropdown-" + item.Id })
+                                                       <strong>Current Status: </strong> @Html.DisplayEnumFor(model => item.Status)
                                                     </p>
+                                                    <br/>
+
+                                                    <p>Add a Note:</p>
+                                                    <p>@Html.TextAreaFor(model => item.Note, htmlAttributes: new { @class = "textarea", id = "statusNote-" + item.Id })</p>
+                                                    <p>
+                                                        Change Status To:
+                                                    </p>
+                                                    <p>
+                                                        @Html.EnumDropDownListFor(model => item.Status, htmlAttributes: new { @class = "form-control", @selected = item.Status, id = "statusDropdown-" + item.Id })
+                                                    </p>
+                                                    <br />
                                                 </div>
                                                 <div class="modal-footer">
-                                                    <button id="changeStatus" class="btn btn-primary" onclick="ChangeStatus(@item.Id)" data-dismiss="modal">Change</button>
-                                                    <button class="btn btn-secondary" id="Close-@item.Id" data-dismiss="modal">Cancel</button>
+                                                    <button id="changeStatus" class="btn btn-primary" onclick="ChangeStatus(@item.Id)" data-dismiss="modal">Change</button>&nbsp;&nbsp;
+                                                    <button class="btn btn-primary" id="Close-@item.Id" data-dismiss="modal">Cancel</button>
                                                 </div>
                                             </div>
                                         </div>

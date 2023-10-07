@@ -170,9 +170,29 @@ namespace Group20_IoT.Controllers
                     db.Entry(users).State = EntityState.Modified;
                     await db.SaveChangesAsync();
                 }
+
+                return RedirectToAction(nameof(Index));
             }
 
             return View(forgotPassword);
+        }
+
+        public ActionResult ContactUs()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult SubmitContact(string name, string email, string message)
+        {
+            if(string.IsNullOrWhiteSpace(name) || string.IsNullOrWhiteSpace(email) || string.IsNullOrWhiteSpace(message))
+                return Json(new { success = false, message = "Please fill out all fields" });
+
+            _ = SharedMethods.SendEmail("IoT Super Admin", "iotgrp2023@gmail.com", "IoT System - User Query/Question", $"Hello, Admin.\n\n{name} [{email}] has sent a query:\n\n{message}\n\nThank you.\nKind Regards,\nIoT System.", false);
+            _ = SharedMethods.SendEmail(name, email, "IoT System - Query Submitted", $"Hello, {name}.\n\nThank you for your query.\nThis serves as confirmation of your query being submitted.\n\nKind regards,\nIoT System.", false);
+
+            return Json(new { success = true, message = "Thank you, your query has been submitted" });
+
         }
     }
 }

@@ -68,9 +68,7 @@
         <h2>Accepted Loans</h2>
     </div>
     <div class="card-body">
-        <div>
-            FILTER BY ??
-        </div>
+
 
         <table class="table">
             <tr>
@@ -108,45 +106,29 @@
             @foreach (var item in Model)
             {
                 <tr>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Id)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.RequestLoanStock.Stock.StockCode)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.RequestLoanStock.Stock.Name)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.RequestLoanStock.Quantity)
-                    </td>
-                    <td>
-                        @item.RequestLoanStock.DateRequested.ToString("yyyy/M/d")
-                    </td>
-                    <td>
-                        @item.RequestLoanStock.FromDate.ToString("yyyy/M/d")
-                    </td>
-                    <td>
-                        @item.RequestLoanStock.DueDate.ToString("yyyy/M/d")
-                    </td>
-                    <td>
-                        @item.Status
-                    </td>
+                    <td style="background-color: #2E3842; color: #fff; padding: 0.75rem;">@Html.DisplayFor(modelItem => item.Id)</td>
+                    <td style="background-color: #2E3842; color: #fff; padding: 0.75rem;">@Html.DisplayFor(modelItem => item.RequestLoanStock.Stock.StockCode)</td>
+                    <td style="background-color: #2E3842; color: #fff; padding: 0.75rem;">@Html.DisplayFor(modelItem => item.RequestLoanStock.Stock.Name)</td>
+                    <td style="background-color: #2E3842; color: #fff; padding: 0.75rem;">@Html.DisplayFor(modelItem => item.RequestLoanStock.Quantity)</td>
+                    <td style="background-color: #2E3842; color: #fff; padding: 0.75rem;">@item.RequestLoanStock.DateRequested.ToString("dd MMMM yyyy")</td>
+                    <td style="background-color: #2E3842; color: #fff; padding: 0.75rem;">@item.RequestLoanStock.FromDate.ToString("dd MMMM yyyy")</td>
+                    <td style="background-color: #2E3842; color: #fff; padding: 0.75rem;">@item.RequestLoanStock.DueDate.ToString("dd MMMM yyyy")</td>
+                    <td style="background-color: #2E3842; color: #fff; padding: 0.75rem;">@item.Status</td>
                     @if (item.RequestExtension)
                     {
-                        <td>Yes</td>
+                       <td style="background-color: #2E3842; color: #fff; padding: 0.75rem;">Yes</td>
                     }
                     else
                     {
-                        <td>No</td>
+                <td style="background-color: #2E3842; color: #fff; padding: 0.75rem;">No</td>
                     }
                     @if (item.Status == Group20_IoT.Models.LoanStatus.LoanStatusStock.Picked_Up || item.Status == Group20_IoT.Models.LoanStatus.LoanStatusStock.Overdue)
                     {
-                        <td>
-                            <button id="requestButton" data-target="#RequestModal-@item.Id" data-toggle="modal" class="btn-primary">Request An Extension</button>
+                        <td style="background-color: #2E3842; color: #fff; padding: 0.75rem;">
+                            <button id="requestButton" data-target="#RequestModal-@item.Id" data-toggle="modal" class="btn btn-primary">Request An Extension</button>
                             <div class="modal fade" data-keyboard="false" data-backdrop="static" id="RequestModal-@item.Id" tabindex="-1">
                                 <div class="modal-dialog modal-dialog-centered">
-                                    <div class="modal-content">
+                                    <div class="modal-content" style="background-color: #2E3842; color: #fff;">
                                         <div class="modal-header">
                                             <input type="button" value="&#x274C;" class="close" data-dismiss="modal" />
                                             <p class="modal-title" style="color:white">Request An Extension</p>
@@ -162,8 +144,8 @@
                                             </form>
                                         </div>
                                         <div class="modal-footer">
-                                            <button id="confirmExtensionRequest" class="btn btn-primary" onclick="ExtensionRequest(@item.Id)" data-dismiss="modal">Request Extension</button>
-                                            <button class="btn btn-secondary" id="Close-@item.Id" data-dismiss="modal">Cancel</button>
+                                            <button id="confirmExtensionRequest" class="btn btn-primary" onclick="ExtensionRequest(@item.Id)" data-dismiss="modal">Request Extension</button>&nbsp;&nbsp;
+                                            <button class="btn-primary id="Close-@item.Id" data-dismiss="modal">Cancel</button>
                                         </div>
                                     </div>
                                 </div>
@@ -172,7 +154,7 @@
                     }
                     @if (item.Status == Group20_IoT.Models.LoanStatus.LoanStatusStock.Awaiting_Pickup)
                     {
-                        <td>
+                        <td style="background-color: #2E3842; color: #fff; padding: 0.75rem;">
                             <button class="cancel-button" data-id="@item.Id">Cancel</button>
                         </td>
                     }

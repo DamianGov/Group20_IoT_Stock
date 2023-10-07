@@ -36,75 +36,110 @@
 {
     @Html.AntiForgeryToken()
 
-<div class="form-horizontal">
-    <hr />
-    <div class="form-group">
-        <p></p>
-        <div class="col-md-10">
-            @Html.DropDownListFor(model => model.StockId, (SelectList)ViewBag.Stocks, null, htmlAttributes: new { @class = "form-control", id = "ddlStock" })
-            @Html.ValidationMessageFor(model => model.StockId, "", new { @class = "text-danger" })
+    <div class="form-horizontal">
+        <hr />
+        <div class="form-group">
+            <p></p>
+            <div class="col-md-10">
+                @Html.DropDownListFor(model => model.StockId, (SelectList)ViewBag.Stocks, null, htmlAttributes: new { @class = "form-control", id = "ddlStock" })
+                @Html.ValidationMessageFor(model => model.StockId, "", new { @class = "text-danger" })
+            </div>
         </div>
-    </div>
 
-    <div class="form-group">
-        @Html.LabelFor(model => model.Quantity, htmlAttributes: new { @class = "control-label col-md-2 required-star" })
-        <div class="col-md-10">
-            @Html.EditorFor(model => model.Quantity, new { htmlAttributes = new { @class = "form-control", min = 1, max = int.MaxValue } })
-            @Html.ValidationMessageFor(model => model.Quantity, "", new { @class = "text-danger" })
+        <div class="form-group">
+            @Html.LabelFor(model => model.Quantity, htmlAttributes: new { @class = "control-label col-md-2 required-star" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Quantity, new { htmlAttributes = new { @class = "form-control", min = 1, max = int.MaxValue } })
+                @Html.ValidationMessageFor(model => model.Quantity, "", new { @class = "text-danger" })
+            </div>
         </div>
-    </div>
 
-    <div class="form-group">
-        @Html.LabelFor(model => model.DiscrepancyCategory, htmlAttributes: new { @class = "control-label col-md-2 required-star" })
-        <div class="col-md-10">
-            @Html.EnumDropDownListFor(model => model.DiscrepancyCategory, htmlAttributes: new { @class = "form-control" })
-            @Html.ValidationMessageFor(model => model.DiscrepancyCategory, "", new { @class = "text-danger" })
+        <div class="form-group">
+            @Html.LabelFor(model => model.DiscrepancyCategory, htmlAttributes: new { @class = "control-label col-md-2 required-star" })
+            <div class="col-md-10">
+                @Html.EnumDropDownListFor(model => model.DiscrepancyCategory, htmlAttributes: new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.DiscrepancyCategory, "", new { @class = "text-danger" })
+            </div>
         </div>
-    </div>
-    <div class="form-group">
-        @Html.LabelFor(model => model.Note, htmlAttributes: new { @class = "control-label col-md-2 required-star" })
-        <div class="col-md-10">
-            @Html.TextAreaFor(model => model.Note, new { htmlAttributes = new { @class = "form-control" } })
-            @Html.ValidationMessageFor(model => model.Note, "", new { @class = "text-danger" })
+        <div class="form-group">
+            @Html.LabelFor(model => model.Note, htmlAttributes: new { @class = "control-label col-md-2 required-star" })
+            <div class="col-md-10">
+                @Html.TextAreaFor(model => model.Note, new { htmlAttributes = new { @class = "textarea", id = "noteTextArea" } })
+                <div id="charCount"></div>
+                @Html.ValidationMessageFor(model => model.Note, "", new { @class = "text-danger" })
+            </div>
         </div>
-    </div>
 
-    <div class="form-group">
-        @Html.LabelFor(model => model.DiscrepancyFound, htmlAttributes: new { @class = "control-label col-md-2 required-star" })
-        <div class="col-md-10">
-            @Html.EditorFor(model => model.DiscrepancyFound, new { htmlAttributes = new { @class = "datepicker" } })
-            @Html.ValidationMessageFor(model => model.DiscrepancyFound, "", new { @class = "text-danger" })
+        <div class="form-group">
+            @Html.LabelFor(model => model.DiscrepancyFound, htmlAttributes: new { @class = "control-label col-md-2 required-star" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.DiscrepancyFound, new { htmlAttributes = new { @class = "datepicker form-control" } })
+                @Html.ValidationMessageFor(model => model.DiscrepancyFound, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <br />
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Submit Discrepancy" class="btn btn-primary" />
+            </div>
         </div>
     </div>
-    <br />
-    <div class="form-group">
-        <div class="col-md-offset-2 col-md-10">
-            <input type="submit" value="Submit Discrepancy" class="btn btn-primary" />
-        </div>
-    </div>
-</div>
 }
-
+<br />
 <div>
-    @Html.ActionLink("Back to List of Discrepancies", "Index", null, new {@class = "btn-primary"})
+    @Html.ActionLink("Back to List of Discrepancies", "Index", null, new { @class = "btn-primary" })
 </div>
 
 @section scripts
 {
     <script>
-        $(".datepicker").datepicker({
-            dateFormat: 'yy/mm/dd',
-            changeMonth: true,
-            changeYear: true,
-            maxDate: 0,
-            yearRange: "-1:+0"
-        }).datepicker("setDate", "0");
-        $(".datepicker").attr("readonly", true);
-        $("#Quantity").on("keypress keyup blur", function (event) {
-            // Allow only digits and backspace key (code 8)
-            if (event.keyCode !== 8 && (event.keyCode < 48 || event.keyCode > 57)) {
-                event.preventDefault();
+        $(document).ready(function () {
+
+            var textarea = $("textarea[name='Note']");
+            var charCount = $("#charCount");
+
+            // Attach an input event listener to the textarea
+            // Function to update character count
+            function updateCharCount() {
+                // Get the current character count
+                var currentCount = textarea.val().length;
+
+                // Display the character count
+                charCount.text("Character Count: " + currentCount);
+
+                // You can also check if the user exceeds the 250-character limit and provide feedback
+                if (currentCount > 250 || currentCount == 0) {
+                    charCount.css("color", "red");
+                } else {
+                    charCount.css("color", "green"); // Reset color
+                }
             }
+
+            // Call the updateCharCount function initially
+            updateCharCount();
+
+            // Attach an input event listener to the textarea
+            textarea.on("input", function () {
+                // Call the updateCharCount function when the user types
+                updateCharCount();
+            });
         });
+        </script>
+
+            <script>
+                $(".datepicker").datepicker({
+                    dateFormat: 'yy/mm/dd',
+                changeMonth: true,
+                changeYear: true,
+                maxDate: 0,
+                yearRange: "-1:+0"
+            }).datepicker("setDate", "0");
+                $(".datepicker").attr("readonly", true);
+                $("#Quantity").on("keypress keyup blur", function (event) {
+                // Allow only digits and backspace key (code 8)
+                if (event.keyCode !== 8 && (event.keyCode < 48 || event.keyCode > 57)) {
+                    event.preventDefault();
+                }
+            });
     </script>
 }

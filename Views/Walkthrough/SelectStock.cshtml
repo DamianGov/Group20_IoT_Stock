@@ -1,42 +1,91 @@
 ﻿@model Group20_IoT.Models.ViewModel.WalkthroughStockViewModel
 @{
-    ViewBag.Title = "SelectStock";
+    ViewBag.Title = "Select Stock";
 }
+<style>
+    .card {
+        width: 100% !important;
+        margin-bottom: 1.7rem !important;
+        background-color: #2E3842 !important;
+        color: #fff !important;
+    }
 
+    .card-header {
+        background-color: #003366 !important;
+        color: #fff !important;
+        text-align: center !important;
+        padding: 0.75rem !important;
+        font-weight: bold !important;
+    }
 
+    .card-body {
+        padding: 1.25rem !important;
+    }
 
-@using (Html.BeginForm())
-{
-    <h2>Select Stock For Walkthrough - @Model.Walkthrough.WalkthroughDate.ToString("dd MMMM yyyy")</h2>
-    @Html.AntiForgeryToken()
-    @Html.ValidationMessage(string.Empty)
-    @Html.HiddenFor(model => model.Walkthrough.WalkthroughDate)
-    @Html.HiddenFor(model => model.Walkthrough.WalkthroughDescription)
-    <table>
-        <tr>
-            <th>Stock Code</th>
-            <th>
-                Name
-            </th>
-            <th>Quantity Available</th>
-            <th>Quantity</th>
-            <th>Select</th>
-        </tr>
-        @for (var i = 0; i < Model.Stocks.Count; i++)
-        {
-            <tr>
-                @Html.HiddenFor(model => model.Stocks[i].Id)
-                <td>@Html.DisplayFor(model => model.Stocks[i].Stockcode)</td>
-                <td>@Html.DisplayFor(model => model.Stocks[i].Name)</td>
-                <td>@Html.DisplayFor(model => model.Stocks[i].QuantityAvailable)</td>
-                <td>@Html.EditorFor(model => model.Stocks[i].Quantity, new { htmlAttributes = new { @class = "form-control", min = 1, max = Model.Stocks[i].QuantityAvailable } })</td>
-                <td>@Html.CheckBoxFor(model => model.Stocks[i].Selected)</td>
-            </tr>
+    .btn-primary {
+        display: inline-block;
+        padding: 10px 20px;
+        color: #03e9f4;
+        font-size: 13px;
+        text-decoration: none;
+        text-transform: uppercase;
+        border: none;
+        outline: none;
+        background: transparent;
+        transition: background 0.5s, color 0.5s;
+        margin-top: 20px;
+        letter-spacing: 4px;
+        cursor: pointer;
+    }
+
+        .btn-primary:hover {
+            background: #03e9f4;
+            color: #fff;
+            border-radius: 5px;
+            box-shadow: 0 0 5px #03e9f4, 0 0 25px #03e9f4, 0 0 50px #03e9f4, 0 0 100px #03e9f4;
         }
-    </table>
-    <input type="submit" value="Create Walkthrough" class="btn btn-default" />
-}
+</style>
+<div class="card" style="width: 30rem;">
+    <div class="card-body">
 
+
+        @using (Html.BeginForm())
+        {
+            <h2 class="card-title">Select Stock For Walkthrough - @Model.Walkthrough.WalkthroughDate.ToString("dd MMMM yyyy")</h2>
+            @Html.AntiForgeryToken()
+            @Html.ValidationMessage(string.Empty)
+            @Html.HiddenFor(model => model.Walkthrough.WalkthroughDate)
+            @Html.HiddenFor(model => model.Walkthrough.WalkthroughDescription)
+            <table class="table text-white">
+                <thead>
+                    <tr>
+                        <th>Stock Code</th>
+                        <th>
+                            Name
+                        </th>
+                        <th>Quantity Available</th>
+                        <th>Quantity</th>
+                        <th>Select</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @for (var i = 0; i < Model.Stocks.Count; i++)
+                    {
+                        <tr>
+                            @Html.HiddenFor(model => model.Stocks[i].Id)
+                            <td>@Html.DisplayFor(model => model.Stocks[i].Stockcode)</td>
+                            <td>@Html.DisplayFor(model => model.Stocks[i].Name)</td>
+                            <td>@Html.DisplayFor(model => model.Stocks[i].QuantityAvailable)</td>
+                            <td>@Html.EditorFor(model => model.Stocks[i].Quantity, new { htmlAttributes = new { @class = "form-control", min = 1, max = Model.Stocks[i].QuantityAvailable } })</td>
+                            <td>@Html.CheckBoxFor(model => model.Stocks[i].Selected)</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+            <input type="submit" value="Create Walkthrough" class="btn btn-default" />
+        }
+    </div>
+</div>
 @section scripts
 {
     <script>

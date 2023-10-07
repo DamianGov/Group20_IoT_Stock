@@ -1,0 +1,339 @@
+﻿
+@{
+    Layout = null;
+}
+<head>
+    <title>Contact Us | IoT Management System</title>
+</head>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+<!-- Bootstrap CSS and JavaScript -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    body {
+        margin: 0;
+        padding: 0;
+        font-family: sans-serif;
+        background: linear-gradient(#141e30, #243b55);
+    }
+
+        /* Add the laser effect pseudo-element */
+        body::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            box-sizing: border-box;
+            pointer-events: none;
+            animation: laserEffect 2s infinite linear;
+            border: 3px solid #03e9f4;
+            border-radius: 20px;
+        }
+
+
+    header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 20px;
+        background-color: #003366;
+        color: white;
+        height: 4rem;
+    }
+
+    .logo {
+        font-size: 2rem;
+    }
+
+
+    .reachUs-button {
+        padding: 1rem;
+        background-color: #003366;
+        border: none;
+        color: white;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+
+        .reachUs-button:hover {
+            background-color: #1ac840;
+        }
+
+
+    .banner {
+        text-align: center;
+        margin: 0 auto;
+    }
+
+        .banner img {
+            max-width: 10%;
+            height: auto;
+            background-color: #003366;
+        }
+
+    .contact-form {
+        padding: 40px 0;
+        color: #03e9f4;
+        margin: 0 10px;
+    }
+
+    .form-container {
+        text-align: center;
+        max-width: 40%;
+        margin: 0 auto;
+        padding: 20px;
+        background: rgba(0,0,0,.5);
+        border-radius: 10px;
+        box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    }
+
+        .form-container label {
+            text-align: left; /* Align labels to the left */
+            display: block; /* Make labels block-level elements */
+            font-weight: bold;
+        }
+
+    .contact-form h2 {
+        text-align: center;
+        margin-bottom: 20px;
+        text-transform: capitalize !important;
+        color: #fff;
+    }
+
+    .form-group {
+        margin-bottom: 20px;
+    }
+
+    .form-container label {
+        display: block;
+        font-weight: bold;
+    }
+
+    .form-container input, textarea {
+        font-family: sans-serif;
+        width: 100% !important;
+        padding: 10px !important;
+        border: 1px solid #ccc !important;
+        border-radius: 4px !important;
+        margin-bottom: 1rem !important;
+        resize: vertical !important;
+    }
+
+    .btn-primary {
+        display: inline-block;
+        text-align: center !important;
+        padding: 10px 20px;
+        color: #03e9f4;
+        font-size: 13px;
+        text-decoration: none;
+        text-transform: uppercase;
+        border: none;
+        outline: none;
+        background: transparent;
+        transition: background 0.5s, color 0.5s;
+        margin-top: 20px;
+        letter-spacing: 4px;
+        cursor: pointer;
+    }
+
+        .btn-primary:hover {
+            background: #03e9f4;
+            color: #fff;
+            border-radius: 5px;
+            box-shadow: 0 0 5px #03e9f4, 0 0 25px #03e9f4, 0 0 50px #03e9f4, 0 0 100px #03e9f4;
+        }
+
+    .contact-info {
+        text-align: center;
+        padding: 50px 0;
+        background-color: #003366;
+    }
+
+        .contact-info h2 {
+            margin-bottom: 20px;
+        }
+
+    .hamburger {
+        display: none;
+        color: rgb(0, 0, 0);
+        font-size: 1.5rem;
+        cursor: pointer;
+    }
+
+
+    @@media only screen and (max-width: 768px) {
+        .logo {
+            display: none;
+        }
+
+        .hamburger {
+            display: flex;
+        }
+
+        #nav-menu {
+            position: absolute;
+            top: 4rem;
+            left: 0;
+            background-color: #333;
+            width: 100%;
+            display: none;
+        }
+
+            #nav-menu.active {
+                display: block;
+                flex-direction: row;
+                padding: 1rem;
+            }
+    }
+
+
+    .validation-message {
+        color: #ff5555; /* Red color for error messages */
+        font-size: 14px;
+        margin-top: 5px;
+    }
+
+    /* Add this style for success messages if needed */
+    .validation-success {
+        color: #00cc00; /* Green color for success messages */
+        font-size: 14px;
+        margin-top: 5px;
+    }
+</style>
+
+
+<div id="notification-area">
+</div>
+
+<section class="banner" style="color:white;">
+    <img src="https://media.istockphoto.com/id/1312566254/photo/contact-us-concept-icon-telephone-address-and-email-on-blue-background-3d-illustration.jpg?s=612x612&w=0&k=20&c=ibxUaAea878l9MU53W-3RB0Tkj9i-MIbCOu0LwIHz9c="
+         alt="Contact Us">
+    <h1>Get in Touch With Us</h1>
+    <p>We're here to answer any questions you may have.</p>
+</section>
+<section class="contact-form">
+    <div class="form-container">
+        <h2>Your Details</h2>
+        <div>
+            <label for="name">Name: </label>
+            <input type="text" id="name" name="name" required maxlength="80">
+            <span id="nameError" class="validation-message"></span>
+
+            <label for="email">Email: </label>
+            <input type="email" id="email" name="email" required>
+            <span id="emailError" class="validation-message"></span>
+
+            <label for="message">Message: </label>
+            <textarea id="message" name="message" rows="8" required maxlength="300"></textarea>
+            <span id="messageError" class="validation-message"></span>
+            <br />
+        </div>
+        <button type="submit" class="btn-primary" id="SubmitBtn">Submit</button>
+        <br />
+        <a href="@Url.Action("Index", "Login")">
+            <button class="btn-primary">Back To Login</button>
+        </a>
+    </div>
+    
+    
+</section>
+<script src="~/Scripts/alertdialog.js"></script>
+<link href="~/Content/alert-toast.css" rel="stylesheet" />
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        var storedMessage = localStorage.getItem('notificationMessage');
+
+        if (storedMessage) {
+            notifySuccess(storedMessage);
+            localStorage.removeItem('notificationMessage');
+        }
+
+        $("#SubmitBtn").click(function () {
+
+            var nameError = document.getElementById("nameError");
+            var emailError = document.getElementById("emailError");
+            var messageError = document.getElementById("messageError");
+
+            nameError.textContent = "";
+            emailError.textContent = "";
+            messageError.textContent = "";
+
+            var name = document.getElementById("name").value.trim();
+            var email = document.getElementById("email").value.trim();
+            var message = document.getElementById("message").value.trim();
+
+            if (name === "") {
+                nameError.textContent = "Please enter your Name";
+
+                return;
+            } else if (name.length > 80) {
+                nameError.textContent = "Your Name cannot be more than 80 characters";
+
+                return;
+            }
+
+            const emailPattern = /^[a-zA-Z0-9._%+-]+@@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+            if (email === "")
+            {
+                emailError.textContent = "Please enter your Email";
+
+                return;
+            }
+            else if (!emailPattern.test(email))
+            {
+                emailError.textContent = "Invalid Email format";
+ 
+                return;
+            }
+
+            if (message === "") {
+                messageError.textContent = "Please enter a Message";
+
+                return;
+            } else if (message.length > 300) {
+                messageError.textContent = "The message cannot be more than 300 characters";
+
+                return;
+            }
+
+            notifySuccess("Please wait as we submit your query");
+
+            $.ajax({
+    url: '@Url.Action("SubmitContact", "Login")',
+                type: "POST",
+                data: {name: name, email : email, message : message },
+    success: function (data) {
+        if (!data.success) {
+            notifyError(data.message);
+        } else {
+            notifySuccess(data.message);
+            document.getElementById("name").value = "";
+            document.getElementById("email").value = "";
+            document.getElementById("message").value = "";
+            
+        }
+    },
+    error: function () {
+        notifyError("Error occurred while submitting query.");
+
+    }
+});
+
+
+        });
+
+    });
+</script>

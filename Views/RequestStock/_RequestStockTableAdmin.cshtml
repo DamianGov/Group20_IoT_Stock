@@ -1,7 +1,7 @@
 ﻿@model List<Group20_IoT.Models.ViewModel.RequestStockViewModel>
 
 
-<table class="table" text-white">
+<table class="table text-white">
     <tr>
         <th>
             Reference #
@@ -66,8 +66,8 @@
                 <td>
                     <button id="acceptButton" data-target="#AcceptModal-@item.Id" data-toggle="modal">Accept</button>
                     <div class="modal fade" data-keyboard="false" data-backdrop="static" id="AcceptModal-@item.Id" tabindex="-1">
-                        <div class="modal-dialog">
-                            <div class="modal-content">
+                        <div class="modal-dialog modal-dialog-centered">
+                            <div class="modal-content" style="background-color: #2E3842; color: #fff;">
                                 <div class="modal-header">
                                     <input type="button" value="&#x274C;" class="close" data-dismiss="modal" />
                                     <p class="modal-title" style="color:white">Accept Stock Request</p>
@@ -94,32 +94,3 @@
     }
 </table>
 
-
-@section scripts
-{
-    <script>
-        function AcceptStockReq(stockId)
-        {
-            $.ajax({
-                url: '@Url.Action("AcceptStockRequest", "RequestStock")',
-                type: 'POST',
-                data: { id: stockId },
-                dataType: 'json',
-                success: function (data) {
-                    if (!data.success) {
-                        notifyError(data.message);
-                    } else {
-                        localStorage.setItem('notificationMessage', data.message);
-                        location.reload();
-                    }
-
-
-                },
-                error: function () {
-                    notifyError("An error occurred while approving the Stock Request.");
-                }
-            });
-
-    }
-        </script>
-    }

@@ -9,275 +9,117 @@
 <link href="~/Content/Site.css" rel="stylesheet" />
 <style>
     html {
-    height: 100%;
-}
-
-body {
-    margin: 0;
-    padding: 0;
-    font-family: sans-serif;
-    background: linear-gradient(#141e30, #243b55);
-}
-    body::before {
-        content: '';
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
         height: 100%;
-        pointer-events: none;
-        background: linear-gradient(90deg, transparent, #000000);
-        z-index: -1;
-        animation: laser 2s linear infinite;
     }
 
-    @@keyframes laser {
-        0% {
-            background-position: 100% 0;
-        }
-
-        100% {
-            background-position: -100% 0;
-        }
-    }
-.login-box {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    width: 400px;
-    padding: 40px;
-    transform: translate(-50%, -50%);
-    background: rgba(0,0,0,.5);
-    box-sizing: border-box;
-    box-shadow: 0 15px 25px rgba(0,0,0,.6);
-    border-radius: 10px;
-}
-
-    .login-box h2 {
-        margin: 0 0 30px;
+    body {
+        margin: 0;
         padding: 0;
-        color: #fff;
-        text-align: center;
+        font-family: sans-serif;
+        background: linear-gradient(#141e30, #243b55);
+      
+        overflow: hidden; /* Hide overflow to prevent unwanted scrollbars */
     }
 
-    .login-box .user-box {
-        position: relative;
-    }
-
-        .login-box .user-box input {
-            width: 100%;
-            padding: 10px 0;
-            font-size: 16px;
-            color: #fff;
-            margin-bottom: 30px;
-            border: none;
-            border-bottom: 1px solid #fff;
-            outline: none;
-            background: transparent;
-        }
-
-        .login-box .user-box label {
+        /* Add the laser effect pseudo-element */
+        body::before {
+            content: '';
             position: absolute;
             top: 0;
             left: 0;
-            padding: 10px 0;
-            font-size: 16px;
-            color: #fff;
+            width: 100%;
+            height: 100%;
+            box-sizing: border-box;
             pointer-events: none;
-            transition: .5s;
+            animation: laserEffect 2s infinite linear;
+            border: 3px solid #03e9f4;
+            border-radius: 20px;
         }
 
-        .login-box .user-box input:focus ~ label,
-        .login-box .user-box input:valid ~ label {
-            top: -20px;
-            left: 0;
-            color: #03e9f4;
-            font-size: 12px;
-        }
 
-    .login-box form a {
-        position: relative;
-        display: inline-block;
-        padding: 10px 20px;
-        color: #03e9f4;
-        font-size: 16px;
-        text-decoration: none;
-        text-transform: uppercase;
-        overflow: hidden;
-        transition: .5s;
-        margin-top: 40px;
-        letter-spacing: 4px
-    }
 
-    .login-box a:hover {
-        background: #03e9f4;
-        color: #fff;
-        border-radius: 5px;
-        box-shadow: 0 0 5px #03e9f4, 0 0 25px #03e9f4, 0 0 50px #03e9f4, 0 0 100px #03e9f4;
-    }
-
-    .login-box a span {
+    .login-box {
         position: absolute;
-        display: block;
+        top: 50%;
+        left: 50%;
+        width: 400px;
+        padding: 40px;
+        transform: translate(-50%, -50%);
+        background: rgba(0,0,0,.5);
+        box-sizing: border-box;
+        box-shadow: 0 15px 25px rgba(0,0,0,.6);
+        border-radius: 10px;
     }
 
-        .login-box a span:nth-child(1) {
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 2px;
-            background: linear-gradient(90deg, transparent, #03e9f4);
-            animation: btn-anim1 1s linear infinite;
-        }
-
-
-
-.login-box a span:nth-child(2) {
-    top: -100%;
-    right: 0;
-    width: 2px;
-    height: 100%;
-    background: linear-gradient(180deg, transparent, #03e9f4);
-    animation: btn-anim2 1s linear infinite;
-    animation-delay: .25s
-}
-
-
-
-.login-box a span:nth-child(3) {
-    bottom: 0;
-    right: -100%;
-    width: 100%;
-    height: 2px;
-    background: linear-gradient(270deg, transparent, #03e9f4);
-    animation: btn-anim3 1s linear infinite;
-    animation-delay: .5s
-}
-
-
-
-.login-box a span:nth-child(4) {
-    bottom: -100%;
-    left: 0;
-    width: 2px;
-    height: 100%;
-    background: linear-gradient(360deg, transparent, #03e9f4);
-    animation: btn-anim4 1s linear infinite;
-    animation-delay: .75s
-}
-
-
-
-/* Style for the "Forgot Password" button */
-.forgot-password-button {
-    display: inline-block;
-    padding: 10px 20px;
-    color: #03e9f4;
-    font-size: 12px;
-    text-decoration: none;
-    text-transform: uppercase;
-    border: none;
-    outline: none;
-    background: transparent;
-    transition: background 0.5s, color 0.5s;
-    margin-top: 20px;
-    letter-spacing: 4px;
-    cursor: pointer;
-}
-
-    .forgot-password-button:hover {
-        background: #03e9f4;
-        color: #fff;
-        border-radius: 5px;
-        box-shadow: 0 0 5px #03e9f4, 0 0 25px #03e9f4, 0 0 50px #03e9f4, 0 0 100px #03e9f4;
-    }
-
-/* CSS styles for the Forgot Password page, matching the login screen */
-
-
-.login-box {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    width: 400px;
-    padding: 40px;
-    transform: translate(-50%, -50%);
-    background: rgba(0,0,0,.5);
-    box-sizing: border-box;
-    box-shadow: 0 15px 25px rgba(0,0,0,.6);
-    border-radius: 10px;
-    text-align: center; /* Center the content */
-}
-
-    .login-box h2 {
-        margin: 0 0 30px;
-        padding: 0;
-        color: #fff;
-        text-align: center;
-    }
-
-    .login-box .user-box {
-        position: relative;
-        margin-bottom: 30px;
-    }
-
-        .login-box .user-box input {
-            width: 100%;
-            padding: 10px 0;
-            font-size: 16px;
+        .login-box h2 {
+            margin: 0 0 30px;
+            padding: 0;
             color: #fff;
-            border: none;
-            border-bottom: 1px solid #fff;
-            outline: none;
-            background: transparent;
+            text-align: center;
         }
 
-        .login-box .user-box label {
-            position: absolute;
-            top: 0;
-            left: 0;
-            padding: 10px 0;
-            font-size: 16px;
-            color: #fff;
-            pointer-events: none;
-            transition: .5s;
+        .login-box .user-box {
+            position: relative;
         }
 
-        .login-box .user-box input:focus ~ label,
-        .login-box .user-box input:valid ~ label {
-            top: -20px;
-            left: 0;
+            .login-box .user-box input {
+                width: 100%;
+                padding: 10px 0;
+                font-size: 16px;
+                color: #fff;
+                margin-bottom: 30px;
+                border: none;
+                border-bottom: 1px solid #fff;
+                outline: none;
+                background: transparent;
+            }
+
+            .login-box .user-box label {
+                position: absolute;
+                top: 0;
+                left: 0;
+                padding: 10px 0;
+                font-size: 16px;
+                color: #fff;
+                pointer-events: none;
+                transition: .5s;
+            }
+
+            .login-box .user-box input:focus ~ label,
+            .login-box .user-box input:valid ~ label {
+                top: -20px;
+                left: 0;
+                color: #03e9f4;
+                font-size: 12px;
+            }
+
+        .login-box form a {
+            position: relative;
+            display: inline-block;
+            padding: 10px 20px;
             color: #03e9f4;
-            font-size: 12px;
+            font-size: 16px;
+            text-decoration: none;
+            text-transform: uppercase;
+            overflow: hidden;
+            transition: .5s;
+            margin-top: 40px;
+            letter-spacing: 4px
         }
 
-    .login-box form button.login-button {
-        position: relative;
-        display: inline-block;
-        padding: 10px 20px;
-        color: #03e9f4;
-        font-size: 16px;
-        text-decoration: none;
-        text-transform: uppercase;
-        overflow: hidden;
-        transition: .5s;
-        margin-top: 40px;
-        letter-spacing: 4px;
-    }
+        .login-box a:hover {
+            background: #03e9f4;
+            color: #fff;
+            border-radius: 5px;
+            box-shadow: 0 0 5px #03e9f4, 0 0 25px #03e9f4, 0 0 50px #03e9f4, 0 0 100px #03e9f4;
+        }
 
-    .login-box form button.login-button:hover {
-        background: #03e9f4;
-        color: #fff;
-        border-radius: 5px;
-        box-shadow: 0 0 5px #03e9f4, 0 0 25px #03e9f4, 0 0 50px #03e9f4, 0 0 100px #03e9f4;
-    }
-
-        .login-box form button.login-button span {
+        .login-box a span {
             position: absolute;
             display: block;
         }
 
-            .login-box form button.login-button span:nth-child(1) {
+            .login-box a span:nth-child(1) {
                 top: 0;
                 left: -100%;
                 width: 100%;
@@ -285,32 +127,189 @@ body {
                 background: linear-gradient(90deg, transparent, #03e9f4);
                 animation: btn-anim1 1s linear infinite;
             }
-    .login-box .user-box .eye-icon {
-        color: #fff; /* Set the color to white */
-        cursor: pointer;
-    }
 
-    .login-box form button.login-button {
-        position: relative;
+
+
+            .login-box a span:nth-child(2) {
+                top: -100%;
+                right: 0;
+                width: 2px;
+                height: 100%;
+                background: linear-gradient(180deg, transparent, #03e9f4);
+                animation: btn-anim2 1s linear infinite;
+                animation-delay: .25s
+            }
+
+
+
+            .login-box a span:nth-child(3) {
+                bottom: 0;
+                right: -100%;
+                width: 100%;
+                height: 2px;
+                background: linear-gradient(270deg, transparent, #03e9f4);
+                animation: btn-anim3 1s linear infinite;
+                animation-delay: .5s
+            }
+
+
+
+            .login-box a span:nth-child(4) {
+                bottom: -100%;
+                left: 0;
+                width: 2px;
+                height: 100%;
+                background: linear-gradient(360deg, transparent, #03e9f4);
+                animation: btn-anim4 1s linear infinite;
+                animation-delay: .75s
+            }
+
+
+
+    /* Style for the "Forgot Password" button */
+    .forgot-password-button {
         display: inline-block;
         padding: 10px 20px;
         color: #03e9f4;
-        font-size: 16px;
+        font-size: 12px;
         text-decoration: none;
         text-transform: uppercase;
-        overflow: hidden;
-        transition: .5s;
-        margin-top: 40px;
+        border: none;
+        outline: none;
+        background: transparent;
+        transition: background 0.5s, color 0.5s;
+        margin-top: 20px;
         letter-spacing: 4px;
-        background: rgba(0, 0, 0, 0.5); /* Set the background color to match the background */
+        cursor: pointer;
     }
 
-        .login-box form button.login-button:hover {
+        .forgot-password-button:hover {
             background: #03e9f4;
             color: #fff;
             border-radius: 5px;
             box-shadow: 0 0 5px #03e9f4, 0 0 25px #03e9f4, 0 0 50px #03e9f4, 0 0 100px #03e9f4;
         }
+
+    /* CSS styles for the Forgot Password page, matching the login screen */
+
+
+    .login-box {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 400px;
+        padding: 40px;
+        transform: translate(-50%, -50%);
+        background: rgba(0,0,0,.5);
+        box-sizing: border-box;
+        box-shadow: 0 15px 25px rgba(0,0,0,.6);
+        border-radius: 10px;
+        text-align: center; /* Center the content */
+    }
+
+        .login-box h2 {
+            margin: 0 0 30px;
+            padding: 0;
+            color: #fff;
+            text-align: center;
+        }
+
+        .login-box .user-box {
+            position: relative;
+            margin-bottom: 30px;
+        }
+
+            .login-box .user-box input {
+                width: 100%;
+                padding: 10px 0;
+                font-size: 16px;
+                color: #fff;
+                border: none;
+                border-bottom: 1px solid #fff;
+                outline: none;
+                background: transparent;
+            }
+
+            .login-box .user-box label {
+                position: absolute;
+                top: 0;
+                left: 0;
+                padding: 10px 0;
+                font-size: 16px;
+                color: #fff;
+                pointer-events: none;
+                transition: .5s;
+            }
+
+            .login-box .user-box input:focus ~ label,
+            .login-box .user-box input:valid ~ label {
+                top: -20px;
+                left: 0;
+                color: #03e9f4;
+                font-size: 12px;
+            }
+
+        .login-box form button.login-button {
+            position: relative;
+            display: inline-block;
+            padding: 10px 20px;
+            color: #03e9f4;
+            font-size: 16px;
+            text-decoration: none;
+            text-transform: uppercase;
+            overflow: hidden;
+            transition: .5s;
+            margin-top: 40px;
+            letter-spacing: 4px;
+        }
+
+            .login-box form button.login-button:hover {
+                background: #03e9f4;
+                color: #fff;
+                border-radius: 5px;
+                box-shadow: 0 0 5px #03e9f4, 0 0 25px #03e9f4, 0 0 50px #03e9f4, 0 0 100px #03e9f4;
+            }
+
+            .login-box form button.login-button span {
+                position: absolute;
+                display: block;
+            }
+
+                .login-box form button.login-button span:nth-child(1) {
+                    top: 0;
+                    left: -100%;
+                    width: 100%;
+                    height: 2px;
+                    background: linear-gradient(90deg, transparent, #03e9f4);
+                    animation: btn-anim1 1s linear infinite;
+                }
+
+        .login-box .user-box .eye-icon {
+            color: #fff; /* Set the color to white */
+            cursor: pointer;
+        }
+
+        .login-box form button.login-button {
+            position: relative;
+            display: inline-block;
+            padding: 10px 20px;
+            color: #03e9f4;
+            font-size: 16px;
+            text-decoration: none;
+            text-transform: uppercase;
+            overflow: hidden;
+            transition: .5s;
+            margin-top: 40px;
+            letter-spacing: 4px;
+            background: rgba(0, 0, 0, 0.5); /* Set the background color to match the background */
+        }
+
+            .login-box form button.login-button:hover {
+                background: #03e9f4;
+                color: #fff;
+                border-radius: 5px;
+                box-shadow: 0 0 5px #03e9f4, 0 0 25px #03e9f4, 0 0 50px #03e9f4, 0 0 100px #03e9f4;
+            }
 
     .validation-message {
         color: #ff5555; /* Red color for error messages */
@@ -335,10 +334,10 @@ body {
     .login-box .user-box.remember-me {
         text-align: center;
     }
-
 </style>
-<body style="background-color: #1a2740">
 
+<body style="background-color: #1a2740">
+    </body>
     <div class="login-box">
         <h2>Login</h2>
         @using (Html.BeginForm())
@@ -370,6 +369,10 @@ body {
         }
         <a href="@Url.Action("ForgotPassword", "Login")" class="list-group-item list-group-item-action bg-light">
             <button class="forgot-password-button">Forgot Password?</button>
+        </a>
+        <br />
+        <a href="@Url.Action("ContactUs", "Login")" class="list-group-item list-group-item-action bg-light">
+            <button class="forgot-password-button">Contact Us</button>
         </a>
     </div>
 

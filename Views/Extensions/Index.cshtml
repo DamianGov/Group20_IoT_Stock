@@ -55,7 +55,9 @@
         @Html.ActionLink("View Accepted Extensions", "AcceptedExtensions", null, new { @class = "btn-primary" })
         &nbsp;&nbsp;&nbsp;&nbsp;
         @Html.ActionLink("View Rejected Extensions", "RejectedExtensions", null, new { @class = "btn-primary" })
+
         <div>
+            <br />
             <label>Enter Reference #</label>
             <input type="number" id="searchInput" min="0" max="@int.MaxValue" />
             <button id="searchButton" class="btn-primary">Search</button>
@@ -113,4 +115,48 @@
         });
     });
     </script>
-    }
+    <script>
+        function AcceptExtension(stockId)
+        {
+            $.ajax({
+                url: '@Url.Action("AcceptExtension", "Extensions")',
+                type: 'POST',
+                data: { id: stockId },
+                dataType: 'json',
+                success: function (data) {
+                    if (!data.success) {
+                        notifyError(data.message);
+                    } else {
+                        localStorage.setItem('notificationMessage', data.message);
+                        location.reload();
+                    }
+
+
+                },
+                error: function () {
+                    notifyError("An error occurred while applying the Extension.");
+                }
+            });
+
+        }
+
+        function RejectExtension(stockId)
+{
+            $.ajax({
+                url: '@Url.Action("RejectExtension", "Extensions")',
+                type: 'POST',
+                data: { id: stockId },
+                dataType: 'json',
+                success: function (data) {
+                    localStorage.setItem('notificationMessage', data.message);
+                    location.reload();
+                },
+                error: function () {
+                    notifyError("An error occurred while rejecting the Extension.");
+                }
+            });
+}
+    </script>
+}
+
+
