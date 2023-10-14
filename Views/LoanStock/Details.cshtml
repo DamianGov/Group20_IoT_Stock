@@ -106,37 +106,42 @@
                     @Html.EditorFor(model => model.BorrowStartDate, new { htmlAttributes = new { @class = "form-control datepicker" } })
                 </div>
             </div>
-
+            <br />
             <div class="form-group">
                 <input type="submit" value="Loan" class="btn btn-primary" />
+            </div>
+            <br />
+            <div>
+                @Html.ActionLink("Back to List of Stock", "Index", null, new { @class = "btn-primary" })
             </div>
         }
     </div>
 </div>
 
+
 @section Scripts
 {
     <script>
-        
-            // Get the current date
-            var currentDate = new Date();
 
-            // Function to check if a date is a weekday (Monday to Friday)
-            function isWeekday(date) {
-                var day = date.getDay();
-                return day >= 1 && day <= 5; // Monday to Friday
-            }
+        // Get the current date
+        var currentDate = new Date();
 
-            // Function to calculate the next weekday from a given date
-            function getNextWeekday(date) {
-                var nextDay = new Date(date);
-                nextDay.setDate(date.getDate() + 1); // Start with the next day
-                while (!isWeekday(nextDay)) {
-                    nextDay.setDate(nextDay.getDate() + 1);
-                }
-                return nextDay;
+        // Function to check if a date is a weekday (Monday to Friday)
+        function isWeekday(date) {
+            var day = date.getDay();
+            return day >= 1 && day <= 5; // Monday to Friday
+        }
+
+        // Function to calculate the next weekday from a given date
+        function getNextWeekday(date) {
+            var nextDay = new Date(date);
+            nextDay.setDate(date.getDate() + 1); // Start with the next day
+            while (!isWeekday(nextDay)) {
+                nextDay.setDate(nextDay.getDate() + 1);
             }
-   
+            return nextDay;
+        }
+
         $(".datepicker").datepicker({
             dateFormat: 'yy/mm/dd',
             minDate: getNextWeekday(currentDate), // Set the minimum date to the next weekday
@@ -157,4 +162,4 @@
             }
         });
     </script>
-    }
+}

@@ -1,11 +1,12 @@
 ﻿@model IEnumerable<Group20_IoT.Models.ViewModel.LoanStockViewModel>
 
-<div class="row">
-    @foreach (var item in Model)
-    {
-        <div class="col-md-4 mb-4">
+<div class="card-body">
+    <div class="row">
+        @foreach (var item in Model)
+        {
+
             <div class="card">
-                <img src="~/Content/Images/@item.ImageFile" class="card-img-top" alt="@item.ImageFile" style="max-height:200px;">
+                <div style="text-align:center"><img src="~/Content/Images/@item.ImageFile" class="card-img-top" alt="@item.ImageFile" style="max-height: 200px; max-width: 200px;"></div>
                 <div class="card-body">
                     <h3 class="card-title"><strong>@Html.DisplayFor(modelItem => item.Name)</strong></h3>
                     <br />
@@ -28,6 +29,7 @@
                     }
                 </div>
             </div>
-        </div>
-    }
-</div>
+
+        }
+    </div>
+    </div>
