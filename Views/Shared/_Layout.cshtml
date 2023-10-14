@@ -266,6 +266,7 @@
                     {
                         <li><i class="fa fa-stack-overflow" aria-hidden="true"></i> @Html.ActionLink("Loan Stock", "Index", "LoanStock")</li>
                         <li><i class="fa fa-list"></i> @Html.ActionLink("My Loan Requests", "Index", "RequestLoan")</li>
+                        <li><i class="fa-solid fa-boxes-packing"></i> @Html.ActionLink("My Requested Stock", "Index", "RequestStock")</li>
                     }
                     @if (UserType == "SuperAdmin")
                     {
@@ -280,10 +281,7 @@
                         <li><i class="fa-solid fa-pen-to-square"></i> @Html.ActionLink("Manage Loan Requests", "Index", "ReviewLoan")</li>
                         <li><i class="fa-solid fa-file-pen"></i> @Html.ActionLink("Manage Extension Requests", "Index", "Extensions")</li>
                         <li><i class="fa-solid fa-boxes-packing"></i> @Html.ActionLink("Stock Requests Management", "Index", "RequestStock")</li>
-                    }
-                    @if (UserType == "Member")
-                    {
-                        <li><i class="fa-solid fa-boxes-packing"></i> @Html.ActionLink("My Requested Stock", "Index", "RequestStock")</li>
+                        <li><i class="fa-solid fa-file-invoice"></i> @Html.ActionLink("Reports","Index","Reports")</li>
                     }
                     @if (UserType == "SuperAdmin")
                     {

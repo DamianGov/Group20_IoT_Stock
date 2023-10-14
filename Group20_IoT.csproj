@@ -559,9 +559,6 @@
     <Content Include="Views\Users\ManageUser.cshtml" />
     <Content Include="Views\Users\Index.cshtml" />
     <Content Include="Views\Login\Index.cshtml" />
-    <Content Include="Views\Home\SuperAdminHome.cshtml" />
-    <Content Include="Views\Home\AdminHome.cshtml" />
-    <Content Include="Views\Home\MemberHome.cshtml" />
     <Content Include="Views\UserTracking\Index.cshtml" />
     <Content Include="Views\UserTracking\_UserTracked.cshtml" />
     <Content Include="Views\RequestStock\Index.cshtml" />
@@ -596,8 +593,6 @@
     <Content Include="Views\RequestLoan\_RequestLoanTable.cshtml" />
     <Content Include="Views\Login\ContactUs.cshtml" />
     <Content Include="Views\Reports\Index.cshtml" />
-    <Content Include="Views\Reports\NewStock.cshtml" />
-    <Content Include="Views\Reports\BorrowedStock.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

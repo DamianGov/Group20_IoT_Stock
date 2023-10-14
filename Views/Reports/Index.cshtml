@@ -1,7 +1,34 @@
 ﻿
 @{
-    ViewBag.Title = "Stock Report";
+    ViewBag.Title = "Reports";
 }
+<style>
+    /* Add some basic CSS to style the wrapper div */
+    #iframe-container {
+        width: 100%; /* Set the initial width to 100% of the page */
+    }
+</style>
+<h2>Reports</h2>
+<br />
+<div id="iframe-container">
+    <iframe title="IOT" width="100%" height="790px" src="https://app.powerbi.com/reportEmbed?reportId=f3d998ca-7ad5-4035-97f8-0d24fe3b481f&autoAuth=true&embeddedDemo=true" frameborder="0" allowFullScreen="true"></iframe>
+</div>
 
-<h2>Stock Report</h2>
+@section scripts
+{
+    <script>
+        // Get a reference to the iframe and the container div
+        const iframe = document.querySelector('iframe');
+        const container = document.getElementById('iframe-container');
 
+        // Function to update the iframe width based on the container width
+        function updateIframeWidth() {
+            const containerWidth = container.clientWidth;
+            iframe.width = containerWidth;
+        }
+
+        // Call the function initially and add an event listener for window resizing
+        updateIframeWidth();
+        window.addEventListener('resize', updateIframeWidth);
+    </script>
+    }

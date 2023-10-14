@@ -14,23 +14,6 @@ namespace Group20_IoT.Controllers
     {
         private IoTContext db = new IoTContext();
 
-        [SessionChecker("SuperAdmin")]
-        public ActionResult SuperAdminHome()
-        {
-            return View();
-        }
-
-        [SessionChecker("Admin")]
-        public ActionResult AdminHome()
-        {
-            return View();
-        }
-
-        [SessionChecker("Member")]
-        public ActionResult MemberHome()
-        {
-            return View();
-        }
 
         [SessionChecker("SuperAdmin", "Admin", "Member")]
         public ActionResult ManageAccount()
