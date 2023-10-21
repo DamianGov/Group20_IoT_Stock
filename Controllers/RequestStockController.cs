@@ -112,6 +112,9 @@ namespace Group20_IoT.Controllers
                 stock.StockImage = ImageGUID;
                 db.RequestStock.Add(stock);
                 db.SaveChanges();
+
+                _ = SharedMethods.SendEmail(user.GetFullName(), user.Email, "IoT System - Stock Request", $"Hello, {user.GetFullName()}.\n\nYour stock request:\n \"{stock.Quantity} x {stock.StockName}\" \nHas been submitted.\nYou will receive feedback about your stock request via email.\n\nThank you.\nKind Regards,\nIoT System.", false);
+
                 return RedirectToAction(nameof(Index));
             }
 
@@ -173,7 +176,7 @@ namespace Group20_IoT.Controllers
 
             Users user = db.Users.Find(stock.UserId);
 
-            _ = SharedMethods.SendEmail(user.GetFullName(), user.Email, "IoT System - Stock Request Accepted", $"Hello,{user.GetFullName()}.\n\nThe Stock you requested for, {stock.Quantity} x {stock.StockName}, has been accepted.\n\nThank you.\nKind regards,\nIoT System.", false);
+            _ = SharedMethods.SendEmail(user.GetFullName(), user.Email, "IoT System - Stock Request Accepted", $"Hello,{user.GetFullName()}.\n\nThe Stock you requested for,\n \"{stock.Quantity} x {stock.StockName}\" \n, has been accepted.\n\nThank you.\nKind regards,\nIoT System.", false);
 
             return Json(new { success = true, message = "Stock Request has been approved" });
         }

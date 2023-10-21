@@ -78,7 +78,7 @@ namespace Group20_IoT.Controllers
             db.Entry(requestLoan).State = EntityState.Modified;
             db.SaveChanges();
 
-            _ = SharedMethods.SendEmail(request.LoanStatus.RequestLoanStock.Users.GetFullName(), request.LoanStatus.RequestLoanStock.Users.Email, "IoT System - Extension Accepted", $"Hello,{request.LoanStatus.RequestLoanStock.Users.GetFullName()}.\n\nThe extension you requested regarding {request.LoanStatus.RequestLoanStock.Quantity} x {request.LoanStatus.RequestLoanStock.Stock.Name} that was due on {OriginallyDue} is now due on {requestLoan.DueDate.ToString("dd MMMM yyyy")}.\n\nThank you.\nKind regards,\nIoT System.", false);
+            _ = SharedMethods.SendEmail(request.LoanStatus.RequestLoanStock.Users.GetFullName(), request.LoanStatus.RequestLoanStock.Users.Email, $"IoT System - Extension Accepted [Loan Reference #{request.LoanStatusId}]", $"Hello, {request.LoanStatus.RequestLoanStock.Users.GetFullName()}.\n\nThe extension you requested regarding\n \"{request.LoanStatus.RequestLoanStock.Quantity} x {request.LoanStatus.RequestLoanStock.Stock.Name}\" \nthat was due on {OriginallyDue} is now due on {requestLoan.DueDate.ToString("dd MMMM yyyy")}.\n\nThank you.\nKind regards,\nIoT System.", false);
 
             return Json(new { success = true, message = "Extension applied successfully" });
         }
@@ -97,7 +97,7 @@ namespace Group20_IoT.Controllers
             db.Entry(request).State = EntityState.Modified;
             db.SaveChanges();
 
-            _ = SharedMethods.SendEmail(request.LoanStatus.RequestLoanStock.Users.GetFullName(), request.LoanStatus.RequestLoanStock.Users.Email, "IoT System - Extension Rejected", $"Hello,{request.LoanStatus.RequestLoanStock.Users.GetFullName()}.\n\nThe extension you requested regarding {request.LoanStatus.RequestLoanStock.Quantity} x {request.LoanStatus.RequestLoanStock.Stock.Name} that is due on {request.LoanStatus.RequestLoanStock.DueDate.ToString("dd MMMM yyyy")} has unfortunately been rejected.\n\nThank you.\nKind regards,\nIoT System.", false);
+            _ = SharedMethods.SendEmail(request.LoanStatus.RequestLoanStock.Users.GetFullName(), request.LoanStatus.RequestLoanStock.Users.Email, $"IoT System - Extension Rejected [Loan Reference #{request.LoanStatusId}]", $"Hello, {request.LoanStatus.RequestLoanStock.Users.GetFullName()}.\n\nThe extension you requested regarding\n \"{request.LoanStatus.RequestLoanStock.Quantity} x {request.LoanStatus.RequestLoanStock.Stock.Name}\" \nthat is due on {request.LoanStatus.RequestLoanStock.DueDate.ToString("dd MMMM yyyy")} has unfortunately been rejected.\n\nThank you.\nKind regards,\nIoT System.", false);
 
             return Json(new { success = true, message = "Extension rejected successfully" });
         }

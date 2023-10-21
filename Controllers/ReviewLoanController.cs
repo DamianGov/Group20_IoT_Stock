@@ -150,7 +150,7 @@ namespace Group20_IoT.Controllers
 
             Users requestUser = db.Users.Find(Request.UserId);
 
-            _ = SharedMethods.SendEmail(requestUser.GetFullName(), requestUser.Email, "IoT System - Loan Request Accepted", $"Hello,{requestUser.GetFullName()}.\n\nYour request to loan {Request.Quantity} x {Stock.Name} has been accepted.\nPlease pick up the stock from {users.GetFullName()}.\n\nThank you.\nKind regards,\nIoT System.", false);
+            _ = SharedMethods.SendEmail(requestUser.GetFullName(), requestUser.Email, $"IoT System - Loan Request Accepted [Loan Reference #{id}]", $"Hello,{requestUser.GetFullName()}.\n\nYour request to loan\n \"{Request.Quantity} x {Stock.Name}\" \nhas been accepted.\nPlease pick up the stock from {users.GetFullName()}.\n\nThank you.\nKind regards,\nIoT System.", false);
 
             return Json(new { success = true, message = "The request has been approved" });
         }
@@ -175,7 +175,7 @@ namespace Group20_IoT.Controllers
 
             Stock Stock = db.Stock.Find(Request.StockId);
 
-            _ = SharedMethods.SendEmail(requestUser.GetFullName(), requestUser.Email, "IoT System - Loan Request Rejected", $"Hello,{requestUser.GetFullName()}.\n\nYour request to loan {Request.Quantity} x {Stock.Name} has unfortunately been rejected.\n\nThank you.\nKind regards,\nIoT System.", false);
+            _ = SharedMethods.SendEmail(requestUser.GetFullName(), requestUser.Email, $"IoT System - Loan Request Rejected [Loan Reference #{id}]", $"Hello,{requestUser.GetFullName()}.\n\nYour request to loan\n \"{Request.Quantity} x {Stock.Name}\" \nhas unfortunately been rejected.\n\nThank you.\nKind regards,\nIoT System.", false);
 
             return Json(new { success = true, message = "The request has been rejected" });
         }

@@ -88,6 +88,9 @@ namespace Group20_IoT.Controllers
                 db.Entry(stock).State = EntityState.Modified;
                 db.StockDiscrepancy.Add(discrepancyStock);
                 db.SaveChanges();
+
+                _ = SharedMethods.SendEmail(user.GetFullName(), user.Email, $"IoT System - Discrepancy Submitted [{stock.CreatedOn.ToString("dd MMMM yyyy")}]", $"Hello, {user.GetFullName()}.\n\nThe Discrepancy has been submitted, regarding {stock.Name} with this issue:\n\n\"{discrepancyStock.Note}\"\n\nThank you.\nKind regards,\nIoT System.", false);
+
                 return RedirectToAction("Index");
             }
 
@@ -132,7 +135,7 @@ namespace Group20_IoT.Controllers
 
             Users user = db.Users.Find(DefStock.CreatedBy);
 
-            _ = SharedMethods.SendEmail(user.GetFullName(), user.Email, "IoT System - Discrepancy Resolved", $"Hello,{user.GetFullName()}.\n\nThe discrepancy regarding {Stock.Name} that you submitted on the {DefStock.CreationDate.ToString("dd MMMM yyyy")}, where there was a {DefStock.DiscrepancyCategory}, has been resolved.\n\nThank you.\nKind regards,\nIoT System.", false);
+            _ = SharedMethods.SendEmail(user.GetFullName(), user.Email, "IoT System - Discrepancy Resolved", $"Hello, {user.GetFullName()}.\n\nThe discrepancy regarding {Stock.Name} that you submitted on the {DefStock.CreationDate.ToString("dd MMMM yyyy")} with this issue:\n\n\"{DefStock.Note}\"\n\n, has been resolved.\n\nThank you.\nKind regards,\nIoT System.", false);
 
             return Json(new { success = true, message = "Discrepancy has been resolved" });
         }

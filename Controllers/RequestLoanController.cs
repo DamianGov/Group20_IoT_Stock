@@ -87,6 +87,13 @@ namespace Group20_IoT.Controllers
 
             db.SaveChanges();
 
+            Users user = Session["User"] as Users;
+            RequestLoanStock reqStock = db.RequestLoanStock.Find(loanStatus.RequestId);
+            Stock stock = db.Stock.Find(reqStock.StockId);
+
+
+            _ = SharedMethods.SendEmail(user.GetFullName(), user.Email, $"IoT System - Extension Request Submitted [Loan Reference #{loanStatus.Id}]", $"Hello, {user.GetFullName()}.\n\nThe extension you requested regarding\n \"{reqStock.Quantity} x {stock.Name}\" \n, has been submitted.\n\nThank you.\nKind regards,\nIoT System.", false);
+
             return Json(new { success = true, message = "Your request for an Extension has been submitted" });
         }
 

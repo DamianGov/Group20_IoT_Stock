@@ -137,7 +137,7 @@ namespace Group20_IoT.Controllers
 
                 Stock stock = db.Stock.Find(obj.StockId);
                 
-                _ = SharedMethods.SendEmail(users.GetFullName(), users.Email, "IoT System - Loan Stock Request Submitted", $"Hello,{users.GetFullName()}.\n\nYour request to loan {obj.QuantityWantToLoan} x {stock.Name} has been submitted.\nYou will receive an email when your loan request has been accepted/rejected.\n\nThank you.\nKind regards,\nIoT System.", false);
+                _ = SharedMethods.SendEmail(users.GetFullName(), users.Email, "IoT System - Loan Stock Request Submitted", $"Hello, {users.GetFullName()}.\n\nYour request to loan\n \"{obj.QuantityWantToLoan} x {stock.Name}\" \nhas been submitted.\nYou will receive an email when your loan request has been accepted/rejected.\n\nThank you.\nKind regards,\nIoT System.", false);
 
                 db.RequestLoanStock.Add(requestLoanStock);
                 db.SaveChanges();
