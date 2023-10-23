@@ -237,126 +237,184 @@
             border-radius: 4px !important;
             margin-bottom: 1rem !important;
         }
+        #chat-bubble {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: #007ACC;
+            color: #fff;
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            text-align: center;
+            line-height: 60px;
+            cursor: pointer;
+        }
+
+            #chat-bubble:hover {
+                background-color: #005C8D;
+            }
+
+        #chat-container {
+            display: none;
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 700px; /* Adjust the width as needed */
+            height: 800px; /* Adjust the height as needed */
+            background-color: #fff;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
     </style>
 </head>
 <body style="background-color: #1a2740">
     <body>
-    <nav>
-        <div class="navbar">
-            <div class="container nav-container">
-                <input class="checkbox" type="checkbox" id="menu-toggle" />
-                <div class="hamburger-lines">
-                    <span class="line line1"></span>
-                    <span class="line line2"></span>
-                    <span class="line line3"></span>
-                </div>
-                <div class="logo">
-                     <h1 style="font-family: sans-serif ">IoT Management System</h1>
-                </div>
-                <div class="menu-items">
-                    @{
-                        string UserType = Session["UserType"] as string;
-                    }
-                    <li><i class="fa-solid fa-user" aria-hidden="true"></i> @Html.ActionLink(((Session["User"] as Group20_IoT.Models.Users).GetFullName()), "ManageAccount", "Home")</li>
-                    @if (UserType == "Admin" || UserType == "SuperAdmin")
-                    {
-                        <li><i class="fa-solid fa-users" aria-hidden="true"></i> @Html.ActionLink("User Management", "Index", "Users")</li>
-                    }
-                    @if (UserType == "Admin" || UserType == "Member")
-                    {
-                        <li><i class="fa fa-stack-overflow" aria-hidden="true"></i> @Html.ActionLink("Loan Stock", "Index", "LoanStock")</li>
-                        <li><i class="fa fa-list"></i> @Html.ActionLink("My Loan Requests", "Index", "RequestLoan")</li>
-                        <li><i class="fa-solid fa-boxes-packing"></i> @Html.ActionLink("My Requested Stock", "Index", "RequestStock")</li>
-                    }
-                    @if (UserType == "SuperAdmin")
-                    {
-                        <li><i class="fa-solid fa-door-open"></i> @Html.ActionLink("Room Management", "Index", "Rooms")</li>
-                        <li><i class="fa-solid fa-boxes-stacked"></i> @Html.ActionLink("Storage Area Management", "Index", "StorageAreas")</li>
-                    }
-                    @if (UserType == "Admin" || UserType == "SuperAdmin")
-                    {
-                        <li><i class="fa-solid fa-archive" aria-hidden="true"></i> @Html.ActionLink("Stock Management", "Index", "Stocks")</li>
-                        <li><i class="fa-solid fa-ban" aria-hidden="true"></i> @Html.ActionLink("Stock Discrepancies Management", "Index", "Discrepancy")</li>
-                        <li><i class="fa-solid fa-person-walking"></i> @Html.ActionLink("Walkthrough Management", "Index", "Walkthrough")</li>
-                        <li><i class="fa-solid fa-pen-to-square"></i> @Html.ActionLink("Manage Loan Requests", "Index", "ReviewLoan")</li>
-                        <li><i class="fa-solid fa-file-pen"></i> @Html.ActionLink("Manage Extension Requests", "Index", "Extensions")</li>
-                        <li><i class="fa-solid fa-boxes-packing"></i> @Html.ActionLink("Stock Requests Management", "Index", "RequestStock")</li>
-                        <li><i class="fa-solid fa-file-invoice"></i> @Html.ActionLink("Reports","Index","Reports")</li>
-                    }
-                    @if (UserType == "SuperAdmin")
-                    {
-                        <li><i class="fa-solid fa-user-secret" aria-hidden="true"></i> @Html.ActionLink("User Tracking", "Index", "UserTracking")</li>
-                    }
-                    <li><i class="fa-solid fa-sign-out" aria-hidden="true"></i> @Html.ActionLink("Logout", "Logout", "Login")</li>
+        <nav>
+            <div class="navbar">
+                <div class="container nav-container">
+                    <input class="checkbox" type="checkbox" id="menu-toggle" />
+                    <div class="hamburger-lines">
+                        <span class="line line1"></span>
+                        <span class="line line2"></span>
+                        <span class="line line3"></span>
+                    </div>
+                    <div class="logo">
+                        <h1 style="font-family: sans-serif ">IoT Management System</h1>
+                    </div>
+                    <div class="menu-items">
+                        @{
+                            string UserType = Session["UserType"] as string;
+                        }
+                        <li><i class="fa-solid fa-user" aria-hidden="true"></i> @Html.ActionLink(((Session["User"] as Group20_IoT.Models.Users).GetFullName()), "ManageAccount", "Home")</li>
+                        @if (UserType == "Admin" || UserType == "SuperAdmin")
+                        {
+                            <li><i class="fa-solid fa-users" aria-hidden="true"></i> @Html.ActionLink("User Management", "Index", "Users")</li>
+                        }
+                        @if (UserType == "Admin" || UserType == "Member")
+                        {
+                            <li><i class="fa fa-stack-overflow" aria-hidden="true"></i> @Html.ActionLink("Loan Stock", "Index", "LoanStock")</li>
+                            <li><i class="fa fa-list"></i> @Html.ActionLink("My Loan Requests", "Index", "RequestLoan")</li>
+                            <li><i class="fa-solid fa-boxes-packing"></i> @Html.ActionLink("My Requested Stock", "Index", "RequestStock")</li>
+                        }
+                        @if (UserType == "SuperAdmin")
+                        {
+                            <li><i class="fa-solid fa-door-open"></i> @Html.ActionLink("Room Management", "Index", "Rooms")</li>
+                            <li><i class="fa-solid fa-boxes-stacked"></i> @Html.ActionLink("Storage Area Management", "Index", "StorageAreas")</li>
+                        }
+                        @if (UserType == "Admin" || UserType == "SuperAdmin")
+                        {
+                            <li><i class="fa-solid fa-archive" aria-hidden="true"></i> @Html.ActionLink("Stock Management", "Index", "Stocks")</li>
+                            <li><i class="fa-solid fa-ban" aria-hidden="true"></i> @Html.ActionLink("Stock Discrepancies Management", "Index", "Discrepancy")</li>
+                            <li><i class="fa-solid fa-person-walking"></i> @Html.ActionLink("Walkthrough Management", "Index", "Walkthrough")</li>
+                            <li><i class="fa-solid fa-pen-to-square"></i> @Html.ActionLink("Manage Loan Requests", "Index", "ReviewLoan")</li>
+                            <li><i class="fa-solid fa-file-pen"></i> @Html.ActionLink("Manage Extension Requests", "Index", "Extensions")</li>
+                            <li><i class="fa-solid fa-boxes-packing"></i> @Html.ActionLink("Stock Requests Management", "Index", "RequestStock")</li>
+                            <li><i class="fa-solid fa-file-invoice"></i> @Html.ActionLink("Reports", "Index", "Reports")</li>
+                        }
+                        @if (UserType == "SuperAdmin")
+                        {
+                            <li><i class="fa-solid fa-user-secret" aria-hidden="true"></i> @Html.ActionLink("User Tracking", "Index", "UserTracking")</li>
+                        }
+                        <li><i class="fa-solid fa-sign-out" aria-hidden="true"></i> @Html.ActionLink("Logout", "Logout", "Login")</li>
+                    </div>
                 </div>
             </div>
+        </nav>
+
+
+
+
+        <div class="container body-content">
+            <div class="wrapper">
+                <div class="content" style="min-height:93vh;">
+
+                    @RenderBody()
+                    <div id="notification-area">
+                    </div>
+
+                    <div id="chat-bubble">
+                        <img src="~/Content/Images/bot.png" style="max-height: 40px; max-width: 40px;">
+                    </div>
+                    <div id="chat-container">
+                        <div id="close-button" onclick="closeChat()" style="text-align:center;color:darkblue">Close</div>
+                        <iframe src="https://web.powerva.microsoft.com/environments/Default-4b1930d1-12f4-40b5-b48c-bd86117429d8/bots/cr938_naSbotWWBx9Y/webchat?__version__=2" frameborder="0" style="width: 100%; height: 100%;"></iframe>
+                    </div>
+
+                </div>
+                <div class="footer">
+                    <hr />
+                    <p>&copy; @DateTime.Now.Year - Made with <span class="heart">&hearts;</span> by the <span class="rainbow-text">IoT Group</span></p>
+                </div>
+            </div>
+
+
         </div>
-    </nav>
+        <script>
+            function closeChat() {
+                var chatContainer = document.getElementById("chat-container");
+                chatContainer.style.display = "none";
+            }
 
+        </script>
 
-
-
-    <div class="container body-content">
-        <div class="wrapper">
-            <div class="content" style="min-height:93vh;">
-
-                @RenderBody()
-                <div id="notification-area">
-                </div>
-            </div>
-            <div class="footer">
-                <hr />
-                <p>&copy; @DateTime.Now.Year - Made with <span class="heart">&hearts;</span> by the <span class="rainbow-text">IoT Group</span></p>
-            </div>
-        </div>
-
-
-    </div>
-
-    <script>
-        $(document).ready(function () {
-            // Cache the menu items element
-            var mainContent = $(".content");
-            var Footer = $(".footer");
-
-            // When the menu toggle checkbox is clicked
-            $("#menu-toggle").click(function () {
-                if (this.checked) {
-                    // Hide the mainContent when checked
-                    mainContent.css("display", "none");
-                    Footer.css("display", "none");
+        <script>
+            document.getElementById("chat-bubble").addEventListener("click", function () {
+                var chatContainer = document.getElementById("chat-container");
+                if (chatContainer.style.display === "none" || chatContainer.style.display === "") {
+                    chatContainer.style.display = "block";
                 } else {
-                    // Show the mainContent when unchecked
-                    mainContent.css("display", "block"); // or "inline-block", or any other appropriate value
-                    Footer.css("display", "block");
+                    chatContainer.style.display = "none";
+                }
+            });
+        </script>
+
+
+        <script>
+            $(document).ready(function () {
+                // Cache the menu items element
+                var mainContent = $(".content");
+                var Footer = $(".footer");
+
+                // When the menu toggle checkbox is clicked
+                $("#menu-toggle").click(function () {
+                    if (this.checked) {
+                        // Hide the mainContent when checked
+                        mainContent.css("display", "none");
+                        Footer.css("display", "none");
+                    } else {
+                        // Show the mainContent when unchecked
+                        mainContent.css("display", "block"); // or "inline-block", or any other appropriate value
+                        Footer.css("display", "block");
+                    }
+
+                });
+                var storedMessage = localStorage.getItem('notificationMessage');
+
+                if (storedMessage) {
+                    notifySuccess(storedMessage);
+                    localStorage.removeItem('notificationMessage');
                 }
 
+
             });
-            var storedMessage = localStorage.getItem('notificationMessage');
-
-            if (storedMessage) {
-                notifySuccess(storedMessage);
-                localStorage.removeItem('notificationMessage');
+            function tryParseInt(value) {
+                const parsedValue = parseInt(value, 10); // The second argument specifies the radix (base 10).
+                if (!isNaN(parsedValue)) {
+                    return parsedValue;
+                }
+                return null; // Return null if parsing fails.
+            }
+            function isInteger(value) {
+                return Number.isInteger(value);
             }
 
-
-        });
-        function tryParseInt(value) {
-            const parsedValue = parseInt(value, 10); // The second argument specifies the radix (base 10).
-            if (!isNaN(parsedValue)) {
-                return parsedValue;
-            }
-            return null; // Return null if parsing fails.
-        }
-        function isInteger(value) {
-            return Number.isInteger(value);
-        }
-
-    </script>
-    @RenderSection("scripts", required: false)
-    @Scripts.Render("~/bundles/jquery")
-    @Scripts.Render("~/bundles/bootstrap")
+        </script>
+        @RenderSection("scripts", required: false)
+        @Scripts.Render("~/bundles/jquery")
+        @Scripts.Render("~/bundles/bootstrap")
 
 
-</body>
+    </body>
 </html>

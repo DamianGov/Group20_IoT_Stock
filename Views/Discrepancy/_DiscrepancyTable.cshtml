@@ -22,11 +22,12 @@
                     else
                     { <span class="text-danger">No</span>}
                 </p>
+                @if (item.Resolved)
+                {
                 <p>
-                    <strong>Resolved Date:</strong> @if (item.ResolvedDate.HasValue)
-                    {@item.ResolvedDate.Value.ToString("dd MMMM yyyy")}
-                else {; }
+                    <strong>Resolved Date:</strong> @item.ResolvedDate.Value.ToString("dd MMMM yyyy")
                 </p>
+                }
                 @if (Session["UserType"] as string == "SuperAdmin" && !item.Resolved)
                 {
                     <button class="btn btn-primary resolve-button" data-id="@item.Id">Resolve Discrepancy</button>
